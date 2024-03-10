@@ -1,0 +1,46 @@
+import 'package:Cliamizer/res/setting.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../CommonUtils/image_utils.dart';
+import '../res/colors.dart';
+
+class ClaimizerAppBar extends StatelessWidget {
+  final String title;
+
+  const ClaimizerAppBar({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Setting.mobileLanguage.value != Locale("en")
+                ? RotatedBox(
+                    quarterTurns: 2,
+                    child: SvgPicture.asset(
+                      ImageUtils.getSVGPath("back_icon"),
+                    ),
+                  )
+                : SvgPicture.asset(
+                    ImageUtils.getSVGPath("back_icon"),
+                  )),
+        Expanded(
+          child: Center(
+            child: AutoSizeText(
+              capitalize(title),
+              style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, color: MColors.dark_text_color),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}

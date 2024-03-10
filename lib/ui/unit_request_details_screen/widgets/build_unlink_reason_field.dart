@@ -1,0 +1,33 @@
+import 'package:Cliamizer/ui/unit_request_details_screen/UnitDetailsProvider.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../generated/l10n.dart';
+import '../../../res/colors.dart';
+import '../../../res/styles.dart';
+
+class BuildUnlinkReasonField extends StatelessWidget {
+  const BuildUnlinkReasonField({Key? key,required this.provider}) : super(key: key);
+  final UnitDetailsProvider provider;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UnitDetailsProvider>(
+      builder: (context, pr, child) =>  TextFormField(
+        controller: pr.unlinkReason,
+        maxLines: 4,
+        style: MTextStyles.textDark14,
+        decoration: InputDecoration(
+          hintText: S.of(context)!.unlinkReason,
+          hintStyle: MTextStyles.textMain14.copyWith(
+              color: MColors.light_text_color
+          ),
+          fillColor: MColors.primary_color.withOpacity(.1),
+          filled: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+}
