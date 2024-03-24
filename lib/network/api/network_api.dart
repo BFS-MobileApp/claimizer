@@ -36,4 +36,10 @@ class Api {
   static String getUnitRequestDetailsApiCall(int id) => "request/$id";
   static String unlinkUnitRequestDetailsApiCall = "requests/unlink";
 
+  static String help = "https://claimizer.com/help";
+
+  static String privacyPolicy = "https://claimizer.com/page/privacy-policy";
+
+  static String contact = "https://claimizer.com/contact";
+
 }
