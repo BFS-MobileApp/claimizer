@@ -3,12 +3,17 @@ import 'dart:math';
 
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
+import 'package:Cliamizer/firebase_options.dart';
 import 'package:Cliamizer/res/gaps.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../CommonUtils/log_utils.dart';
@@ -20,6 +25,8 @@ import '../../../network/models/LoginResponse.dart';
 import '../../../res/colors.dart';
 import '../../../res/setting.dart';
 import '../../../res/styles.dart';
+import '../forgot_password_screen/ForgotPasswordScreen.dart';
+import '../register_screen/RegisterScreen.dart';
 import 'LoginPresenter.dart';
 import 'LoginProvider.dart';
 
@@ -38,6 +45,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
   ScrollController _controller = ScrollController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ValueNotifier userCredential = ValueNotifier('');
 
   String password = '', email = '';
 
@@ -48,20 +56,47 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
   Widget myloginWidget = SizedBox();
   int selectedLang = 0;
 
+  /*void intializeFirebase() async{
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }*/
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser!.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      /*print(userCredential.value.user.photoURL.toString());
+      print(userCredential.value.user.displayName.toString());
+      print(userCredential.value.user.email.toString());*/
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      debugPrint("Exception : ${e.code}");
+    }
+  }
   @override
   void initState() {
     // provider= context.read<LoginProvider<LoginResponse>>();
+    //intializeFirebase();
     Prefs.getAppLocal.then((value) => {
-          if (value != null)
-            {
-              setState(() {
-                setSelected(value);
-                print('###### $value');
-                provider.language = value;
-              }),
-              // provider.isArabic == "ar",
-            }
-        });
+      if (value != null)
+        {
+          setState(() {
+            setSelected(value);
+            print('###### $value');
+            provider.language = value;
+          }),
+          // provider.isArabic == "ar",
+        }
+    });
 
     myloginWidget = LoginBTN(
       key: Key("ds"),
@@ -166,30 +201,32 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                             SizedBox(
                               height: 4.h,
                             ),
-                            //buildSignInWith(context),
+                            buildSignInWith(context),
+                            Gaps.vGap12,
+                            buildSignInWithApple(context)
                           ],
                         ),
                       ),
                     ),
                     Gaps.vGap30,
-                    /*Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          S.of(context).dontHaveAnAccount,
-                          style: Theme.of(context).textTheme.titleSmall.copyWith(fontWeight: FontWeight.w600),
+                          S.of(context)!.dontHaveAnAccount,
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w600),
                         ),
                         InkWell(
                           onTap: () {
                             Navigator.push(context, CupertinoPageRoute(builder: (_) => RegisterScreen()));
                           },
                           child: Text(
-                            S.of(context).signUp,
-                            style: Theme.of(context).textTheme.titleSmall.copyWith(color:Color(0xff44A4F2),fontWeight: FontWeight.w500),
+                            S.of(context)!.signUp,
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(color:Color(0xff44A4F2),fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],
-                    ),*/
+                    ),
                     SizedBox(
                       height: 3.h,
                     ),
@@ -207,9 +244,9 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
     return Center(
         child: Image.asset(
           ImageUtils.getImagePath("logo"),
-      width: 18.w,
-      height: 18.w,
-    ));
+          width: 18.w,
+          height: 18.w,
+        ));
   }
 
   Widget buildEmailField(BuildContext context) {
@@ -236,13 +273,13 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
               contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.w),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
               enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
               errorBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
               focusedErrorBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
               focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.primary_light_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.primary_light_color)),
               counterText: "",
               hintStyle: Theme.of(context).textTheme.displaySmall,
             ),
@@ -305,17 +342,17 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                       color: MColors.primary_color,
                     ),
                   )
-                  // Icon(_obscureTextPassword ? Icons.visibility : Icons.visibility_off, color: MColors.primary_color),
-                  ),
+                // Icon(_obscureTextPassword ? Icons.visibility : Icons.visibility_off, color: MColors.primary_color),
+              ),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
               enabledBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.outlineBorderLight)),
               errorBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
               focusedErrorBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.rejected_color)),
               focusedBorder:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.primary_light_color)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: MColors.primary_light_color)),
               counterText: "",
               hintStyle: Theme.of(context).textTheme.displaySmall,
             ),
@@ -360,9 +397,9 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
               decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                  color: MColors.gray,
-                  width: 2,
-                )),
+                      color: MColors.gray,
+                      width: 2,
+                    )),
               ),
             ),
             SizedBox(
@@ -388,12 +425,60 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
         ),
         Gaps.vGap30,
         InkWell(
-          onTap: () {},
+          onTap: () async{
+            userCredential.value = await signInWithGoogle();
+            print(userCredential.value.user.email.toString());
+          },
           child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.w),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: MColors.outlineBorderLight)),
               child: SvgPicture.asset(ImageUtils.getSVGPath("continue_with_google"))),
         ),
+      ],
+    );
+  }
+
+  Future<UserCredential> messi() async{
+    AppleAuthProvider appleProvider = AppleAuthProvider();
+    return await FirebaseAuth.instance.signInWithProvider(appleProvider);
+  }
+
+
+  Widget buildSignInWithApple(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () async{
+            final credential = await SignInWithApple.getAppleIDCredential(
+              scopes: [
+                AppleIDAuthorizationScopes.email,
+                AppleIDAuthorizationScopes.fullName,
+              ],
+            );
+
+            print(credential);
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.w),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: MColors.outlineBorderLight)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(ImageUtils.getSVGPath("apple") , width: 7.w,height: 7.w,),
+                SizedBox(
+                  width: 1.w,
+                ),
+                Padding(
+                    padding:  EdgeInsets.only(top: 3 , right: 3.w),
+                    child: Text(
+                      S.of(context)!.continueWithApple,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600 , fontSize: 10.sp),
+                    )
+                ),
+              ],
+            ),
+          ),)
       ],
     );
   }
@@ -476,7 +561,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
 
 class LoginBTN extends StatelessWidget {
   const LoginBTN({
-    Key? key,
+    Key?  key,
   }) : super(key: key);
 
   @override

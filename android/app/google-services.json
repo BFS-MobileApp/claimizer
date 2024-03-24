@@ -1,56 +1,56 @@
 {
   "project_info": {
-    "project_number": "235439740198",
-    "project_id": "claimizer-342606",
-    "storage_bucket": "claimizer-342606.appspot.com"
+    "project_number": "688584279084",
+    "project_id": "claimizer-a73e7",
+    "storage_bucket": "claimizer-a73e7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:235439740198:android:ad1dc3e8b0de7f48ff1de7",
+        "mobilesdk_app_id": "1:688584279084:android:6498e044a8dd5fd1993d89",
         "android_client_info": {
           "package_name": "com.app.claimizer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "235439740198-c7kp3kb4fr418oun15a36bbs1ci77dm4.apps.googleusercontent.com",
+          "client_id": "688584279084-7keh32jiadhi3jmpgds1aevjribpd2mb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.claimizer",
-            "certificate_hash": "620c2a5532bd119d175b693c095888bdbe47d3fb"
+            "certificate_hash": "41a7d13a8306639d3dfaeffd04ea11102ee3d0a9"
           }
         },
         {
-          "client_id": "235439740198-mufi3fall2erhpssvh8b0srh22u12j4t.apps.googleusercontent.com",
+          "client_id": "688584279084-g16fpmqgl8rmir3f5slqffl8kbdgvij6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.app.claimizer",
-            "certificate_hash": "83c4e37ec719d6d5e7a2277706323c9fe3af1bc0"
+            "certificate_hash": "93a4419342ea172231025b49cb11bf6aa9fa059a"
           }
         },
         {
-          "client_id": "235439740198-ih5kihd8smtnchdr9qooug8r93dfuof7.apps.googleusercontent.com",
+          "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBl64zDaqF4-eTfTxjZE21HJTLda7Hpqs"
+          "current_key": "AIzaSyBRBNeUwID2o8BR0nXXGKjWplXC6Vj7ISQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "235439740198-ih5kihd8smtnchdr9qooug8r93dfuof7.apps.googleusercontent.com",
+              "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "235439740198-hnh0n5dc3mfoos7mslllu2v8b7fo4geu.apps.googleusercontent.com",
+              "client_id": "688584279084-10sbhe7q6nvfhsompug64etvqripk8p6.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.app.claimizer"
+                "bundle_id": "com.app.claimizer.claimizerClient"
               }
             }
           ]
