@@ -13,6 +13,9 @@ class Prefs {
   static Future<bool> get getIsArabicLang =>
       PreferencesHelper.getBool(Const.IS_Arabic_KEY);
 
+  static Future setIfSocialLogin(String value) =>
+      PreferencesHelper.setString(Const.IF_SOCIAL_LOGIN, value);
+
   static Future setIsArabicLang(bool value) =>
       PreferencesHelper.setBool(Const.IS_Arabic_KEY, value);
 

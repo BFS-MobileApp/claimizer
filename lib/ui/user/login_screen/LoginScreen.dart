@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
+import 'package:Cliamizer/CommonUtils/model_eventbus/db_helper.dart';
+import 'package:Cliamizer/CommonUtils/preference/Const.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
 import 'package:Cliamizer/firebase_options.dart';
 import 'package:Cliamizer/res/gaps.dart';
@@ -40,6 +42,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   LoginProvider<LoginResponse> provider = LoginProvider<LoginResponse>();
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   //Rolling listener
   ScrollController _controller = ScrollController();
@@ -56,32 +59,6 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
   Widget myloginWidget = SizedBox();
   int selectedLang = 0;
 
-  /*void intializeFirebase() async{
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  }*/
-
-  Future<dynamic> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser!.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      /*print(userCredential.value.user.photoURL.toString());
-      print(userCredential.value.user.displayName.toString());
-      print(userCredential.value.user.email.toString());*/
-      return await FirebaseAuth.instance.signInWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      debugPrint("Exception : ${e.code}");
-    }
-  }
   @override
   void initState() {
     // provider= context.read<LoginProvider<LoginResponse>>();
@@ -426,8 +403,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
         Gaps.vGap30,
         InkWell(
           onTap: () async{
-            userCredential.value = await signInWithGoogle();
-            print(userCredential.value.user.email.toString());
+            _handleSignIn();
           },
           child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 3.w),
@@ -436,6 +412,19 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
         ),
       ],
     );
+  }
+
+  void _handleSignIn() async {
+    try {
+      await _googleSignIn.signIn();
+      // Once signed in, you can get user details like email, name, etc.
+      print('User signed in: ${_googleSignIn.currentUser!.email}');
+      provider.clearError();
+      FocusScope.of(context).unfocus();
+      _doSocialServerLogin(_googleSignIn.currentUser!.email, _googleSignIn.currentUser!.displayName! , Const.GOOGLE);
+    } catch (error) {
+      print('Error signing in: $error');
+    }
   }
 
   Future<UserCredential> messi() async{
@@ -453,10 +442,32 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
               scopes: [
                 AppleIDAuthorizationScopes.email,
                 AppleIDAuthorizationScopes.fullName,
-              ],
-            );
+              ],);
+            DatabaseHelper dbHelper = DatabaseHelper();
+            if(credential.email != null){
+              await dbHelper.insertUser({
+                'userid': credential.userIdentifier,
+                'name': credential.givenName!+' '+credential.familyName!,
+                'email': credential.email,
+                'photo': '',
+                'phone': '',
+              });
+              provider.clearError();
+              FocusScope.of(context).unfocus();
+              _doSocialServerLogin(credential.email!, credential.givenName!+' '+credential.familyName! , Const.APPLE);
+            } else {
+              final  user =  await dbHelper.getUserById(credential.userIdentifier!);
+              if(user.userId=='00000'){
 
-            print(credential);
+              } else {
+                provider.clearError();
+                FocusScope.of(context).unfocus();
+                _doSocialServerLogin(user.email, user.name, Const.APPLE);
+              }
+            }
+            print('User ID: ${credential.userIdentifier}');
+            print('Email: ${credential.email}');
+
           },
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.w),
@@ -481,6 +492,14 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
           ),)
       ],
     );
+  }
+
+  Future<void> _doSocialServerLogin(String email, String name , String social) async {
+    _googleSignIn.disconnect();
+    Map<String, dynamic> bodyParams = new Map();
+    bodyParams["email"] = email;
+    bodyParams["name"] = name;
+    await mPresenter.doLoginApiCallWithSocial(bodyParams , social);
   }
 
   GestureDetector buildLoginButton(BuildContext context) {

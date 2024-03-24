@@ -11,6 +11,8 @@ class Const {
 
   static const String USER_IMAGE = 'USER_IMAGE';
 
+  static const String IF_SOCIAL_LOGIN = "IF_SOCIAL_LOGIN";
+
   static const String IS_LOGIN_KEY = "is_logged_in";
 
   static const String IS_Arabic_KEY = "is_arabic_in";
@@ -36,6 +38,10 @@ class Const {
   static const String SOURCE_HOME = "HOME";
 
   static const THEME_STATUS = "THEMESTATUS";
+
+  static const String GOOGLE = "GOOGLE";
+
+  static const String APPLE = "APPLE";
 }
 
 enum FileType { products, posts, reviews, comments }
