@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBBl64zDaqF4-eTfTxjZE21HJTLda7Hpqs',
-    appId: '1:235439740198:android:ad1dc3e8b0de7f48ff1de7',
-    messagingSenderId: '235439740198',
-    projectId: 'claimizer-342606',
-    storageBucket: 'claimizer-342606.appspot.com',
+    apiKey: 'AIzaSyBRBNeUwID2o8BR0nXXGKjWplXC6Vj7ISQ',
+    appId: '1:688584279084:android:6498e044a8dd5fd1993d89',
+    messagingSenderId: '688584279084',
+    projectId: 'claimizer-a73e7',
+    storageBucket: 'claimizer-a73e7.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBmrSbheSvuSMxxrKTAGI41PcRUlkbvITQ',
-    appId: '1:235439740198:ios:762bd6cda259bfddff1de7',
-    messagingSenderId: '235439740198',
-    projectId: 'claimizer-342606',
-    storageBucket: 'claimizer-342606.appspot.com',
-    androidClientId: '235439740198-c7kp3kb4fr418oun15a36bbs1ci77dm4.apps.googleusercontent.com',
-    iosClientId: '235439740198-hnh0n5dc3mfoos7mslllu2v8b7fo4geu.apps.googleusercontent.com',
-    iosBundleId: 'com.app.claimizer',
+    apiKey: 'AIzaSyAQvrkXQ-ZPWPhBlf-b9ciWvBvkq5QmJp0',
+    appId: '1:688584279084:ios:8a3b0ff57f05fbbd993d89',
+    messagingSenderId: '688584279084',
+    projectId: 'claimizer-a73e7',
+    storageBucket: 'claimizer-a73e7.appspot.com',
+    androidClientId: '688584279084-7keh32jiadhi3jmpgds1aevjribpd2mb.apps.googleusercontent.com',
+    iosClientId: '688584279084-10sbhe7q6nvfhsompug64etvqripk8p6.apps.googleusercontent.com',
+    iosBundleId: 'com.app.claimizer.claimizerClient',
   );
 }

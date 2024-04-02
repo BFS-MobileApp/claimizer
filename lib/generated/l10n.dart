@@ -115,6 +115,17 @@ class S {
     );
   }
 
+  /// `Continue with apple`
+  String get continueWithApple {
+    return Intl.message(
+      'Continue with apple',
+      name: 'continueWithApple',
+      desc: '',
+      args: [],
+    );
+  }
+
+
   /// `Log In`
   String get login {
     return Intl.message(

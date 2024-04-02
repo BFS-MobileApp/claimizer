@@ -1,6 +1,7 @@
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/image_loader.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
+import 'package:Cliamizer/network/api/network_api.dart';
 import 'package:Cliamizer/res/styles.dart';
 import 'package:Cliamizer/ui/edit_profile_screen/EditProfileScreen.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../CommonUtils/log_utils.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
@@ -71,7 +73,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
       body: provider.instance!=null ?Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 60),
         child: ListView(
-          children: [profileWidget(), Gaps.vGap12, settingsWidget(), Gaps.vGap12, Gaps.vGap8, accountWidget() , deleteAccountWidget()],
+          children: [profileWidget(), Gaps.vGap12, settingsWidget(), Gaps.vGap12, Gaps.vGap8, accountWidget() , /*deleteAccountWidget()*/],
         ),
       ) : mPresenter.showProgress(),
     );
@@ -173,45 +175,54 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
           ),
           divider(),
           // help
-          Row(
-            children: [
-              SvgPicture.asset(
-                ImageUtils.getSVGPath('help'),
-                height: 3.h,
-                width: 3.w,
-                fit: BoxFit.fitWidth,
-              ),
-              Gaps.hGap12,
-              Text(S.of(context)!.help, style: MTextStyles.textMainLight16),
-            ],
+          InkWell(
+            onTap: ()=>_launchUrl(Api.help),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  ImageUtils.getSVGPath('help'),
+                  height: 3.h,
+                  width: 3.w,
+                  fit: BoxFit.fitWidth,
+                ),
+                Gaps.hGap12,
+                Text(S.of(context)!.help, style: MTextStyles.textMainLight16),
+              ],
+            ),
           ),
           divider(),
           // support
-          Row(
-            children: [
-              SvgPicture.asset(
-                ImageUtils.getSVGPath('24-support'),
-                height: 3.h,
-                width: 3.w,
-                fit: BoxFit.fitWidth,
-              ),
-              Gaps.hGap12,
-              Text(S.of(context)!.support, style: MTextStyles.textMainLight16),
-            ],
+          InkWell(
+            onTap: ()=>_launchUrl(Api.contact),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  ImageUtils.getSVGPath('24-support'),
+                  height: 3.h,
+                  width: 3.w,
+                  fit: BoxFit.fitWidth,
+                ),
+                Gaps.hGap12,
+                Text(S.of(context)!.support, style: MTextStyles.textMainLight16),
+              ],
+            ),
           ),
           divider(),
           // Privacy and Policy
-          Row(
-            children: [
-              SvgPicture.asset(
-                ImageUtils.getSVGPath('privacy_policy'),
-                height: 3.h,
-                width: 3.w,
-                fit: BoxFit.fitWidth,
-              ),
-              Gaps.hGap12,
-              Text(S.of(context)!.privacyAndPolicy, style: MTextStyles.textMainLight16),
-            ],
+          InkWell(
+            onTap: ()=>_launchUrl(Api.privacyPolicy),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  ImageUtils.getSVGPath('privacy_policy'),
+                  height: 3.h,
+                  width: 3.w,
+                  fit: BoxFit.fitWidth,
+                ),
+                Gaps.hGap12,
+                Text(S.of(context)!.privacyAndPolicy, style: MTextStyles.textMainLight16),
+              ],
+            ),
           ),
         ],
       ),
@@ -224,6 +235,13 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
       Setting.mobileLanguage.value = new Locale('ar');
     Prefs.setAppLocal(s);
     Log.d(s);
+  }
+
+  Future<void> _launchUrl(String _url) async {
+    Uri uri = Uri.parse(_url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 
   Widget accountWidget() {

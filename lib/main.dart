@@ -11,7 +11,6 @@ import 'package:Cliamizer/ui/main_screens/MainProvider.dart';
 import 'package:Cliamizer/ui/more_screen/MoreProvider.dart';
 import 'package:Cliamizer/ui/notification_screen/NotificationProvider.dart';
 import 'package:Cliamizer/ui/splash_screen/SplashScreen.dart';
-import 'package:Cliamizer/ui/test.dart';
 import 'package:Cliamizer/ui/unit_request_details_screen/UnitDetailsProvider.dart';
 import 'package:Cliamizer/ui/units_screen/units_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
