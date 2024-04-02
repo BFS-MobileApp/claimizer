@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/CommonUtils/model_eventbus/db_helper.dart';
 import 'package:Cliamizer/CommonUtils/preference/Const.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
-import 'package:Cliamizer/firebase_options.dart';
 import 'package:Cliamizer/res/gaps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +14,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../CommonUtils/log_utils.dart';
 import '../../../CommonUtils/preference/Prefs.dart';
 import '../../../CommonUtils/utils.dart';
@@ -27,7 +23,6 @@ import '../../../network/models/LoginResponse.dart';
 import '../../../res/colors.dart';
 import '../../../res/setting.dart';
 import '../../../res/styles.dart';
-import '../forgot_password_screen/ForgotPasswordScreen.dart';
 import '../register_screen/RegisterScreen.dart';
 import 'LoginPresenter.dart';
 import 'LoginProvider.dart';
@@ -179,8 +174,8 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                               height: 4.h,
                             ),
                             buildSignInWith(context),
-                            Gaps.vGap12,
-                            buildSignInWithApple(context)
+                            /*Gaps.vGap12,
+                            buildSignInWithApple(context)*/
                           ],
                         ),
                       ),
