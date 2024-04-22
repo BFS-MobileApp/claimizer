@@ -4,13 +4,18 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
 }
-
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -48,18 +53,38 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
+        versionCode flutterVersionCode.toInteger()+3
         versionName flutterVersionName
         multiDexEnabled = true
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    signingConfigs{
+//        debug{
+//            keyAlias 'androiddebugkey'
+//            keyPassword 'android'
+//            storeFile file('mykey.jks')
+//            storePassword 'android'
+//        }
+    }
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.config
             shrinkResources false
             minifyEnabled false
+//            minifyEnabled true
+
         }
     }
 }
