@@ -27,7 +27,7 @@ class NewLinkRequestDataBean {
   NewLinkRequestDataBean.fromJson(Map<String, dynamic> json)
       : building = json['building'],
         company = json['company'],
-        message = json['message'],
+        message = json['message']??'',
         units = json['units'] != null ? Units.fromJson(json['units']) : null;
 
   Map<String, dynamic> toJson() {

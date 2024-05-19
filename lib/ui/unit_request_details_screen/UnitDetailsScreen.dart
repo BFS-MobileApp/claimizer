@@ -724,7 +724,7 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                                                   else if(pr.endDate == null){
                                                     showToasts(S.of(context)!.pleaseEnterContractEndDate, 'warning');
                                                   }
-                                                  else if (pr.contractImg != null || pr.identityImg != null) {
+                                                  else if (pr.contractImg.path != '' || pr.identityImg != null) {
                                                     FormData formData = new FormData.fromMap({
                                                       "contract_attach": await MultipartFile.fromFile(
                                                         pr.contractImg.path,

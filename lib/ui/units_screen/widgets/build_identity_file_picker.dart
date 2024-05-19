@@ -44,6 +44,7 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
 
     setState(() {
       if (pickedFile != null) {
+        print(pickedFile.path);
         widget.provider.identityImg = File(pickedFile.path);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -107,7 +108,7 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
               children: [
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
-                pr.identityImg != null
+                pr.identityImg != ''
                     ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(pr.identityImg,width: 10.w,height: 10.w,fit: BoxFit.cover,))

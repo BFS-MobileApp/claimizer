@@ -30,7 +30,7 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                 if(pr.validated != true) {
                   final DateTime? picked = await showDatePicker(
                       context: context,
-                      initialDate: pr.startDate ?? DateTime.now(),
+                      initialDate: pr.startDate,
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now().add(Duration(days: 100000)));
                   if (picked != null) {
@@ -48,9 +48,7 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      pr.startDate != null
-                          ? _dateFormat.format(pr.startDate)
-                          : S.of(context)!.startDate,
+                      S.of(context)!.startDate,
                     ),
                   ],
                 ),
@@ -83,9 +81,7 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      pr.endDate != null
-                          ? _dateFormat.format(pr.endDate)
-                          : S.of(context)!.endDate,
+                      S.of(context)!.endDate,
                     ),
                   ],
                 ),

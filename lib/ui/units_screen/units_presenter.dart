@@ -94,14 +94,16 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
   }
   checkLinkHasParams(String link) {
     Uri myUri = Uri.parse(link);
+    print(myUri.queryParameters.toString());
+    print(myUri.queryParameters.containsKey('contract_start'));
     bool hasContractNumber = myUri.queryParameters.containsKey('contract_no');
     bool hasStartDate = myUri.queryParameters.containsKey('contract_start');
     bool hasEndDate = myUri.queryParameters.containsKey('contract_end');
     String qrCode = myUri.queryParameters['qr_code']!;
-    String contractNumber = myUri.queryParameters['contract_no']!;
-    String startDate = myUri.queryParameters['contract_start']!;
-    String endDate = myUri.queryParameters['contract_end']!;
-    String mLink = myUri.queryParameters['m']!;
+    String contractNumber = myUri.queryParameters['contract_no']??'';
+    String startDate = myUri.queryParameters['contract_start']?? '';
+    String endDate = myUri.queryParameters['contract_end']??'';
+    String mLink = myUri.queryParameters['m']??'';
     RegExp uPattern = RegExp('^U\\d{2}-\\d{5}-\\d');
     RegExp bPattern = RegExp('^B\\d{2}-\\d{5}-\\d');
     if (hasContractNumber && hasStartDate && hasEndDate) {
@@ -110,18 +112,22 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       view.provider.isBuilding = false;
       String mCalculated;
       mCalculated =
-          ((int.parse(formattedStartDate) + int.parse(formattedEndDate)) * int.parse(contractNumber)).toString();
+          ((int.parse(formattedStartDate) + int.parse(formattedEndDate)) * int.parse(contractNumber!)).toString();
       if (mCalculated == mLink) {
+        print('here2');
         doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": true}, qrCode, contractNumber, startDate, endDate);
         view.provider.validated = true;
       } else {
+        print('here2');
         view.showToasts(S.current!.theQrCodeIsIncorrect, "error");
         view.provider.isQrCodeValid = false;
       }
     } else if (bPattern.hasMatch(qrCode)) {
+      print('here3');
       view.provider.isBuilding = true;
       doCheckBuildingQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode);
     } else {
+      print('here4');
       view.provider.isBuilding = false;
       doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode, contractNumber, startDate, endDate);
       view.provider.validated = false;

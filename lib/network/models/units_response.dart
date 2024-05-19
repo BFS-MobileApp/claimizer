@@ -26,8 +26,8 @@ class UnitsDataBean {
   String company;
   int companyId;
   String building;
-  String startAt;
-  String endAt;
+  String? startAt;
+  String? endAt;
 
   UnitsDataBean({
     required this.id,
@@ -45,12 +45,12 @@ class UnitsDataBean {
       : id = json['id'],
         code = json['code'],
         name = json['name'],
-        type = json['type'],
+        type = json['type']??'',
         company = json['company'],
         companyId = json['company_id'],
         building = json['building'],
-        startAt = json['start_at'],
-        endAt = json['end_at'];
+        startAt = json['start_at']??'',
+        endAt = json['end_at']??'';
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
@@ -90,7 +90,6 @@ class Pagination {
   int perPage;
   int currentPage;
   int totalPages;
-  Links? links;
 
   Pagination({
     required this.total,
@@ -98,7 +97,6 @@ class Pagination {
     required this.perPage,
     required this.currentPage,
     required this.totalPages,
-    this.links,
   });
 
   Pagination.fromJson(Map<String, dynamic> json)
@@ -106,8 +104,7 @@ class Pagination {
         count = json['count'],
         perPage = json['per_page'],
         currentPage = json['current_page'],
-        totalPages = json['total_pages'],
-        links = json['links'] != null ? Links.fromJson(json['links']) : null;
+        totalPages = json['total_pages'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
@@ -116,9 +113,6 @@ class Pagination {
     data['per_page'] = this.perPage;
     data['current_page'] = this.currentPage;
     data['total_pages'] = this.totalPages;
-    if (this.links != null) {
-      data['links'] = this.links!.toJson();
-    }
     return data;
   }
 }

@@ -158,7 +158,8 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
               Transform.scale(
                   scale: 0.2.w,
                   child: Consumer<MoreProvider>(
-                    builder: (context, pr, child) =>  CupertinoSwitch(
+                    builder: (context, pr, child) =>
+                        CupertinoSwitch(
                         activeColor: Color(0xff44A4F2),
                         value: Setting.mobileLanguage.value == Locale('en'),
                         onChanged: (value) {
