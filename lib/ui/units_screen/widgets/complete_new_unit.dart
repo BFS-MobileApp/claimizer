@@ -129,10 +129,13 @@ class CompleteNewUnit extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 3.w),
                   child: ElevatedButton(
                     onPressed: () async {
+                      print('here1');
                       if (pr.contractNo.text.isEmpty && pr.startDate == null && pr.endDate == null) {
+                        print('here2');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                      } else if (pr.contractImg != null ||
-                          pr.identityImg != null) {
+                      } else if (pr.contractImg.path != '' ||
+                          pr.identityImg.path != '') {
+                        print(pr.contractImg);
                         FormData formData = new FormData.fromMap({
                           "contract_attach": await MultipartFile.fromFile(
                             pr.contractImg.path,

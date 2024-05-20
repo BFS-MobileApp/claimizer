@@ -547,7 +547,7 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                         mainAxisAlignment: MainAxisAlignment.center,
                                                         children: [
-                                                          pr.contractImg != null
+                                                          pr.contractImg.length !=0
                                                               ? ClipRRect(
                                                               borderRadius: BorderRadius.circular(12),
                                                               child: Image.file(
@@ -570,7 +570,7 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                                                           ),
                                                           Spacer(),
                                                           Visibility(
-                                                            visible: pr.contractImg != null,
+                                                            visible: true,
                                                             child: InkWell(
                                                               onTap: () async {
                                                                 pr.contractImg = File('');
@@ -724,7 +724,7 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                                                   else if(pr.endDate == null){
                                                     showToasts(S.of(context)!.pleaseEnterContractEndDate, 'warning');
                                                   }
-                                                  else if (pr.contractImg.path != '' || pr.identityImg != null) {
+                                                  else if (pr.contractImg.path.length !=0 || pr.identityImg.length !=0) {
                                                     FormData formData = new FormData.fromMap({
                                                       "contract_attach": await MultipartFile.fromFile(
                                                         pr.contractImg.path,

@@ -62,8 +62,8 @@ class UnitProvider<T> extends BaseProvider<T> {
 
   TextEditingController _companyName = TextEditingController();
   TextEditingController _contractNo = TextEditingController();
-  DateTime? _startDate;
-  DateTime? _endDate;
+  DateTime _startDate = DateTime.now();
+  DateTime _endDate = DateTime.now();
   File _contractImg = File('');
   File _identityImg = File('');
 

@@ -108,7 +108,7 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
               children: [
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
-                pr.identityImg != ''
+                pr.identityImg.path.isNotEmpty
                     ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(pr.identityImg,width: 10.w,height: 10.w,fit: BoxFit.cover,))
