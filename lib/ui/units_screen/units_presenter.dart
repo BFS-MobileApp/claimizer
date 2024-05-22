@@ -151,6 +151,10 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.provider.contractNo.text = contractNum ?? '';
           view.provider.startDate = DateTime.parse(startData);
           view.provider.endDate = DateTime.parse(endDate);
+          view.provider.unitNumber = data.data.units!.propertyName.toString();
+          view.provider.hasStartDate = true;
+          view.provider.hasEndDate = true;
+          view.provider.contract = true;
         } else if (data.status == "fail") {
           view.provider.message = data.data.message;
         }
@@ -185,6 +189,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.provider.linkListRequestDataBean = data.data!;
           view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
           view.provider.qrCode.text = qrCode ?? '';
+          view.provider.hasStartDate = false;
+          view.provider.hasEndDate = false;
         } else if (data.status == "fail") {
           view.provider.message = data.status;
         }
@@ -254,6 +260,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
                       view.provider.contractFiles = [];
                       view.provider.identityFiles = [];
                       view.provider.qrCodeValid = false;
+                      view.provider.hasStartDate = false;
+                      view.provider.hasEndDate = false;
                       Navigator.pop(context);
                       view.provider.selectedIndex = 2;
                       Map<String, dynamic> params = Map();

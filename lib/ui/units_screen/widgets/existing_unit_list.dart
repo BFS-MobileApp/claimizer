@@ -25,6 +25,7 @@ class _ExistingUnitListState extends State<ExistingUnitList> {
 
   @override
   void initState() {
+    print('Existing Unit');
     widget.provider = context.read<UnitProvider>();
     Map<String, dynamic> params = Map();
     params['search'] = widget.provider.searchController.text.toString();

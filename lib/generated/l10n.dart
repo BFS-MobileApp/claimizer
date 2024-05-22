@@ -416,6 +416,15 @@ class S {
     );
   }
 
+  String get dateErrorMessage {
+    return Intl.message(
+      'Start date must be before end date',
+      name: 'Start date must be before end date',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Lorem ipsum is a placeholder text commonly used to demonstrate the visual.`
   String get desc1 {
     return Intl.message(
@@ -980,6 +989,15 @@ class S {
     return Intl.message(
       'Type your complaints here',
       name: 'writeYourThoughtsHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get requestNotes {
+    return Intl.message(
+      'Request Notes',
+      name: 'RequestNotes',
       desc: '',
       args: [],
     );

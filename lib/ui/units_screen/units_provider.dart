@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:Cliamizer/base/provider/base_provider.dart';
 import 'package:Cliamizer/network/models/units_response.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../network/models/NewLinkListRequestResponse.dart';
 import '../../network/models/NewLinkRequestResponse.dart';
@@ -12,6 +13,8 @@ class UnitProvider<T> extends BaseProvider<T> {
   TextEditingController _buildingName = TextEditingController();
   TextEditingController _qrCode = TextEditingController();
   bool _qrCodeValid = false;
+
+  String _unitNumber = '';
   String _message = '';
 
   String get message => _message;
@@ -64,6 +67,11 @@ class UnitProvider<T> extends BaseProvider<T> {
   TextEditingController _contractNo = TextEditingController();
   DateTime _startDate = DateTime.now();
   DateTime _endDate = DateTime.now();
+
+  bool _isContract = false;
+  bool _isHasStartDate = false;
+
+  bool _isHasEndDate = false;
   File _contractImg = File('');
   File _identityImg = File('');
 
@@ -74,7 +82,26 @@ class UnitProvider<T> extends BaseProvider<T> {
     notifyListeners();
   }
 
+  bool get isHasStartDate => _isHasStartDate;
 
+  bool get isHasEndDate => _isHasEndDate;
+
+  set hasStartDate(value){
+    _isHasStartDate = value;
+    notifyListeners();
+  }
+
+  set hasEndDate(value){
+    _isHasEndDate = value;
+    notifyListeners();
+  }
+
+  bool get isContract => _isContract;
+
+  set contract(value){
+    _isHasStartDate = value;
+    notifyListeners();
+  }
 
   List<XFile> _contractFiles = [];
   List<XFile> _identityFiles = [];
@@ -206,8 +233,15 @@ class UnitProvider<T> extends BaseProvider<T> {
 
   TextEditingController get description => _description;
 
+  String get unitNumber => _unitNumber;
+
   set description(TextEditingController value) {
     _description = value;
+    notifyListeners();
+  }
+
+  set unitNumber(String value) {
+    _unitNumber = value;
     notifyListeners();
   }
 

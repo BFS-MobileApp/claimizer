@@ -6,6 +6,7 @@ import 'package:Cliamizer/ui/units_screen/units_provider.dart';
 import 'package:Cliamizer/ui/units_screen/widgets/build_description_field.dart';
 import 'package:Cliamizer/ui/units_screen/widgets/build_contract_file_picker.dart';
 import 'package:Cliamizer/ui/units_screen/widgets/unit_name_field.dart';
+import 'package:Cliamizer/ui/units_screen/widgets/unit_number_item.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
@@ -27,8 +28,10 @@ class CompleteNewUnit extends StatelessWidget {
   final UnitProvider provider;
   final UnitPresenter presenter;
 
+
   @override
   Widget build(BuildContext context) {
+    print('Complete');
     return Consumer<UnitProvider>(
       builder: (context, pr, child) => Container(
         padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 4.w),
@@ -59,26 +62,32 @@ class CompleteNewUnit extends StatelessWidget {
               ],
             ),
             Gaps.vGap8,
-            
-            BuildingNameField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            
-            UnitNameField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            
             CompanyNameField(
               provider: provider,
             ),
+            Gaps.vGap8,
+            BuildingNameField(
+              provider: provider,
+            ),
+            /*Gaps.vGap8,
+            
+            UnitNameField(
+              provider: provider,
+            ),*/
             Gaps.vGap8,
             Visibility(visible: pr.isBuilding, child: BuildBuildingUnitDropDown()),
             Gaps.vGap8,
             ContractField(
               provider: provider,
             ),
+            pr.isContract ? Column(
+              children: [
+                Gaps.vGap8,
+                UnitNumberItem(
+                  provider: provider,
+                )
+              ],
+            ) : const SizedBox(),
             Gaps.vGap8,
             StartEndDatePickerField(
               provider: provider,
@@ -132,10 +141,12 @@ class CompleteNewUnit extends StatelessWidget {
                     onPressed: () async {
                       print('here1');
                       print(pr.selectedUnit);
-                      if (pr.contractNo.text.isEmpty && pr.startDate == null && pr.endDate == null) {
+                      if (pr.contractNo.text.isEmpty && !pr.isHasStartDate && !pr.isHasEndDate) {
                         print('dodo');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                      } else if(pr.contractNo.text.isNotEmpty && pr.startDate != null && pr.endDate != null){
+                      } else if(pr.endDate.isBefore(pr.startDate)){
+                        presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
+                      } else if(pr.contractNo.text.isNotEmpty && pr.isHasStartDate && pr.isHasEndDate){
                         print('dodo1');
                        if (pr.contractImg.path != '' ||
                           pr.identityImg.path != '') {
@@ -165,7 +176,6 @@ class CompleteNewUnit extends StatelessWidget {
                            "end_at": pr.endDate.toString(),
                            "request_remarks": pr.description.text,
                          });
-
                          presenter.completeLinkRequestApiCall(formData , context);
                        }
                       }else{

@@ -30,6 +30,7 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
 
   @override
   void initState() {
+    print('UnitLinkRequest');
     widget.provider = context.read<UnitProvider>();
     EventBusUtils.getInstance().on<ReloadEvent>().listen((event) {
       if (event.isRefresh != null || event.isLangChanged != null) {

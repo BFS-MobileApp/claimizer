@@ -15,8 +15,6 @@ class StartEndDatePickerField extends StatefulWidget {
 }
 
 class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
-  DateTime? _startDate;
-  DateTime? _endDate;
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd',"en");
 
   @override
@@ -27,7 +25,7 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
           Expanded(
             child: GestureDetector(
               onTap: () async{
-                if(pr.validated != true) {
+                if(!pr.validated){
                   final DateTime? picked = await showDatePicker(
                       context: context,
                       initialDate: pr.startDate,
@@ -35,7 +33,10 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                       lastDate: DateTime.now().add(Duration(days: 100000)));
                   if (picked != null) {
                     print(picked);
-                    pr.startDate = picked;
+                    setState(() {
+                      pr.startDate = picked;
+                      pr.hasStartDate = true;
+                    });
                   }
                 }
               },
@@ -48,8 +49,11 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    !pr.isHasStartDate ? Text(
                       S.of(context)!.startDate,
+                    ) :
+                    Text(
+                      _dateFormat.format(pr.startDate),
                     ),
                   ],
                 ),
@@ -60,14 +64,17 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
           Expanded(
             child: GestureDetector(
               onTap: () async{
-                if(pr.validated != true) {
+                if(!pr.validated) {
                   final DateTime? picked = await showDatePicker(
                       context: context,
                       initialDate: pr.endDate,
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now().add(Duration(days: 100000)));
                   if (picked != null) {
-                    pr.endDate = picked;
+                    setState(() {
+                      pr.endDate = picked;
+                      pr.hasEndDate = true;
+                    });
                   }
                 }
               },
@@ -80,8 +87,10 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    !pr.isHasEndDate ? Text(
                       S.of(context)!.endDate,
+                    ) : Text(
+                      _dateFormat.format(pr.endDate),
                     ),
                   ],
                 ),
