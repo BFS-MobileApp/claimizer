@@ -15,7 +15,7 @@ class UnitNameField extends StatelessWidget {
       builder: (context, pr, child) => Container(
         height: MediaQuery.of(context).size.height * .06,
         child: TextFormField(
-          controller: TextEditingController(text: pr.newLinkRequestDataBean.units!.propertyName??""),
+          controller: TextEditingController(text: ""),
           readOnly: true,
           style: MTextStyles.textDark14,
           decoration: InputDecoration(

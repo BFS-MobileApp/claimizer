@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Cliamizer/ui/home_screen/HomeScreen.dart';
 import 'package:Cliamizer/ui/units_screen/units_presenter.dart';
 import 'package:Cliamizer/ui/units_screen/units_provider.dart';
 import 'package:Cliamizer/ui/units_screen/widgets/build_description_field.dart';
@@ -130,12 +131,15 @@ class CompleteNewUnit extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       print('here1');
+                      print(pr.selectedUnit);
                       if (pr.contractNo.text.isEmpty && pr.startDate == null && pr.endDate == null) {
-                        print('here2');
+                        print('dodo');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                      } else if (pr.contractImg.path != '' ||
+                      } else if(pr.contractNo.text.isNotEmpty && pr.startDate != null && pr.endDate != null){
+                        print('dodo1');
+                       if (pr.contractImg.path != '' ||
                           pr.identityImg.path != '') {
-                        print(pr.contractImg);
+                         print('dodo2');
                         FormData formData = new FormData.fromMap({
                           "contract_attach": await MultipartFile.fromFile(
                             pr.contractImg.path,
@@ -151,8 +155,21 @@ class CompleteNewUnit extends StatelessWidget {
                           "end_at": pr.endDate.toString(),
                           "request_remarks": pr.description.text,
                         });
-                        presenter.completeLinkRequestApiCall(formData);
+                        presenter.completeLinkRequestApiCall(formData , context);
+                      } else {
+                         print('dodo3');
+                         FormData formData = new FormData.fromMap({
+                           "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text,
+                           "contract_number": pr.contractNo.text,
+                           "start_at": pr.startDate.toString(),
+                           "end_at": pr.endDate.toString(),
+                           "request_remarks": pr.description.text,
+                         });
+
+                         presenter.completeLinkRequestApiCall(formData , context);
+                       }
                       }else{
+                        print('dodo4');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                       }
                     },

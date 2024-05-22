@@ -5,6 +5,9 @@ import 'package:Cliamizer/network/models/NewLinkListRequestResponse.dart';
 import 'package:Cliamizer/network/models/NewLinkRequestResponse.dart';
 import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
 import 'package:Cliamizer/network/models/units_response.dart';
+import 'package:Cliamizer/ui/home_screen/HomeScreen.dart';
+import 'package:Cliamizer/ui/intro/IntroScreen.dart';
+import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -114,20 +117,16 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       mCalculated =
           ((int.parse(formattedStartDate) + int.parse(formattedEndDate)) * int.parse(contractNumber!)).toString();
       if (mCalculated == mLink) {
-        print('here2');
         doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": true}, qrCode, contractNumber, startDate, endDate);
         view.provider.validated = true;
       } else {
-        print('here2');
         view.showToasts(S.current!.theQrCodeIsIncorrect, "error");
         view.provider.isQrCodeValid = false;
       }
     } else if (bPattern.hasMatch(qrCode)) {
-      print('here3');
       view.provider.isBuilding = true;
       doCheckBuildingQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode);
     } else {
-      print('here4');
       view.provider.isBuilding = false;
       doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode, contractNumber, startDate, endDate);
       view.provider.validated = false;
@@ -202,7 +201,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
     });
   }
 
-  Future completeLinkRequestApiCall(FormData bodyParams) async {
+  Future completeLinkRequestApiCall(FormData bodyParams , BuildContext context) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
@@ -215,6 +214,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       view.closeProgress();
       if (data != null) {
         if (data.status == "success") {
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+              MainScreen()), (Route<dynamic> route) => false);
           showDialog(
             context: view.context,
             builder: (context) => AlertDialog(

@@ -225,14 +225,14 @@ class UnitProvider<T> extends BaseProvider<T> {
     notifyListeners();
   }
 
-  DateTime get startDate => _startDate!;
+  DateTime get startDate => _startDate;
 
   set startDate(DateTime value) {
     _startDate = value;
     notifyListeners();
   }
 
-  DateTime get endDate => _endDate!;
+  DateTime get endDate => _endDate;
 
   set endDate(DateTime value) {
     _endDate = value;

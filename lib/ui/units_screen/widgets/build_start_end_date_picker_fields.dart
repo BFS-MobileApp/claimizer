@@ -34,6 +34,7 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now().add(Duration(days: 100000)));
                   if (picked != null) {
+                    print(picked);
                     pr.startDate = picked;
                   }
                 }
@@ -62,13 +63,12 @@ class _StartEndDatePickerFieldState extends State<StartEndDatePickerField> {
                 if(pr.validated != true) {
                   final DateTime? picked = await showDatePicker(
                       context: context,
-                      initialDate: pr.endDate ?? DateTime.now(),
+                      initialDate: pr.endDate,
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now().add(Duration(days: 100000)));
                   if (picked != null) {
                     pr.endDate = picked;
                   }
-                }else{
                 }
               },
               child: Container(

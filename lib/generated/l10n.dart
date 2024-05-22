@@ -806,6 +806,15 @@ class S {
     );
   }
 
+  String get selectUnitAtDDL {
+    return Intl.message(
+      'Select The Unit',
+      name: 'selectUnit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select Main Category`
   String get selectClaimCategory {
     return Intl.message(
