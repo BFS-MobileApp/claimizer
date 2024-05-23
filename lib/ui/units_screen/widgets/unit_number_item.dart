@@ -21,7 +21,7 @@ class UnitNumberItem extends StatelessWidget {
           readOnly: pr.validated,
           style: MTextStyles.textDark14,
           decoration: InputDecoration(
-            hintText: S.of(context)!.contractNo,
+            //hintText: S.of(context)!.contractNo,
             hintStyle: MTextStyles.textMain14.copyWith(color: MColors.light_text_color, fontWeight: FontWeight.w500),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),

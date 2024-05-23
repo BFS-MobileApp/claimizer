@@ -77,17 +77,17 @@ class CompleteNewUnit extends StatelessWidget {
             Gaps.vGap8,
             Visibility(visible: pr.isBuilding, child: BuildBuildingUnitDropDown()),
             Gaps.vGap8,
+            provider.showUnitNumber ?Column(
+              children: [
+                UnitNumberItem(
+                  provider: provider,
+                ),
+                Gaps.vGap8,
+              ],
+            ): const SizedBox(),
             ContractField(
               provider: provider,
             ),
-            pr.isContract ? Column(
-              children: [
-                Gaps.vGap8,
-                UnitNumberItem(
-                  provider: provider,
-                )
-              ],
-            ) : const SizedBox(),
             Gaps.vGap8,
             StartEndDatePickerField(
               provider: provider,

@@ -15,10 +15,12 @@ class BuildQRCodeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UnitProvider>(
       builder: (context, pr, child) => TextFormField(
+
         controller: pr.qrCode,
         style: MTextStyles.textNormal12,
         maxLines: null,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 30.0),
           hintText: S.of(context)!.qrCode,
           hintStyle: MTextStyles.textMain14.copyWith(color: MColors.light_text_color, fontWeight: FontWeight.w500),
           // suffixIcon: SvgPicture.asset(ImageUtils.getSVGPath('scan')),

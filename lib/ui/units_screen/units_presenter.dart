@@ -119,16 +119,19 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       if (mCalculated == mLink) {
         doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": true}, qrCode, contractNumber, startDate, endDate);
         view.provider.validated = true;
+        view.provider.showUnitNumber = true;
       } else {
         view.showToasts(S.current!.theQrCodeIsIncorrect, "error");
         view.provider.isQrCodeValid = false;
       }
     } else if (bPattern.hasMatch(qrCode)) {
       view.provider.isBuilding = true;
+      view.provider.showUnitNumber = false;
       doCheckBuildingQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode);
     } else {
       view.provider.isBuilding = false;
-      doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode, contractNumber, startDate, endDate);
+      view.provider.showUnitNumber = true;
+      doCheckSmallUnitQrCodeApiCall({"qr_code": qrCode, "validated": false}, qrCode, contractNumber, startDate, endDate);
       view.provider.validated = false;
     }
   }
@@ -145,13 +148,15 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       view.closeProgress();
       if (data != null) {
         if (data.status == "success") {
+          print('here');
           view.provider.newLinkRequestDataBean = data.data;
           view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
           view.provider.qrCode.text = qrCode ?? '';
           view.provider.contractNo.text = contractNum ?? '';
           view.provider.startDate = DateTime.parse(startData);
           view.provider.endDate = DateTime.parse(endDate);
-          view.provider.unitNumber = data.data.units!.propertyName.toString();
+          view.provider.unitNumber = data.data.units!.propertyName;
+          print(data.data.units!.propertyName);
           view.provider.hasStartDate = true;
           view.provider.hasEndDate = true;
           view.provider.contract = true;
@@ -169,6 +174,44 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
         view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
       }
     });
+  }
+
+  Future doCheckSmallUnitQrCodeApiCall(
+      Map<String, dynamic> bodyParams, String qrCode, String contractNum, String startData, String endDate) async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    view.showProgress(isDismiss: false);
+    await requestFutureData<NewLinkRequestResponse>(Method.post,
+        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
+          view.closeProgress();
+          if (data != null) {
+            if (data.status == "success") {
+              print('here');
+              view.provider.newLinkRequestDataBean = data.data;
+              view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+              view.provider.qrCode.text = qrCode ?? '';
+              view.provider.contractNo.text = contractNum ?? '';
+              view.provider.hasStartDate = false;
+              view.provider.hasEndDate = false;
+              view.provider.unitNumber = data.data.units!.propertyName;
+              print(data.data.units!.propertyName);
+              view.provider.contract = false;
+            } else if (data.status == "fail") {
+              view.provider.message = data.data.message;
+            }
+          }
+        }, onError: (code, msg) {
+          view.closeProgress();
+          if (code == 404) {
+            view.provider.message = S.current!.theQrCodeIsIncorrect;
+          }
+
+          if (code == 422) {
+            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+          }
+        });
   }
 
   Future doCheckBuildingQrCodeApiCall(
@@ -191,6 +234,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.provider.qrCode.text = qrCode ?? '';
           view.provider.hasStartDate = false;
           view.provider.hasEndDate = false;
+
+          print(data.data!.units![0].propertyName);
         } else if (data.status == "fail") {
           view.provider.message = data.status;
         }

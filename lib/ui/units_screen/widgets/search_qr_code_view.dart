@@ -32,18 +32,18 @@ class SearchAboutUnitByQR extends StatelessWidget {
             Gaps.vGap8,
             Gaps.vGap8,
             Gaps.vGap8,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 1.w,
-                  height: 5.w,
-                  margin: EdgeInsetsDirectional.only(end: 3.w),
-                  decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
-                ),
-                AutoSizeText(S.of(context)!.unitQuery,  style: TextStyle(fontWeight: FontWeight.w600, color: MColors.primary_text_color)),
-              ],
-            ),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
+            //     Container(
+            //       width: 1.w,
+            //       height: 5.w,
+            //       margin: EdgeInsetsDirectional.only(end: 3.w),
+            //       decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
+            //     ),
+            //     AutoSizeText(S.of(context)!.unitQuery,  style: TextStyle(fontWeight: FontWeight.w600, color: MColors.primary_text_color)),
+            //   ],
+            // ),
             Gaps.vGap8,
             Gaps.vGap12,
             BuildQRCodeField(

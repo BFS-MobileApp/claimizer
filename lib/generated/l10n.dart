@@ -1156,8 +1156,8 @@ class S {
   /// `Unit Query`
   String get unitQuery {
     return Intl.message(
-      'Unit Query',
-      name: 'unitQuery',
+      'Contract Query',
+      name: 'contractQuery',
       desc: '',
       args: [],
     );

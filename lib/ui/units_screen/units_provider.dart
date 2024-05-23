@@ -72,6 +72,8 @@ class UnitProvider<T> extends BaseProvider<T> {
   bool _isHasStartDate = false;
 
   bool _isHasEndDate = false;
+
+  bool _showUnitNumber = false;
   File _contractImg = File('');
   File _identityImg = File('');
 
@@ -86,6 +88,8 @@ class UnitProvider<T> extends BaseProvider<T> {
 
   bool get isHasEndDate => _isHasEndDate;
 
+
+
   set hasStartDate(value){
     _isHasStartDate = value;
     notifyListeners();
@@ -96,10 +100,18 @@ class UnitProvider<T> extends BaseProvider<T> {
     notifyListeners();
   }
 
+  bool get showUnitNumber => _showUnitNumber;
+
+
+
+  set showUnitNumber(value){
+    _showUnitNumber = value;
+    notifyListeners();
+  }
   bool get isContract => _isContract;
 
   set contract(value){
-    _isHasStartDate = value;
+    _isContract = value;
     notifyListeners();
   }
 
