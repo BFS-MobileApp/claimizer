@@ -34,7 +34,7 @@ class ProfileDataBean {
   ProfileDataBean.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         refCode = json['ref_code'],
-        name = json['name'],
+        name = json['name']??'',
         email = json['email'],
         avatar = json['avatar'],
         profile = json['profile'] != null ? Profile.fromJson(json['profile']) : null;
@@ -77,7 +77,7 @@ class Profile {
 
   Profile.fromJson(Map<String, dynamic> json)
       : timezone = json['timezone'],
-        mobile = json['mobile'],
+        mobile = json['mobile']??'',
         gender = json['gender'],
         locale = json['locale'],
         status = json['status'],

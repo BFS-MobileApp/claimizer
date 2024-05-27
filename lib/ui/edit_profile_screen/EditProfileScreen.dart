@@ -92,6 +92,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<EditProfileProvider>(
         builder: (context, pr, child) => DefaultTabController(
               length: 2,
@@ -129,7 +130,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                                           borderRadius: BorderRadius.circular(100)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(100),
-                                        child: _image != null
+                                        child: _image.path!=''
                                             ? Image.file(_image,fit: BoxFit.cover,)
                                             : ImageLoader(
                                           imageUrl: provider.instance.avatar,
@@ -776,7 +777,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
   }
 
   void editProfile() async {
-    if (_image != null) {
+    if (_image.path!='') {
       FormData formData = new FormData.fromMap({
         "image": await MultipartFile.fromFile(
           _image.path,

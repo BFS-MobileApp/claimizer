@@ -36,9 +36,9 @@ class EditProfilePresenter extends BasePresenter<EditProfileScreenState> {
           Log.d("${data.profileDataBean!.name}");
           if (data != null) {
             view.provider.setData(data.profileDataBean);
-            view.provider.nameController?.text = data.profileDataBean!.name;
-            view.provider.emailController?.text = data.profileDataBean!.email;
-            view.provider.mobileController?.text = data.profileDataBean!.profile!.mobile!;
+            view.provider.nameController.text = data.profileDataBean!.name;
+            view.provider.emailController.text = data.profileDataBean!.email;
+            view.provider.mobileController.text = data.profileDataBean!.profile!.mobile!;
             view.provider.isNotificationEnabled = data.profileDataBean!.profile!.emailNotifications;
             view.provider.isDateLoaded = true;
             view.closeProgress();
@@ -100,6 +100,8 @@ class EditProfilePresenter extends BasePresenter<EditProfileScreenState> {
         Navigator.pop(view.context);
         view.showToasts(S.of(view.context)!.profileUpdatedSuccessfully, 'success');
       } else {
+        print('hereeee');
+        print(data.toString());
         view.showToasts("Error", 'error');
       }
     }, onError: (code, msg) {
@@ -111,7 +113,8 @@ class EditProfilePresenter extends BasePresenter<EditProfileScreenState> {
             builder: (_) => LoginRequiredDialog(message: S.of(view.context)!.sessionTimeoutPleaseLogin),
             barrierDismissible: false);
       } else {
-        view.showToasts("Error", 'error');
+        view.showToasts(msg, 'error');
+        //view.showToasts("Error", 'error');
       }
     });
   }
