@@ -35,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
           headLine,
           style: Theme.of(context)
               .textTheme
-              .headline1
+              .titleMedium
               ?.copyWith(color: MColors.black),
         ),
         Container(
@@ -48,7 +48,7 @@ class CustomTextFormField extends StatelessWidget {
             keyboardType: inputType ?? TextInputType.text,
             textInputAction: TextInputAction.next,
             controller: controller,
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.titleMedium,
             // autovalidateMode: AutovalidateMode.always,
             decoration: InputDecoration(
               filled: true,
@@ -56,7 +56,7 @@ class CustomTextFormField extends StatelessWidget {
               hintText: hintText,
               hintStyle: Theme.of(context)
                   .textTheme
-                  .subtitle1
+                  .titleMedium
                   ?.copyWith(fontWeight: FontWeight.w400),
               contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
               border: OutlineInputBorder(
@@ -114,7 +114,7 @@ class CustomPasswordTextFormField extends StatelessWidget {
               hintText: hintText,
               hintStyle: Theme.of(context)
                   .textTheme
-                  .subtitle1
+                  .titleMedium
                   ?.copyWith(fontWeight: FontWeight.w400),
               contentPadding: EdgeInsets.symmetric(horizontal: 4.w),
               border: OutlineInputBorder(

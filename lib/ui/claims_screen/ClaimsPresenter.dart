@@ -1,16 +1,24 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
+import 'package:Cliamizer/generated/l10n.dart';
+import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
 import 'package:Cliamizer/network/models/buildings_response.dart';
 import 'package:Cliamizer/network/models/categories_response.dart';
 import 'package:Cliamizer/network/models/claim_available_time_response.dart';
 import 'package:Cliamizer/network/models/claim_request_response.dart';
 import 'package:Cliamizer/network/models/claims_response.dart';
+import 'package:Cliamizer/network/models/general_response.dart';
+import 'package:Cliamizer/res/colors.dart';
+import 'package:Cliamizer/res/gaps.dart';
+import 'package:Cliamizer/res/styles.dart';
 import 'package:Cliamizer/ui/claims_screen/widgets/success_dialog.dart';
 import 'package:Cliamizer/ui/home_screen/HomeProvider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -64,6 +72,101 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
     return null;
   }
 
+  Future completeLinkRequestApiCall(FormData bodyParams , BuildContext context) async {
+    Map<String, dynamic> header = Map();
+    bodyParams.fields.forEach((field) {
+      print('Field: ${field.key} = ${field.value}');
+    });
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    view.showProgress(isDismiss: false);
+    await requestFutureData<GeneralResponse>(Method.post,
+        endPoint: Api.completeLinkRequestApiCall,
+        params: bodyParams,
+        options: Options(headers: header), onSuccess: (data) {
+          view.closeProgress();
+          if (data != null) {
+            if (data.status == "success") {
+              showDialog(
+                context: view.context,
+                builder: (context) => AlertDialog(
+                  insetPadding: EdgeInsets.all(20),
+                  contentPadding: EdgeInsets.all(16),
+                  backgroundColor: MColors.whiteE,
+                  elevation: 0,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(ImageUtils.getSVGPath("done")),
+                      Gaps.vGap16,
+                      Text(S.current!.confirmation,
+                          style: MTextStyles.textMain16.copyWith(
+                            color: MColors.black,
+                          )),
+                      Gaps.vGap8,
+                      Text(
+                        S.current!.thankYouForSubmittingYourRequestOneOfOurCustomerservices,
+                        style: MTextStyles.textSubtitle,
+                        textAlign: TextAlign.center,
+                      ),
+                      Gaps.vGap30,
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          view.provider.selectedIndex = 2;
+                          Map<String, dynamic> params = Map();
+                          params['search'] = view.provider.searchController.text.toString();
+                          getUnitRequestsApiCall(params);
+                        },
+                        child: Text(
+                          S.current!.backToHome,
+                          style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
+                            elevation: MaterialStatePropertyAll(0),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            )),
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
+                      )
+                    ],
+                  ),
+                ),
+              );
+              view.provider.selectedUnit = '';
+            } else if (data.status == "fail") {
+              view.showToasts(data.message!, 'error');
+            }
+          }
+        }, onError: (code, msg) {
+          view.closeProgress();
+          if (code == 422) {
+            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'warning');
+          } else {
+            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+          }
+        });
+  }
+
+  Future getUnitRequestsApiCall(Map<String, dynamic> params) async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    view.showProgress(isDismiss: false);
+    await requestFutureData<UnitRequestsResponse>(Method.get,
+        options: Options(headers: header),queryParams: params, endPoint: Api.unitRequestApiCall, onSuccess: (data) {
+          view.closeProgress();
+          if (data != null) {
+            //view.provider.unitsRequestList = data.data!;
+          }
+        }, onError: (code, msg) {
+          view.closeProgress();
+        });
+  }
   Future getBuildingsApiCall() async {
     view.provider.dataLoaded = false;
     Map<String, dynamic> header = Map();

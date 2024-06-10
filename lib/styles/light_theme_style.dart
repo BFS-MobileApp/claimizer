@@ -11,9 +11,7 @@ class LightStyles {
       useMaterial3: true,
       // colors
       dividerColor: MColors.gray_ce,
-      errorColor: MColors.error_color,
       shadowColor: MColors.black,
-      backgroundColor: MColors.white,
       scaffoldBackgroundColor: MColors.white,
       primaryColor: MColors.primary_color,
       primaryColorLight: MColors.white,
@@ -75,7 +73,7 @@ class LightStyles {
       //app themes
       appBarTheme: AppBarTheme(
         backgroundColor: MColors.primary_color,
-        titleTextStyle: Theme.of(context).textTheme.button!.copyWith(
+        titleTextStyle: Theme.of(context).textTheme.labelMedium!.copyWith(
             fontFamily: Setting.mobileLanguage.value == Locale("en") ? "PFBagueRoundPro" : "Tajawal",
             color: Theme.of(context).colorScheme.surface),
         elevation: 0.0,

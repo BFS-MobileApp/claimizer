@@ -9,9 +9,9 @@ class DarkStyle {
     return ThemeData(
       // colors
       dividerColor: MColors.page_dark_background,
-      errorColor: MColors.loginColor1.withOpacity(0.5),
+      //errorColor: MColors.loginColor1.withOpacity(0.5),
       shadowColor: MColors.primary_color.withOpacity(0.5),
-      backgroundColor: MColors.page_dark_background,
+      //backgroundColor: MColors.page_dark_background,
       scaffoldBackgroundColor: MColors.page_dark_background,
       primaryColor: MColors.text2_dark_color,
       primaryColorLight: MColors.second_dark_color,
@@ -55,103 +55,11 @@ class DarkStyle {
               ? "AirbnbCereal"
               : "Tajawal",
         ),
-        bodyText1: TextStyle(
-          fontSize: 16.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        bodyText2: TextStyle(
-          fontSize: 14.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        caption: TextStyle(
-          fontSize: 11.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        button: TextStyle(
-          fontSize: 12.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        headline1: TextStyle(
-          fontSize: 10.sp,
-          color: MColors.text2_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        headline2: TextStyle(
-          fontSize: 12.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        headline3: TextStyle(
-          fontSize: 13.sp,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        headline4: TextStyle(
-          fontSize: 8.sp,
-          color: MColors.text2_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        headline5: TextStyle(
-          fontSize: 10.sp,
-          color: MColors.text_dark_color,
-        ),
-        headline6: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.bold,
-          color: MColors.text2_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        subtitle1: TextStyle(
-          fontSize: 9.sp,
-          fontWeight: FontWeight.bold,
-          color: MColors.text_dark_color.withOpacity(0.3),
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        subtitle2: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w700,
-          color: MColors.hint_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
-        overline: TextStyle(
-          fontSize: 9.sp,
-          fontWeight: FontWeight.w700,
-          color: MColors.text_dark_color,
-          fontFamily: Setting.mobileLanguage.value == Locale("en")
-              ? "AirbnbCereal"
-              : "Tajawal",
-        ),
       ),
       //app themes
       appBarTheme: AppBarTheme(
         backgroundColor: MColors.second_dark_color,
-        titleTextStyle: Theme.of(context).textTheme.button!.copyWith(
+        titleTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
             fontFamily: Setting.mobileLanguage.value == Locale("en")
                 ? "AirbnbCereal"
                 : "Tajawal",

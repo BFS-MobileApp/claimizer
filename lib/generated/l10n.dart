@@ -1633,6 +1633,24 @@ class S {
     );
   }
 
+  String get confirmRenewDialog {
+    return Intl.message(
+      'Renew Unit',
+      name: 'confirmRenewDialog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get areYouSureToRenewThisUnit {
+    return Intl.message(
+      'Do you want to renew this unit ?',
+      name: 'areYouSureToRenewThisUnit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Unit Link Request Details`
   String get unitLinkRequestDetails {
     return Intl.message(

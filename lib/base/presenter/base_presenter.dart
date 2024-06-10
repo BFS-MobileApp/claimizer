@@ -2,6 +2,7 @@ import 'package:Cliamizer/CommonUtils/preference/Prefs.dart';
 import 'package:Cliamizer/generated/l10n.dart';
 import 'package:Cliamizer/network/exception/error_status.dart';
 import 'package:Cliamizer/network/network_util.dart';
+import 'package:Cliamizer/res/colors.dart';
 import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -78,19 +79,19 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 duration: const Duration(seconds: 3),
                 content: Text("${S.of(context)!.checkYourInternet}"),
-                backgroundColor: Theme.of(context).errorColor));
+                backgroundColor: MColors.error_color));
           } else if (code == ErrorStatus.SERVER_ERROR) {
             final context = view.getContext();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 duration: const Duration(seconds: 3),
                 content: Text(S.of(context)!.anErrorOccurredTryAgainLater),
-                backgroundColor: Theme.of(context).errorColor));
+                backgroundColor: MColors.error_color));
           } else if (code == ErrorStatus.UNAUTHORIZED) {
             final context = view.getContext();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 duration: const Duration(seconds: 3),
                 content: Text(S.of(context)!.sessionTimeoutPleaseLogin),
-                backgroundColor: Theme.of(context).errorColor));
+                backgroundColor: MColors.error_color));
             // showDialog(context: context, builder: (context) => LoginRequiredDialog(message:S.of(context).sessionTimeoutPleaseLogin));
           }
         });
@@ -154,19 +155,19 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 3),
           content: Text("${S.of(context)!.checkYourInternet}"),
-          backgroundColor: Theme.of(context).errorColor));
+          backgroundColor: MColors.error_color));
     } else if (code == ErrorStatus.SERVER_ERROR) {
       final context = view.getContext();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 3),
           content: Text(S.of(context)!.anErrorOccurredTryAgainLater),
-          backgroundColor: Theme.of(context).errorColor));
+          backgroundColor: MColors.error_color));
     } else if (code == ErrorStatus.UNAUTHORIZED) {
       final context = view.getContext();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(seconds: 3),
           content: Text(S.of(context)!.sessionTimeoutPleaseLogin),
-          backgroundColor: Theme.of(context).errorColor));
+          backgroundColor: MColors.error_color));
       // showDialog(context: context, builder: (context) => LoginRequiredDialog(message:S.of(context).sessionTimeoutPleaseLogin));
     }
   }

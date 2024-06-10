@@ -21,7 +21,7 @@ class DatePickerField extends StatelessWidget {
       validator: (val) => validation(val!) , // Adjusted usage
       onSaved: (val) => onSaved(val!) , // Adjusted usage
       onChanged: onChanged??(val){},
-      style: Theme.of(context).textTheme.caption,
+      style: Theme.of(context).textTheme.titleMedium,
       readOnly: true,
       decoration: InputDecoration(
           filled: true,

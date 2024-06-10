@@ -94,7 +94,7 @@ abstract class BaseState<T extends StatefulWidget, P extends BasePresenter> exte
                 message,
                 style: Theme.of(context)
                     .textTheme
-                    .headline2!
+                    .titleMedium!
                     .copyWith(color: MColors.white),
               ),
             ),

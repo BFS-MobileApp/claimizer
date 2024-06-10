@@ -29,6 +29,8 @@ class UnitsDataBean {
   String? startAt;
   String? endAt;
 
+  bool? available;
+
   UnitsDataBean({
     required this.id,
     required this.code,
@@ -39,6 +41,7 @@ class UnitsDataBean {
     required this.building,
     required this.startAt,
     required this.endAt,
+    required this.available
   });
 
   UnitsDataBean.fromJson(Map<String, dynamic> json)
@@ -50,7 +53,8 @@ class UnitsDataBean {
         companyId = json['company_id'],
         building = json['building'],
         startAt = json['start_at']??'',
-        endAt = json['end_at']??'';
+        endAt = json['end_at']??'',
+        available = json['available'] ?? true;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
@@ -63,6 +67,7 @@ class UnitsDataBean {
     data['building'] = this.building;
     data['start_at'] = this.startAt;
     data['end_at'] = this.endAt;
+    data['available'] = this.available;
     return data;
   }
 }

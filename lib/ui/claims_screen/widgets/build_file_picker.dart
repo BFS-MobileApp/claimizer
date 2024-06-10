@@ -143,11 +143,11 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
               children: [
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
-                pr.file != null
+                pr.file.path !=''
                     ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(pr.file,width: 10.w, height: 10.w,fit: BoxFit.cover,))
-                    : pr.imageFiles != null&&pr.imageFiles.isNotEmpty
+                    : pr.imageFiles.isNotEmpty
                     ? Row(
                   children: [Icon(Icons.image,color: MColors.rejected_color,), Text(pr.imageFiles.length.toString() +" "+ S.of(context)!.images)],
                 )

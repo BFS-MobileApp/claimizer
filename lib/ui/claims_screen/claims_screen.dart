@@ -563,6 +563,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                             content: BuildingGrid(
                                                 presenter: mPresenter,
                                                 onSelected: (id) {
+                                                  print('hello here 0');
                                                   selectedBuildingId = id;
                                                   mPresenter.getUnitsApiCall(id);
                                                 }),
@@ -581,6 +582,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                 onSelected: (id) {
                                                   selectedUnitId = id;
                                                   mPresenter.getCategoryApiCall(id);
+                                                  print('hello here ');
                                                 }),
                                             isActive: pr.currentStep == 1,
                                             state: pr.currentStep == 1
@@ -595,6 +597,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                 presenter: mPresenter,
                                                 id: selectedCategoryId,
                                                 onSelected: (index) {
+                                                  print('hello here 2');
                                                   selectedCategoryId = pr.categoriesList[index].id;
                                                   pr.subCategoryList = pr.categoriesList[index].subCategory!.data!;
                                                 }),
@@ -609,6 +612,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                             title: new Text(''),
                                             content: SubcategoryGrid(
                                               onSelected: (id) {
+                                                print('hello here 3');
                                                 selectedSubCategoryId = id;
                                                 mPresenter.getClaimTypeApiCall(id);
                                               },
