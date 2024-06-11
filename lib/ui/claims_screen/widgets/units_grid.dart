@@ -12,7 +12,6 @@ import 'package:Cliamizer/ui/claims_screen/widgets/date_item.dart';
 import 'package:Cliamizer/ui/claims_screen/widgets/description_name.dart';
 import 'package:Cliamizer/ui/claims_screen/widgets/image_picker.dart';
 import 'package:Cliamizer/ui/claims_screen/widgets/unit_number.dart';
-import 'package:Cliamizer/ui/units_screen/units_presenter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
@@ -99,7 +98,6 @@ class UnitsGrid extends StatelessWidget {
   void showRenewDialog(BuildContext context, UnitsDataBean unit) {
     RenewModel model = RenewModel();
     final DateFormat _dateFormat = DateFormat('yyyy-MM-dd',"en");
-    UnitPresenter unitPresenter = UnitPresenter();
     setDate(model, unit);
     showDialog(
       context: context,
@@ -115,54 +113,36 @@ class UnitsGrid extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 print('here1');
-                if (model.getContractNumber == '' && model.startDate == '' && model.endDate == '') {
-                  print('dodo');
+                if (model.getContractNumber == '' || model.startDate == ' '|| model.endDate == '') {
                   presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                 } else if (_dateFormat.parse(model.startDate).isAfter(_dateFormat.parse(model.endDate))) {
                   presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
                 } else if (model.contractNo != '' && model.startDate != '' && model.endDate != '') {
-                  print('dodo1');
                   if (model.contractImage.path != '' || model.identifyImage.path != '') {
-                    print('dodo2');
                     FormData formData = new FormData.fromMap({
                       "contract_attach": await MultipartFile.fromFile(model.contractImage.path, contentType: new MediaType('application', 'octet-stream'),
                       ),
                       "client_gov_id": await MultipartFile.fromFile(model.identifyImage.path, contentType: new MediaType('application', 'octet-stream'),
                       ),
-                      "unit_code": unit.name,
-                      "contract_number": model.getContractNumber,
-                      "start_at": model.startDate,
+                      "id": unit.requestId,
+                      "contract_no": model.getContractNumber,
                       "end_at": model.endDate,
-                      "request_remarks": model.getDescription,
+                      "note": model.getDescription,
                     });
                     presenter.completeLinkRequestApiCall(formData, context);
                   } else {
-                    print('dodo3');
                     FormData formData = new FormData.fromMap({
-                      "unit_code": unit.name,
-                      "contract_number": model.getContractNumber,
-                      "start_at": model.startDate,
-                      "end_at": model.endDate,
-                      "request_remarks": model.getDescription,
-                    });
-                    FormData formDataa = new FormData.fromMap({
+                      "id": unit.requestId,
                       "contract_no": model.getContractNumber,
-                      "note": model.getDescription,
                       "end_at": model.endDate,
-                      "id": unit.id,
+                      "note": model.getDescription,
                     });
-                    print(unit.name);
-                    print(model.getContractNumber);
-                    print(model.endDate);
-                    print(model.startDate);
-                    print(model.getDescription);
                     presenter.completeLinkRequestApiCall(formData, context);
                   }
                 } else {
-                  print('dodo4');
                   presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                 }
-                //Navigator.pop(context);
+                Navigator.pop(context);
               },
               child: Text(
                 S.of(context)!.renew,
@@ -182,8 +162,6 @@ class UnitsGrid extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                print('asdasd' + model.startDate);
-                print('asdasd' + model.endDate);
                 Navigator.pop(context);
               },
               child: Text(
@@ -284,7 +262,7 @@ class UnitsGrid extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {
                         if (!pr.unitsList[index].available!) {
-                          showRenewDialog(context, pr.unitsList[index]);
+                          showConfirmDialog(context, pr.unitsList[index]);
                         } else {
                           pr.selectedUnitIndex = index;
                           pr.companyId = pr.unitsList[index].companyId;
@@ -304,15 +282,23 @@ class UnitsGrid extends StatelessWidget {
                             border: Border.all(
                                 color: MColors.dividerColor.withOpacity(.6),
                                 width: 2)),
-                        child: Text(
-                          pr.unitsList[index].name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 9.sp,
-                            color: pr.selectedUnitIndex == index
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                        child: Column(
+                          children: [
+                            Text(
+                              pr.unitsList[index].name,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 9.sp,
+                                color: pr.selectedUnitIndex == index
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            !pr.unitsList[index].available! ?Text('Contract ended , renew now ?', textAlign: TextAlign.center ,style: TextStyle(
+                              fontSize: 9.sp,
+                              color: Colors.amber,
+                            )) : SizedBox()
+                          ],
                         ),
                       ),
                     );

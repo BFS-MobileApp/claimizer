@@ -78,11 +78,12 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
       print('Field: ${field.key} = ${field.value}');
     });
     await Prefs.getUserToken.then((token) {
+      print('token = '+token);
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
     await requestFutureData<GeneralResponse>(Method.post,
-        endPoint: Api.completeLinkRequestApiCall,
+        endPoint: Api.renewUnitLinkRequestApiCall,
         params: bodyParams,
         options: Options(headers: header), onSuccess: (data) {
           view.closeProgress();

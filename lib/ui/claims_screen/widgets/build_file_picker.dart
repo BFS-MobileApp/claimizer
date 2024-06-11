@@ -36,7 +36,7 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
       Navigator.pop(context);
       return ;
     }
-    if (pickedFiles != null) {
+    if (pickedFiles.isNotEmpty) {
       setState(() {
         widget.provider.imageFiles = pickedFiles;
       });
@@ -143,7 +143,7 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
               children: [
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
-                pr.file.path !=''
+                pr.file.path != ''
                     ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(pr.file,width: 10.w, height: 10.w,fit: BoxFit.cover,))

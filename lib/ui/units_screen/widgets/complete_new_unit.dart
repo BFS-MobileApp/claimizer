@@ -142,15 +142,12 @@ class CompleteNewUnit extends StatelessWidget {
                       print('here1');
                       print(pr.selectedUnit);
                       if (pr.contractNo.text.isEmpty && !pr.isHasStartDate && !pr.isHasEndDate) {
-                        print('dodo');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                       } else if(pr.endDate.isBefore(pr.startDate)){
                         presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
                       } else if(pr.contractNo.text.isNotEmpty && pr.isHasStartDate && pr.isHasEndDate){
-                        print('dodo1');
                        if (pr.contractImg.path != '' ||
                           pr.identityImg.path != '') {
-                         print('dodo2');
                         FormData formData = new FormData.fromMap({
                           "contract_attach": await MultipartFile.fromFile(
                             pr.contractImg.path,
@@ -168,7 +165,6 @@ class CompleteNewUnit extends StatelessWidget {
                         });
                         presenter.completeLinkRequestApiCall(formData , context);
                       } else {
-                         print('dodo3');
                          FormData formData = new FormData.fromMap({
                            "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text,
                            "contract_number": pr.contractNo.text,
@@ -179,7 +175,6 @@ class CompleteNewUnit extends StatelessWidget {
                          presenter.completeLinkRequestApiCall(formData , context);
                        }
                       }else{
-                        print('dodo4');
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                       }
                     },
