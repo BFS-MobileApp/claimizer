@@ -815,6 +815,15 @@ class S {
     );
   }
 
+  String get renewUnitText {
+    return Intl.message(
+      'Contract ended , renew now ?',
+      name: 'renewUnitText',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get selectUnitAtDDL {
     return Intl.message(
       'Select The Unit',

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
 import 'package:Cliamizer/network/models/buildings_response.dart';
 import 'package:Cliamizer/network/models/categories_response.dart';
 import 'package:Cliamizer/network/models/claim_available_time_response.dart';
@@ -79,6 +80,15 @@ class ClaimsProvider extends ChangeNotifier {
 
   set searchValue(String value) {
     _searchValue = value;
+    notifyListeners();
+  }
+
+  List<UnitRequestDataBean> _unitsRequestList = [];
+
+  List<UnitRequestDataBean> get unitsRequestList => _unitsRequestList;
+
+  set unitsRequestList(List<UnitRequestDataBean> value) {
+    _unitsRequestList = value;
     notifyListeners();
   }
 

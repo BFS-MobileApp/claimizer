@@ -58,18 +58,15 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   @override
   void initState() {
     provider = context.read<ClaimsProvider>();
-    if(provider.homeFilter!=null){
+    if(provider.homeFilter.isNotEmpty){
       provider.selectedIndex = 1;
       print('hereeeeeeeeeeee');
     }
-
     EventBusUtils.getInstance().on<ReloadClaimsEvent>().listen((event) {
       if (event.isRefresh != null) {
         mPresenter.getClaims();
       }
     });
-
-
     mPresenter.getClaims();
     super.initState();
   }
@@ -329,7 +326,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                         )),
                                     Gaps.vGap8,
                                     Text(
-                                        "${pr.selectedDate == null ? DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()) : Setting.mobileLanguage.value == Locale("en") ? _dateFormatEN.format(pr.selectedDate) : _dateFormatAR.format(pr.selectedDate)}\n${pr.selectedTimeValue}",
+                                        "${pr.selectedDate == '' ? DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()) : Setting.mobileLanguage.value == Locale("en") ? _dateFormatEN.format(pr.selectedDate) : _dateFormatAR.format(pr.selectedDate)}\n${pr.selectedTimeValue}",
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -389,7 +386,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                       child: ElevatedButton(
                                         onPressed: () async {
                                           final formData = FormData();
-                                          if (pr.imageFiles != null) {
+                                          if (pr.imageFiles.isNotEmpty) {
                                             for (var i = 0; i < pr.imageFiles.length; i++) {
                                               final file = await mPresenter.compressFile(File(pr.imageFiles[i].path));
                                               formData.files.add(MapEntry(
@@ -405,7 +402,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                               formData.fields.add(MapEntry("description", provider.description.text));
                                               formData.fields.add(MapEntry(
                                                 "available_date",
-                                                provider.selectedDate != null
+                                                provider.selectedDate != ''
                                                     ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
                                                     : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
                                               ));
@@ -413,7 +410,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                   .add(MapEntry("available_time", provider.selectedTimeValue));
                                             }
                                             mPresenter.postClaimRequestApiCall(formData);
-                                          } else if (pr.file != null) {
+                                          } else if (pr.file.path !='') {
                                             final file = await mPresenter.compressFile(pr.file);
                                             FormData formData = new FormData.fromMap({
                                               "file[0]": await MultipartFile.fromBytes(
@@ -425,13 +422,29 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                               "sub_category_id": selectedSubCategoryId,
                                               "claim_type_id": selectedTypeId,
                                               "description": provider.description.text,
-                                              "available_date": provider.selectedDate != null
+                                              "available_date": provider.selectedDate!= ''
                                                   ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
                                                   : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
                                               "available_time": provider.selectedTimeValue
                                             });
                                             mPresenter.postClaimRequestApiCall(formData);
                                           } else {
+                                            print('fuxcxxk');
+                                            FormData formData = new FormData.fromMap({
+                                              "unit_id": selectedUnitId,
+                                              "category_id": selectedCategoryId,
+                                              "sub_category_id": selectedSubCategoryId,
+                                              "claim_type_id": selectedTypeId,
+                                              "description": provider.description.text,
+                                              "available_date": provider.selectedDate!= ''
+                                                  ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
+                                                  : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                                              "available_time": provider.selectedTimeValue
+                                            });
+                                            print(selectedUnitId);
+                                            print(selectedCategoryId);
+                                            print(selectedSubCategoryId);
+                                            print(provider.description.text);
                                             Map<String, dynamic> parms = Map();
                                             parms['unit_id'] = selectedUnitId;
                                             parms['category_id'] = selectedCategoryId;
@@ -442,7 +455,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                 ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
                                                 : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());
                                             parms['available_time'] = provider.selectedTimeValue;
-                                            mPresenter.postClaimRequestApiCall(parms);
+                                            mPresenter.postClaimRequestApiCall(formData);
                                           }
                                         },
                                         child: Text(

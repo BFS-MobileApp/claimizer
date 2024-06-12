@@ -105,7 +105,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                     child: Text("${S.of(context)!.welcome} ${provider.name ?? ""}",
                         maxLines: 2,
                         style: TextStyle(
-                            color: MColors.headline_text_color, fontSize: 14.sp, fontWeight: FontWeight.bold)),
+                            color: MColors.headline_text_color, fontSize: 10.sp, fontWeight: FontWeight.w500)),
                   ),
                   Spacer(),
                   InkWell(

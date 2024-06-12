@@ -40,6 +40,7 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
 
   void _handleTabSelection() {
     setState(() {
+
     });
   }
 
@@ -70,7 +71,7 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
                 color: MColors.white,
                 child: TabBar(
                   controller: pr.tabController,
-                  labelStyle:  TextStyle(fontSize: 8.sp),
+                  labelStyle:  TextStyle(fontSize: 7.sp),
                   isScrollable: false,
                   unselectedLabelColor: MColors.subText_color,
                   automaticIndicatorColorAdjustment: true,

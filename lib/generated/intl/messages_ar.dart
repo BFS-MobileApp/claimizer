@@ -216,6 +216,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "youShouldSelectDateAndTime" : MessageLookupByLibrary.simpleMessage("يجب عليك تحديد التاريخ و الوقت"),
     "yourBuilding" : MessageLookupByLibrary.simpleMessage("اسم المبنى "),
     "yourOldPassword" : MessageLookupByLibrary.simpleMessage("كلمة المرور القديمة"),
-    "yourUnit" : MessageLookupByLibrary.simpleMessage("رقم الوحدة ")
+    "yourUnit" : MessageLookupByLibrary.simpleMessage("رقم الوحدة "),
+    "renewUnitText": MessageLookupByLibrary.simpleMessage("العقد منتهي؟ جدد الان")
   };
 }

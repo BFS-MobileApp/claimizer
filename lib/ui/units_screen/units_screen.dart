@@ -110,7 +110,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                                 elevation: 0.5,
                                 color: pr.selectedIndex == pageIndex ? MColors.primary_color : Colors.white,
                                 child: Container(
-                                  width: 28.w,
+                                  width: 25.w,
                                   height: 100.h,
                                   padding: EdgeInsets.all(12),
                                   child: Column(

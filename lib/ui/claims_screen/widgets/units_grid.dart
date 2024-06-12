@@ -129,6 +129,7 @@ class UnitsGrid extends StatelessWidget {
                       "end_at": model.endDate,
                       "note": model.getDescription,
                     });
+                    Navigator.pop(context);
                     presenter.completeLinkRequestApiCall(formData, context);
                   } else {
                     FormData formData = new FormData.fromMap({
@@ -137,12 +138,13 @@ class UnitsGrid extends StatelessWidget {
                       "end_at": model.endDate,
                       "note": model.getDescription,
                     });
+                    Navigator.pop(context);
                     presenter.completeLinkRequestApiCall(formData, context);
                   }
                 } else {
+                  Navigator.pop(context);
                   presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                 }
-                Navigator.pop(context);
               },
               child: Text(
                 S.of(context)!.renew,
@@ -273,7 +275,7 @@ class UnitsGrid extends StatelessWidget {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(8),
+                        padding: EdgeInsets.all(2),
                         decoration: BoxDecoration(
                             color: pr.selectedUnitIndex == index
                                 ? MColors.primary_color
@@ -284,6 +286,7 @@ class UnitsGrid extends StatelessWidget {
                                 width: 2)),
                         child: Column(
                           children: [
+                            SizedBox(height: 2.h,),
                             Text(
                               pr.unitsList[index].name,
                               textAlign: TextAlign.center,
@@ -294,10 +297,10 @@ class UnitsGrid extends StatelessWidget {
                                     : Colors.black,
                               ),
                             ),
-                            !pr.unitsList[index].available! ?Text('Contract ended , renew now ?', textAlign: TextAlign.center ,style: TextStyle(
+                            !pr.unitsList[index].available! ? Flexible(child: Text(S.of(context)!.renewUnitText, textAlign: TextAlign.center ,style: TextStyle(
                               fontSize: 9.sp,
                               color: Colors.amber,
-                            )) : SizedBox()
+                            ))) : SizedBox()
                           ],
                         ),
                       ),

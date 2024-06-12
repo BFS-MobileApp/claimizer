@@ -15,6 +15,8 @@ import 'package:Cliamizer/res/gaps.dart';
 import 'package:Cliamizer/res/styles.dart';
 import 'package:Cliamizer/ui/claims_screen/widgets/success_dialog.dart';
 import 'package:Cliamizer/ui/home_screen/HomeProvider.dart';
+import 'package:Cliamizer/ui/home_screen/HomeScreen.dart';
+import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -89,6 +91,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
           view.closeProgress();
           if (data != null) {
             if (data.status == "success") {
+              view.closeProgress();
               showDialog(
                 context: view.context,
                 builder: (context) => AlertDialog(
@@ -115,22 +118,26 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          view.provider.selectedIndex = 2;
+                          view.provider.selectedIndex = 0;
                           Map<String, dynamic> params = Map();
                           params['search'] = view.provider.searchController.text.toString();
-                          getUnitRequestsApiCall(params);
+                          //getUnitRequestsApiCall(params);
+                          view.closeProgress();
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                              MainScreen()), (Route<dynamic> route) => false);
+                          view.closeProgress();
                         },
                         child: Text(
                           S.current!.backToHome,
                           style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
                         ),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
-                            elevation: MaterialStatePropertyAll(0),
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                            backgroundColor: WidgetStateProperty.all<Color>(MColors.primary_color),
+                            elevation: WidgetStatePropertyAll(0),
+                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             )),
-                            padding: MaterialStateProperty.all<EdgeInsets>(
+                            padding: WidgetStateProperty.all<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
                       )
                     ],
@@ -162,7 +169,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
         options: Options(headers: header),queryParams: params, endPoint: Api.unitRequestApiCall, onSuccess: (data) {
           view.closeProgress();
           if (data != null) {
-            //view.provider.unitsRequestList = data.data!;
+            view.provider.unitsRequestList = data.data!;
           }
         }, onError: (code, msg) {
           view.closeProgress();
@@ -270,7 +277,9 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
   }
 
   Future postClaimRequestApiCall(dynamic formData) async {
+    print('hereeeeeeeeeeee');
     Map<String, dynamic> header = Map();
+
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
