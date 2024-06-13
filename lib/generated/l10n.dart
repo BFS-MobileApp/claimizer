@@ -625,6 +625,15 @@ class S {
     );
   }
 
+  String get myClaims {
+    return Intl.message(
+      'My Claims',
+      name: 'myClaims',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Claims Requests`
   String get claimsRequests {
     return Intl.message(
@@ -750,6 +759,24 @@ class S {
     return Intl.message(
       'New Link Request',
       name: 'newLinkRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get newRequest {
+    return Intl.message(
+      'New Request',
+      name: 'newRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get myLinkRequest {
+    return Intl.message(
+      'My Link Requests',
+      name: 'myLinkRequest',
       desc: '',
       args: [],
     );

@@ -8,7 +8,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../CommonUtils/image_utils.dart';
@@ -60,9 +59,9 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
   @override
   Widget build(BuildContext context) {
     List<String> cardTitles = [
-      S.current!.newLinkRequest,
+      S.current!.newRequest,
       S.current!.existingUnit,
-      S.current!.unitLinkRequest,
+      S.current!.myLinkRequest,
     ];
     List<String> cardImages = [
       'new_unit_link',
@@ -111,7 +110,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                                 color: pr.selectedIndex == pageIndex ? MColors.primary_color : Colors.white,
                                 child: Container(
                                   width: 25.w,
-                                  height: 100.h,
+                                  height: 180.h,
                                   padding: EdgeInsets.all(12),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

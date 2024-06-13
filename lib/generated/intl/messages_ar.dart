@@ -25,7 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "addComment" : MessageLookupByLibrary.simpleMessage("اضافة تعليق"),
     "addNewClaim" : MessageLookupByLibrary.simpleMessage("طلب صيانة جديد"),
     "allAttachment" : MessageLookupByLibrary.simpleMessage("كل الملفات"),
-    "allClaims" : MessageLookupByLibrary.simpleMessage("جميع طلبات الصيانة"),
+    "allClaims" : MessageLookupByLibrary.simpleMessage("طلبات الصيانة"),
     "allFiles" : MessageLookupByLibrary.simpleMessage("كل الملفات"),
     "alreadyHaveAnAccount" : MessageLookupByLibrary.simpleMessage("لديك حساب بالفعل؟  "),
     "anErrorOccurredTryAgainLater" : MessageLookupByLibrary.simpleMessage("حدث خطأ ما برجاء المحاولة لاحقا"),
@@ -180,7 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "topUpdates" : MessageLookupByLibrary.simpleMessage("اخر التحديثات"),
     "unit" : MessageLookupByLibrary.simpleMessage("ينتهي تعاقد الوحدة "),
     "unitCode" : MessageLookupByLibrary.simpleMessage("كود الوحدة: "),
-    "unitLinkRequest" : MessageLookupByLibrary.simpleMessage("جميع طلبات الربط "),
+    "unitLinkRequest" : MessageLookupByLibrary.simpleMessage("طلبات الربط"),
     "unitLinkRequestDetails" : MessageLookupByLibrary.simpleMessage("تفاصيل طلب ربط الوحدة"),
     "unitName" : MessageLookupByLibrary.simpleMessage("الوحدة"),
     "unitQuery" : MessageLookupByLibrary.simpleMessage("بحث عن الوحدة"),
@@ -217,6 +217,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "yourBuilding" : MessageLookupByLibrary.simpleMessage("اسم المبنى "),
     "yourOldPassword" : MessageLookupByLibrary.simpleMessage("كلمة المرور القديمة"),
     "yourUnit" : MessageLookupByLibrary.simpleMessage("رقم الوحدة "),
-    "renewUnitText": MessageLookupByLibrary.simpleMessage("العقد منتهي؟ جدد الان")
+    "renewUnitText": MessageLookupByLibrary.simpleMessage("العقد منتهي؟ جدد الان"),
+    "myClaims": MessageLookupByLibrary.simpleMessage("طلبات الصيانة"),
+    "newRequest": MessageLookupByLibrary.simpleMessage("طلب ربط جديد"),
+    "myLinkRequest": MessageLookupByLibrary.simpleMessage("طلبات الربط"),
   };
 }

@@ -79,7 +79,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
 
   List<String> cardTitles = [
     S.current!.addNewClaim,
-    S.current!.allClaims,
+    S.current!.myClaims,
   ];
   List<String> cardImages = [
     'newclaims',

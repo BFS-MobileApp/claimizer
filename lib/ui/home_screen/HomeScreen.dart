@@ -80,6 +80,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     List<String> cardTitles = [
       S.current!.allClaims,
       S.current!.newClaims,
@@ -101,11 +102,18 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
               child: Row(
                 children: [
                   Container(
-                    width: 200,
-                    child: Text("${S.of(context)!.welcome} ${provider.name ?? ""}",
-                        maxLines: 2,
-                        style: TextStyle(
-                            color: MColors.headline_text_color, fontSize: 10.sp, fontWeight: FontWeight.w500)),
+                    width: 55.w,
+                    child: Column(
+                      children: [
+                        Text("${S.of(context)!.welcome}",
+                            style: TextStyle(
+                                color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                        Text("${provider.name}",
+                            maxLines: 2,
+                            style: TextStyle(
+                                color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                      ],
+                    )
                   ),
                   Spacer(),
                   InkWell(
