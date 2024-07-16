@@ -5,6 +5,7 @@ import 'package:Cliamizer/network/models/LoginResponse.dart';
 import 'package:Cliamizer/network/models/general_response.dart';
 import 'package:Cliamizer/network/models/social_media_login_response.dart';
 import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
+import 'package:Cliamizer/ui/units_screen/units_screen.dart';
 import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -30,7 +31,7 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
             if (data != null) {
               view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
               Navigator.pushAndRemoveUntil(
-                  view.context, CupertinoPageRoute(builder: (context) => MainScreen()), (route) => false);
+                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 2,)), (route) => false);
               saveUser(data);
               sendFcmToken();
             }
@@ -50,7 +51,7 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
       view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
       SocialMedialLogin login = SocialMedialLogin.fromJson(jsonDecode(response.body));
       Navigator.pushAndRemoveUntil(
-          view.context, CupertinoPageRoute(builder: (context) => MainScreen()), (route) => false);
+          view.context, CupertinoPageRoute(builder: (context) => UnitsScreen()), (route) => false);
       saveSocialMediaUser(login , socialMedial);
       sendFcmToken();
     } else {

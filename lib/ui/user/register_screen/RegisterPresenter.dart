@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
 import 'package:Cliamizer/network/models/LoginResponse.dart';
 import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
+import 'package:Cliamizer/ui/units_screen/units_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +24,7 @@ class RegisterPresenter extends BasePresenter<RegisterScreenState> {
       if (data != null) {
         view.showToasts(S.of(view.context)!.accountCreated,'success');
         Navigator.pushAndRemoveUntil(
-            view.context, CupertinoPageRoute(builder: (context) => MainScreen()), (route) => false);
+            view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 2)), (route) => false);
         saveUser(data);
         sendFcmToken();
       }

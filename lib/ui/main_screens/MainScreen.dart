@@ -17,7 +17,9 @@ import 'MainProvider.dart';
 class MainScreen extends StatefulWidget {
   final bool langChanged;
 
-  MainScreen({this.langChanged = false});
+  int index = 0;
+
+  MainScreen({this.langChanged = false ,required this.index});
 
   static const String TAG = "/MainScreen";
 
@@ -33,7 +35,7 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
   @override
   void initState() {
     pr = context.read<MainProvider>();
-    pr.tabController = TabController(vsync: this, length: 4,initialIndex: 0);
+    pr.tabController = TabController(vsync: this, length: 4,initialIndex: widget.index);
     pr.tabController.addListener(_handleTabSelection);
   super.initState();
   }

@@ -245,7 +245,8 @@ class UnitsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ClaimsProvider>(
-      builder: (ctx, pr, w) => Column(
+      builder: (ctx, pr, w) =>
+          Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           AppHeadline(title: S.of(context)!.selectUnit),

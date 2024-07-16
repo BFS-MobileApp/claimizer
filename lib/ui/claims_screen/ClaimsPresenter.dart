@@ -124,7 +124,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
                           //getUnitRequestsApiCall(params);
                           view.closeProgress();
                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                              MainScreen()), (Route<dynamic> route) => false);
+                              MainScreen(index: 0,)), (Route<dynamic> route) => false);
                           view.closeProgress();
                         },
                         child: Text(

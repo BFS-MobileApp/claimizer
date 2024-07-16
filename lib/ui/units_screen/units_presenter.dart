@@ -266,7 +266,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       if (data != null) {
         if (data.status == "success") {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              MainScreen()), (Route<dynamic> route) => false);
+              MainScreen(index: 0,)), (Route<dynamic> route) => false);
           showDialog(
             context: view.context,
             builder: (context) => AlertDialog(
