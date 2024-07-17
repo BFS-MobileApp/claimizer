@@ -1199,6 +1199,15 @@ class S {
     );
   }
 
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `The unit is Booked`
   String get theUnitIsReserved {
     return Intl.message(
@@ -1682,6 +1691,15 @@ class S {
     return Intl.message(
       'Do you want to renew this unit ?',
       name: 'areYouSureToRenewThisUnit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get areNotConnectedToBuilding {
+    return Intl.message(
+      'You need to link your account with your property unit before proceeding with claims.',
+      name: 'areNotConnectedToBuilding',
       desc: '',
       args: [],
     );

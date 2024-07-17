@@ -14,6 +14,8 @@ import '../main_screens/MainPresenter.dart';
 import '../units_screen/units_screen.dart';
 import 'MainProvider.dart';
 
+final GlobalKey<MainScreenState> homeScreenKey = GlobalKey<MainScreenState>();
+
 class MainScreen extends StatefulWidget {
   final bool langChanged;
 
@@ -45,6 +47,13 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
 
     });
   }
+
+  void changeTab(int index) {
+    setState(() {
+      pr.tabController.index = index;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -221,5 +221,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "myClaims": MessageLookupByLibrary.simpleMessage("طلبات الصيانة"),
     "newRequest": MessageLookupByLibrary.simpleMessage("طلب ربط جديد"),
     "myLinkRequest": MessageLookupByLibrary.simpleMessage("طلبات الربط"),
+    "areNotConnectedToBuilding": MessageLookupByLibrary.simpleMessage("يجب عليك ربط حسابك بوحدتك العقارية أولاً حتى تتمكن من تقديم طلبات الصيانة."),
+    "ok": MessageLookupByLibrary.simpleMessage("موافق"),
   };
 }

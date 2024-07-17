@@ -31,7 +31,7 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
             if (data != null) {
               view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
               Navigator.pushAndRemoveUntil(
-                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 2,)), (route) => false);
+                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 0,)), (route) => false);
               saveUser(data);
               sendFcmToken();
             }

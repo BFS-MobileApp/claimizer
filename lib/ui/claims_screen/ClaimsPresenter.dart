@@ -41,11 +41,13 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
   getClaims(){
     Map<String, dynamic> params = Map();
     params['search'] = view.provider.searchController.text.toString();
-    if(view.provider.homeFilter!=null&&view.provider.homeFilter!='all'){
+    if(view.provider.homeFilter.isEmpty && view.provider.homeFilter!='all'){
       params['status'] = view.provider.homeFilter;
     }
     getAllClaimsApiCall(params);
   }
+
+
   Future getAllClaimsApiCall(Map<String, dynamic> params) async {
     print('~~~~~~~~~ called');
     Map<String, dynamic> header = Map();
@@ -55,14 +57,18 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
     view.showProgress(isDismiss: false);
     await requestFutureData<ClaimsResponse>(Method.get,
         queryParams: params, options: Options(headers: header), endPoint: Api.claimsApiCall, onSuccess: (data) {
+          view.closeProgress();
       if (data != null) {
+        print('here2');
         view.closeProgress();
+        view.provider.claimsList.clear();
         view.provider.claimsList = data.data;
         print("LENGTH : ${view.provider.claimsList.length}");
       }
      getBuildingsApiCall();
 
     }, onError: (code, msg) {
+      print('here3');
       view.closeProgress();
      getBuildingsApiCall();
     });
@@ -187,12 +193,16 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
       view.closeProgress();
       view.provider.dataLoaded = true;
       if (data != null) {
+        view.closeProgress();
+        view.provider.buildingsList.clear();
         view.provider.buildingsList = data.data!;
       }
     }, onError: (code, msg) {
+
       view.provider.dataLoaded = true;
       view.closeProgress();
     });
+    view.closeProgress();
   }
 
   Future getUnitsApiCall(int buildingId) async {

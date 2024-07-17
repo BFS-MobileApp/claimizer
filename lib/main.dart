@@ -1,3 +1,4 @@
+import 'package:Cliamizer/app_widgets/message_item.dart';
 import 'package:Cliamizer/res/setting.dart';
 import 'package:Cliamizer/route/application.dart';
 import 'package:Cliamizer/route/routers.dart';
@@ -131,6 +132,7 @@ class _MyAppState extends State<MyApp> {
                   title: "Claimizer",
                   theme: LightStyles.lightTheme(context),
                   home: SplashScreen(),
+                  scaffoldMessengerKey: MessageWidget.scaffoldMessengerKey,
                 ),
               );
             },

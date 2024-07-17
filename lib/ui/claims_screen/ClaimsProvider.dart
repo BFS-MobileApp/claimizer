@@ -1,38 +1,23 @@
 import 'dart:io';
-
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
 import 'package:Cliamizer/network/models/buildings_response.dart';
 import 'package:Cliamizer/network/models/categories_response.dart';
 import 'package:Cliamizer/network/models/claim_available_time_response.dart';
 import 'package:Cliamizer/network/models/claim_type_response.dart';
 import 'package:Cliamizer/network/models/units_response.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-
 import '../../network/models/claims_response.dart';
 
 class ClaimsProvider extends ChangeNotifier {
   int _selectedIndex = 1;
   DateTime? _selectedDate;
-
   TextEditingController _description = TextEditingController();
-
   int companyId = 0;
-
   String _selectedTimeValue = '';
-
-  // String _description;
   File _fileName = File('');
   int _currentStep = 0;
   bool _isStepsFinished = false;
-
-  bool get isStepsFinished => _isStepsFinished;
-
-  set isStepsFinished(bool value) {
-    _isStepsFinished = value;
-    notifyListeners();
-  }
-
   int _selectedBuildingIndex = 0;
   int _selectedUnitIndex = 0;
   int _selectedClaimCategoryIndex = 0;
@@ -41,6 +26,34 @@ class ClaimsProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   ScrollController _scrollController = ScrollController();
   double _scrollPosition = 0.0;
+  TextEditingController _searchController = TextEditingController();
+  String _searchValue = '';
+  List<UnitRequestDataBean> _unitsRequestList = [];
+  List<ClaimsDataBean> _claimsList = [];
+  List<BuildingsDataBean> _buildingsList = [];
+  List<UnitsDataBean> _unitsList = [];
+  List<CategoryDataBean> _categoriesList = [];
+  List<SubCategoryDataBean> _subCategoryList = [];
+  List<ClaimTypeDataBean> _claimTypeList = [];
+  List<ClaimAvailableTimeDataBean> _claimAvailableTimeList = [];
+  File _file = File('');
+  List<XFile> _imageFiles = [];
+  bool _dataLoaded = false;
+  String homeFilter = '';
+  String selectedBuilding = '';
+  String selectedUnit = '';
+  String selectedCategory = '';
+  String selectedSubCategory = '';
+  String selectedType = '';
+
+  // Getters and setters...
+
+  bool get isStepsFinished => _isStepsFinished;
+
+  set isStepsFinished(bool value) {
+    _isStepsFinished = value;
+    notifyListeners();
+  }
 
   double get scrollPosition => _scrollPosition;
 
@@ -65,8 +78,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  TextEditingController _searchController = TextEditingController();
-
   TextEditingController get searchController => _searchController;
 
   set searchController(TextEditingController value) {
@@ -74,16 +85,12 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _searchValue = '';
-
   String get searchValue => _searchValue;
 
   set searchValue(String value) {
     _searchValue = value;
     notifyListeners();
   }
-
-  List<UnitRequestDataBean> _unitsRequestList = [];
 
   List<UnitRequestDataBean> get unitsRequestList => _unitsRequestList;
 
@@ -120,8 +127,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ClaimsDataBean> _claimsList = [];
-
   List<ClaimsDataBean> get claimsList => _claimsList;
 
   set claimsList(List<ClaimsDataBean> value) {
@@ -129,16 +134,12 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<BuildingsDataBean> _buildingsList = [];
-
   List<BuildingsDataBean> get buildingsList => _buildingsList;
 
   set buildingsList(List<BuildingsDataBean> value) {
     _buildingsList = value;
     notifyListeners();
   }
-
-  List<UnitsDataBean> _unitsList = [];
 
   List<UnitsDataBean> get unitsList => _unitsList;
 
@@ -152,8 +153,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<CategoryDataBean> _categoriesList = [];
-
   List<CategoryDataBean> get categoriesList => _categoriesList;
 
   set categoriesList(List<CategoryDataBean> value) {
@@ -165,8 +164,6 @@ class ClaimsProvider extends ChangeNotifier {
     _categoriesList.clear();
     notifyListeners();
   }
-
-  List<SubCategoryDataBean> _subCategoryList = [];
 
   List<SubCategoryDataBean> get subCategoryList => _subCategoryList;
 
@@ -180,8 +177,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ClaimTypeDataBean> _claimTypeList = [];
-
   List<ClaimTypeDataBean> get claimTypeList => _claimTypeList;
 
   set claimTypeList(List<ClaimTypeDataBean> value) {
@@ -193,8 +188,6 @@ class ClaimsProvider extends ChangeNotifier {
     _claimTypeList.clear();
     notifyListeners();
   }
-
-  List<ClaimAvailableTimeDataBean> _claimAvailableTimeList = [];
 
   List<ClaimAvailableTimeDataBean> get claimAvailableTimeList => _claimAvailableTimeList;
 
@@ -224,7 +217,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   String get selectedTimeValue => _selectedTimeValue;
 
   set selectedTimeValue(String value) {
@@ -237,12 +229,7 @@ class ClaimsProvider extends ChangeNotifier {
   set description(TextEditingController value) {
     _description = value;
     notifyListeners();
-  } // String get description => _description;
-  //
-  // set description(String value) {
-  //   _description = value;
-  //   notifyListeners();
-  // }
+  }
 
   File get fileName => _fileName;
 
@@ -250,10 +237,6 @@ class ClaimsProvider extends ChangeNotifier {
     _fileName = newFile;
     notifyListeners();
   }
-
-  File _file = File('');
-  List<XFile> _imageFiles = [];
-
 
   File get file => _file;
 
@@ -269,8 +252,6 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _dataLoaded = false;
-
   bool get dataLoaded => _dataLoaded;
 
   set dataLoaded(bool value) {
@@ -278,11 +259,42 @@ class ClaimsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String homeFilter = '';
-
-  String selectedBuilding = '';
-  String selectedUnit = '';
-  String selectedCategory = '';
-  String selectedSubCategory = '';
-  String selectedType = '';
+  // Reset method to clear the state of the provider
+  void reset() {
+    _selectedIndex = 1;
+    _selectedDate = null;
+    _description.clear();
+    companyId = 0;
+    _selectedTimeValue = '';
+    _fileName = File('');
+    _currentStep = 0;
+    _isStepsFinished = false;
+    _selectedBuildingIndex = 0;
+    _selectedUnitIndex = 0;
+    _selectedClaimCategoryIndex = 0;
+    _selectedClaimSubCategoryIndex = 0;
+    _selectedClaimTypeIndex = 0;
+    _scrollController = ScrollController();
+    _scrollPosition = 0.0;
+    _searchController.clear();
+    _searchValue = '';
+    _unitsRequestList.clear();
+    _claimsList.clear();
+    _buildingsList.clear();
+    _unitsList.clear();
+    _categoriesList.clear();
+    _subCategoryList.clear();
+    _claimTypeList.clear();
+    _claimAvailableTimeList.clear();
+    _file = File('');
+    _imageFiles.clear();
+    _dataLoaded = false;
+    homeFilter = '';
+    selectedBuilding = '';
+    selectedUnit = '';
+    selectedCategory = '';
+    selectedSubCategory = '';
+    selectedType = '';
+    notifyListeners();
+  }
 }

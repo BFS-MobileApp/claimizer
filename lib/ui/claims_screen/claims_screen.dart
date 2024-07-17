@@ -64,6 +64,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     }
     EventBusUtils.getInstance().on<ReloadClaimsEvent>().listen((event) {
       if (event.isRefresh != null) {
+        print('hereeeeeeeeeeee1'+event.isRefresh.toString());
         mPresenter.getClaims();
       }
     });
@@ -73,8 +74,9 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
 
   @override
   void dispose() {
-    super.dispose();
     provider.homeFilter = '';
+    //context.read<ClaimsProvider>().reset();
+    super.dispose();
   }
 
   List<String> cardTitles = [
@@ -90,6 +92,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   Widget build(BuildContext context) {
     super.build(context);
     print(provider.selectedIndex);
+    mPresenter.view.closeProgress();
     return Scaffold(
       backgroundColor: MColors.page_background,
       body: Consumer<ClaimsProvider>(
@@ -574,6 +577,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                           appStepper.Step(
                                             title: new Text(''),
                                             content: BuildingGrid(
+                                              claimContext: this.context,
                                                 presenter: mPresenter,
                                                 onSelected: (id) {
                                                   print('hello here 0');
