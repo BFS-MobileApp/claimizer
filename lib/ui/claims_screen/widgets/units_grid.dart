@@ -202,7 +202,7 @@ class UnitsGrid extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    Text(S.current!.unitQuery, style: MTextStyles.textMain16),
+                    Text(S.current!.contractQuery, style: MTextStyles.textMain16),
                   ],
                 ),
                 Gaps.vGap8,

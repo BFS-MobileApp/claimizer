@@ -207,7 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "welcome" : MessageLookupByLibrary.simpleMessage("مرحبا"),
     "welcomeBackToClimizer" : MessageLookupByLibrary.simpleMessage("مرحبا بك في كلاميزر "),
     "welcomeToClimizer" : MessageLookupByLibrary.simpleMessage("مرحبا في كلاميزر "),
-    "writeYourThoughtsHere" : MessageLookupByLibrary.simpleMessage("اكتب وصف الشكوى"),
+    "writeYourThoughtsHere" : MessageLookupByLibrary.simpleMessage("اكتب الملاحظات"),
     "youMustLogin" : MessageLookupByLibrary.simpleMessage("يجب عليك تسجيل الدخول"),
     "youNeedToRenewTheContract" : MessageLookupByLibrary.simpleMessage("تحتاج إلى تجديد العقد"),
     "youNeedToRenewTheContractYouNeedToRenew" : MessageLookupByLibrary.simpleMessage(" العقد منتهي - تحتاج إلى تجديد العقد"),
@@ -223,5 +223,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "myLinkRequest": MessageLookupByLibrary.simpleMessage("طلبات الربط"),
     "areNotConnectedToBuilding": MessageLookupByLibrary.simpleMessage("يجب عليك ربط حسابك بوحدتك العقارية أولاً حتى تتمكن من تقديم طلبات الصيانة."),
     "ok": MessageLookupByLibrary.simpleMessage("موافق"),
+    "confirmRenewDialog": MessageLookupByLibrary.simpleMessage("تجديد عقد الوحدة"),
+    "areYouSureToRenewThisUnit": MessageLookupByLibrary.simpleMessage("هل تريد تجديد عقد هذه الوحدة ؟"),
+    "contractQuery": MessageLookupByLibrary.simpleMessage("تجديد عقد الوحدة"),
+    "newContractQuery": MessageLookupByLibrary.simpleMessage("بيانات العقد الجديد"),
   };
 }

@@ -1190,10 +1190,19 @@ class S {
   }
 
   /// `Unit Query`
-  String get unitQuery {
+  String get contractQuery {
     return Intl.message(
       'Contract Query',
       name: 'contractQuery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get newContractQuery {
+    return Intl.message(
+      'Contract Query',
+      name: 'newContractQuery',
       desc: '',
       args: [],
     );

@@ -58,7 +58,7 @@ class CompleteNewUnit extends StatelessWidget {
                   margin: EdgeInsetsDirectional.only(end: 3.w),
                   decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
                 ),
-                Text(pr.isBuilding ? "Building Query" : S.current!.unitQuery, style: MTextStyles.textMain16),
+                Text(pr.isBuilding ? "Building Query" : S.current!.contractQuery, style: MTextStyles.textMain16),
               ],
             ),
             Gaps.vGap8,
