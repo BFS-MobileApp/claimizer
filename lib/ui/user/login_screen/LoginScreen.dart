@@ -47,6 +47,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
 
   String password = '', email = '';
 
+
   String languageSelected = "English";
   int languageSelectedValue = 1;
   bool isError = false;

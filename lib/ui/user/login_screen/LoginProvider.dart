@@ -1,3 +1,4 @@
+import 'package:Cliamizer/network/models/units_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:Cliamizer/base/provider/base_provider.dart';
 
@@ -14,6 +15,15 @@ class LoginProvider<T> extends BaseProvider<T> {
   }
 
   bool get isRememberMe => _isRememberMe;
+
+  List<UnitsDataBean> _unitsList = [];
+
+  List<UnitsDataBean> get unitsList => _unitsList;
+
+  set unitsList(List<UnitsDataBean> value) {
+    _unitsList = value;
+    notifyListeners();
+  }
 
   set isRememberMe(bool value) {
     _isRememberMe = value;

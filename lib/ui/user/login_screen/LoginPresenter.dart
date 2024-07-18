@@ -4,6 +4,7 @@ import 'package:Cliamizer/base/presenter/base_presenter.dart';
 import 'package:Cliamizer/network/models/LoginResponse.dart';
 import 'package:Cliamizer/network/models/general_response.dart';
 import 'package:Cliamizer/network/models/social_media_login_response.dart';
+import 'package:Cliamizer/network/models/units_response.dart';
 import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
 import 'package:Cliamizer/ui/units_screen/units_screen.dart';
 import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
@@ -17,6 +18,7 @@ import '../../../network/api/network_api.dart';
 import '../../../network/network_util.dart';
 
 class LoginPresenter extends BasePresenter<LoginScreenState> {
+
   Future doLoginApiCall(Map<String, dynamic> bodyParams) async {
     List<String> myList = [];
     myList = await Prefs.getDeleteAccount();
@@ -27,13 +29,11 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
       view.showProgress(isDismiss: false);
       await requestFutureData<LoginResponse>(Method.post, endPoint: Api.loginApiCall, params: bodyParams,
           onSuccess: (data) {
-            view.closeProgress();
             if (data != null) {
-              view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
-              Navigator.pushAndRemoveUntil(
-                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 0,)), (route) => false);
+              Map<String, dynamic> exitingParams = Map();
               saveUser(data);
               sendFcmToken();
+              getExistingUnitsApiCall(exitingParams);
             }
           }, onError: (code, msg) {
             view.closeProgress();
@@ -42,18 +42,40 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
     }
   }
 
+  Future getExistingUnitsApiCall(Map<String, dynamic> params) async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    await requestFutureData<UnitsResponse>(Method.get, queryParams:params,options: Options(headers: header), endPoint: Api.unitsApiCall,
+        onSuccess: (data) {
+          view.closeProgress();
+          if (data != null) {
+            view.provider.unitsList = data.data;
+            view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
+            if(data.data.isEmpty){
+              Navigator.pushAndRemoveUntil(
+                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 2,)), (route) => false);
+          } else {
+              Navigator.pushAndRemoveUntil(
+                  view.context, CupertinoPageRoute(builder: (context) => MainScreen(index: 0,)), (route) => false);
+            }
+         }
+        }, onError: (code, msg) {
+          view.closeProgress();
+        });
+  }
+
   Future doLoginApiCallWithSocial(Map<String, dynamic> bodyParams , String socialMedial) async {
     view.showProgress(isDismiss: false);
     var url = Uri.https('claimizer.com', '/api/v2/token');
     var response = await http.post(url, body: {'email': bodyParams['email'], 'name':bodyParams['name']});
     if(response.statusCode == 200){
-      view.closeProgress();
-      view.showToasts(S.of(view.context)!.loggedInSuccessfully,'success');
       SocialMedialLogin login = SocialMedialLogin.fromJson(jsonDecode(response.body));
-      Navigator.pushAndRemoveUntil(
-          view.context, CupertinoPageRoute(builder: (context) => UnitsScreen()), (route) => false);
+      Map<String, dynamic> exitingParams = Map();
       saveSocialMediaUser(login , socialMedial);
       sendFcmToken();
+      getExistingUnitsApiCall(exitingParams);
     } else {
       view.closeProgress();
       view.provider.setError('Error');

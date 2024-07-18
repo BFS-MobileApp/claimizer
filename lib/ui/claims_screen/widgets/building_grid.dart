@@ -78,10 +78,12 @@ class _BuildingGridState extends State<BuildingGrid> {
   Widget build(BuildContext context) {
     return Consumer<ClaimsProvider>(
       builder: (ctx, pr, w) {
-        if (pr.buildingsList.isEmpty && !_dialogShown) {
-          _dialogShown = true;
-          showConfirmDialog(context);
-        }
+        Future.delayed(const Duration(milliseconds: 500), () {
+          if (pr.buildingsList.isEmpty && !_dialogShown) {
+            _dialogShown = true;
+            showConfirmDialog(context);
+          }
+        });
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
