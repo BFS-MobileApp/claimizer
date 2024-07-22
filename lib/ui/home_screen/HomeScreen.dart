@@ -95,113 +95,114 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 55.w,
-                    child: Column(
-                      children: [
-                        Text("${S.of(context)!.welcome}",
-                            style: TextStyle(
-                                color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
-                        Text("${provider.name}",
-                            maxLines: 2,
-                            style: TextStyle(
-                                color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
-                      ],
-                    )
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Row(
+                    children: [
+                      Container(
+                          width: 55.w,
+                          child: Column(
+                            children: [
+                              Text("${S.of(context)!.welcome}",
+                                  style: TextStyle(
+                                      color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                              Text("${provider.name}",
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                            ],
+                          )
+                      ),
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            Navigator.push(context, CupertinoPageRoute(builder: (_) => NotificationScreen()));
+                          },
+                          child: SvgPicture.asset(
+                            ImageUtils.getSVGPath('notification'),
+                            width: 8.w,
+                            height: 8.w,
+                          )),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: 7.w,
+                        height: 7.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(200),
+                        ),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(200), child: Image.asset(ImageUtils.getImagePath("logo"))),
+                      )
+                    ],
                   ),
-                  Spacer(),
-                  InkWell(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (_) => NotificationScreen()));
-                      },
-                      child: SvgPicture.asset(
-                        ImageUtils.getSVGPath('notification'),
-                        width: 8.w,
-                        height: 8.w,
-                      )),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Container(
-                    width: 7.w,
-                    height: 7.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(200),
-                    ),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(200), child: Image.asset(ImageUtils.getImagePath("logo"))),
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            AppHeadline(
-              title: S.of(context)!.statisticsForYourClaims,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-            Selector<HomeProvider, List<String>>(
-              selector: (_, provider) => provider.claimsStatistics,
-              builder: (context, list, child) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 15 / 10,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                    7,
-                    (index) => HomeCardItem(
-                        cardColor: cardsColor[index],
-                        title: cardTitles[index],
-                        imageIcon: cardImages[index],
-                        value: list.isNotEmpty ? list[index] : ' ',
-                        onTap: (){
-                          mainProvider.tabController.index=1;
-                          claimsProvider.homeFilter = mPresenter.statusList[index];
-                        },
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                AppHeadline(
+                  title: S.of(context)!.statisticsForYourClaims,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                ),
+                const SizedBox(
+                  height: 18,
+                ),
+                Selector<HomeProvider, List<String>>(
+                  selector: (_, provider) => provider.claimsStatistics,
+                  builder: (context, list, child) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 15 / 10,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: List.generate(
+                        7,
+                            (index) => HomeCardItem(
+                          cardColor: cardsColor[index],
+                          title: cardTitles[index],
+                          imageIcon: cardImages[index],
+                          value: list.isNotEmpty ? list[index] : ' ',
+                          onTap: (){
+                            mainProvider.tabController.index=1;
+                            claimsProvider.homeFilter = mPresenter.statusList[index];
+                            print('test'+claimsProvider.homeFilter);
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 40),
-            Visibility(
-              visible: provider.rememberThatList.isNotEmpty,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppHeadline(title: S.of(context)!.rememberThat, padding: const EdgeInsets.symmetric(horizontal: 20)),
-                  const SizedBox(height: 18),
-                  Container(
-                    height: 18.h,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (_, index) =>
-                            RememberThatItem(index: index, aboutToExpireUnits: provider.rememberThatList[index]),
-                        separatorBuilder: (_, index) => SizedBox(
+                const SizedBox(height: 40),
+                Visibility(
+                  visible: provider.rememberThatList.isNotEmpty,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppHeadline(title: S.of(context)!.rememberThat, padding: const EdgeInsets.symmetric(horizontal: 20)),
+                      const SizedBox(height: 18),
+                      Container(
+                        height: 18.h,
+                        child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) =>
+                                RememberThatItem(index: index, aboutToExpireUnits: provider.rememberThatList[index]),
+                            separatorBuilder: (_, index) => SizedBox(
                               width: 3.w,
                             ),
-                        itemCount: provider.rememberThatList.length),
+                            itemCount: provider.rememberThatList.length),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                ],
-              ),
-            ),
-          ],
-        )),
+                ),
+              ],
+            )),
       ),
     );
   }

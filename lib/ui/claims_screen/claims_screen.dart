@@ -64,7 +64,6 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     }
     EventBusUtils.getInstance().on<ReloadClaimsEvent>().listen((event) {
       if (event.isRefresh != null) {
-        print('hereeeeeeeeeeee1'+event.isRefresh.toString());
         mPresenter.getClaims();
       }
     });
@@ -74,9 +73,8 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
 
   @override
   void dispose() {
-    provider.homeFilter = '';
-    //context.read<ClaimsProvider>().reset();
     super.dispose();
+    provider.homeFilter = '';
   }
 
   List<String> cardTitles = [

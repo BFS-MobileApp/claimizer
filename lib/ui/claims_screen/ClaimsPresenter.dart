@@ -41,7 +41,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
   getClaims(){
     Map<String, dynamic> params = Map();
     params['search'] = view.provider.searchController.text.toString();
-    if(view.provider.homeFilter.isEmpty && view.provider.homeFilter!='all'){
+    if(view.provider.homeFilter!=null&&view.provider.homeFilter!='all'){
       params['status'] = view.provider.homeFilter;
     }
     getAllClaimsApiCall(params);
