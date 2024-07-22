@@ -279,13 +279,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
                 children: [
                   SvgPicture.asset(ImageUtils.getSVGPath("done")),
                   Gaps.vGap16,
-                  Text(S.current!.confirmation,
-                      style: MTextStyles.textMain16.copyWith(
-                        color: MColors.black,
-                      )),
-                  Gaps.vGap8,
                   Text(
-                    S.current!.thankYouForSubmittingYourRequestOneOfOurCustomerservices,
+                    S.current!.linkRequestSubmittedSuccessfully,
                     style: MTextStyles.textSubtitle,
                     textAlign: TextAlign.center,
                   ),

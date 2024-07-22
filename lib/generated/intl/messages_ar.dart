@@ -228,5 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "contractQuery": MessageLookupByLibrary.simpleMessage("تجديد عقد الوحدة"),
     "newContractQuery": MessageLookupByLibrary.simpleMessage("بيانات العقد الجديد"),
     "requestNotes": MessageLookupByLibrary.simpleMessage("ادخل ملاحظات الطلب"),
+    "request": MessageLookupByLibrary.simpleMessage("كود الطلب: "),
+    "linkRequestSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage("تم تقديم طلب الربط بنجاح"),
   };
 }

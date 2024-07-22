@@ -1039,6 +1039,24 @@ class S {
     );
   }
 
+  String get request {
+    return Intl.message(
+      'Request#: ',
+      name: 'request',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get linkRequestSubmittedSuccessfully{
+    return Intl.message(
+      'Link Request Submitted Successfully',
+      name: 'linkRequestSubmittedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Upload any files`
   String get uploadAnyFiles {
     return Intl.message(
