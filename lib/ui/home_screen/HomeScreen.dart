@@ -31,6 +31,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
   HomeProvider provider = HomeProvider();
   MainProvider mainProvider = MainProvider();
   ClaimsProvider claimsProvider = ClaimsProvider();
+  bool refresh = true;
   List cardsColor = [
     Color(0xff44A4F2),
     Color(0xffFF9500),
@@ -76,6 +77,12 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     mPresenter.getUserName();
     mPresenter.getUserImage();
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeScreen oldWidget) {
+    mPresenter.getStatisticsApiCall();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
