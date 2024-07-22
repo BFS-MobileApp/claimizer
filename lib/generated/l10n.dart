@@ -1013,7 +1013,7 @@ class S {
   /// `Thank you for submitting your request. one of our customer services representatives will contact you shortly,`
   String get thankYouForSubmittingYourRequestOneOfOurCustomerservices {
     return Intl.message(
-      'Thank you for submitting your request. one of our customer services representatives will contact you shortly,',
+      'Claim Submitted Successfully . We will contact you shortly.',
       name: 'thankYouForSubmittingYourRequestOneOfOurCustomerservices',
       desc: '',
       args: [],
@@ -1033,7 +1033,7 @@ class S {
   String get requestNotes {
     return Intl.message(
       'Request Notes',
-      name: 'RequestNotes',
+      name: 'requestNotes',
       desc: '',
       args: [],
     );
@@ -1957,7 +1957,7 @@ class S {
   /// ` Code: `
   String get unitRequestCode {
     return Intl.message(
-      ' Code: ',
+      ' Code#: ',
       name: 'unitRequestCode',
       desc: '',
       args: [],

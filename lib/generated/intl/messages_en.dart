@@ -176,7 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "support" : MessageLookupByLibrary.simpleMessage("Support"),
     "takePhoto" : MessageLookupByLibrary.simpleMessage("Take Photo"),
     "terminated" : MessageLookupByLibrary.simpleMessage("Terminated"),
-    "thankYouForSubmittingYourRequestOneOfOurCustomerservices" : MessageLookupByLibrary.simpleMessage("Thank you for submitting your request. one of our customer services representatives will contact you shortly,"),
+    "thankYouForSubmittingYourRequestOneOfOurCustomerservices" : MessageLookupByLibrary.simpleMessage("Claim Submitted Successfully . We will contact you shortly."),
     "theQrCodeIsIncorrect" : MessageLookupByLibrary.simpleMessage("The QR code is incorrect"),
     "theUnitIsReserved" : MessageLookupByLibrary.simpleMessage("The unit is Booked"),
     "topUpdates" : MessageLookupByLibrary.simpleMessage("Top Updates"),

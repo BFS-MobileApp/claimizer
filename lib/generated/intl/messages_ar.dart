@@ -174,7 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "support" : MessageLookupByLibrary.simpleMessage("الدعم"),
     "takePhoto" : MessageLookupByLibrary.simpleMessage("التقط صورة"),
     "terminated" : MessageLookupByLibrary.simpleMessage("مفسوخ"),
-    "thankYouForSubmittingYourRequestOneOfOurCustomerservices" : MessageLookupByLibrary.simpleMessage("شكرا لتقديم طلبك. سيتصل بك أحد ممثلي خدمة العملاء لدينا قريبًا ،"),
+    "thankYouForSubmittingYourRequestOneOfOurCustomerservices" : MessageLookupByLibrary.simpleMessage("تم تقديم الطلب بنجاح. سيتم التواصل معكم في أقرب وقت"),
     "theQrCodeIsIncorrect" : MessageLookupByLibrary.simpleMessage("رمز الاستجابة السريعة غير صحيح"),
     "theUnitIsReserved" : MessageLookupByLibrary.simpleMessage("الوحدة مربوطة"),
     "topUpdates" : MessageLookupByLibrary.simpleMessage("اخر التحديثات"),
@@ -227,5 +227,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "areYouSureToRenewThisUnit": MessageLookupByLibrary.simpleMessage("هل تريد تجديد عقد هذه الوحدة ؟"),
     "contractQuery": MessageLookupByLibrary.simpleMessage("تجديد عقد الوحدة"),
     "newContractQuery": MessageLookupByLibrary.simpleMessage("بيانات العقد الجديد"),
+    "requestNotes": MessageLookupByLibrary.simpleMessage("ادخل ملاحظات الطلب"),
   };
 }
