@@ -81,10 +81,8 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
   }
 
   Future completeLinkRequestApiCall(FormData bodyParams , BuildContext context) async {
+    print('dodddddddddddo');
     Map<String, dynamic> header = Map();
-    bodyParams.fields.forEach((field) {
-      print('Field: ${field.key} = ${field.value}');
-    });
     await Prefs.getUserToken.then((token) {
       print('token = '+token);
       header['Authorization'] = "Bearer $token";
@@ -110,16 +108,16 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
                     children: [
                       SvgPicture.asset(ImageUtils.getSVGPath("done")),
                       Gaps.vGap16,
-                      Text(S.current!.confirmation,
-                          style: MTextStyles.textMain16.copyWith(
+                      Text(S.current!.linkRequestSubmittedSuccessfully,
+                          style: MTextStyles.textMain18.copyWith(
                             color: MColors.black,
                           )),
                       Gaps.vGap8,
-                      Text(
-                        S.current!.thankYouForSubmittingYourRequestOneOfOurCustomerservices,
+                      /*Text(
+                        S.current!.OneOfOurCustomerServices,
                         style: MTextStyles.textSubtitle,
                         textAlign: TextAlign.center,
-                      ),
+                      ),*/
                       Gaps.vGap30,
                       ElevatedButton(
                         onPressed: () {
@@ -289,7 +287,6 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
   Future postClaimRequestApiCall(dynamic formData) async {
     print('hereeeeeeeeeeee');
     Map<String, dynamic> header = Map();
-
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
@@ -311,14 +308,12 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
         view.provider.imageFiles = [];
         view.provider.description.clear();
         EventBusUtils.getInstance().fire(ReloadEvent(isRefresh: true));
-
       }
     }, onError: (code, msg) {
       view.closeProgress();
       view.showToasts(msg, "error");
     });
   }
-
   showProgress() {
     showDialog(
       context: view.context,

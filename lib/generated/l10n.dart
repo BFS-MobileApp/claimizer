@@ -1011,10 +1011,19 @@ class S {
   }
 
   /// `Thank you for submitting your request. one of our customer services representatives will contact you shortly,`
-  String get thankYouForSubmittingYourRequestOneOfOurCustomerservices {
+  String get thankYouForSubmittingYourRequest {
     return Intl.message(
-      'Claim Submitted Successfully . We will contact you shortly.',
-      name: 'thankYouForSubmittingYourRequestOneOfOurCustomerservices',
+      'Claim Submitted Successfully.',
+      name: 'thankYouForSubmittingYourRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get OneOfOurCustomerServices {
+    return Intl.message(
+      'We will contact you shortly.',
+      name: 'OneOfOurCustomerServices',
       desc: '',
       args: [],
     );

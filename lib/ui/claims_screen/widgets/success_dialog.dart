@@ -29,13 +29,13 @@ class ClaimCreatedDialog extends StatelessWidget {
           children: [
             SvgPicture.asset(ImageUtils.getSVGPath("done")),
             Gaps.vGap16,
-            Text(S.of(context)!.confirmation,
+            Text(S.of(context)!.thankYouForSubmittingYourRequest,
                 style: MTextStyles.textMain16.copyWith(
                   color: MColors.black,
                 )),
             Gaps.vGap8,
             Text(
-              S.of(context)!.thankYouForSubmittingYourRequestOneOfOurCustomerservices,
+              S.of(context)!.OneOfOurCustomerServices,
               style: MTextStyles.textSubtitle,
               textAlign: TextAlign.center,
             ),

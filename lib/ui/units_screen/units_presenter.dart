@@ -169,7 +169,6 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       if (code == 404) {
         view.provider.message = S.current!.theQrCodeIsIncorrect;
       }
-
       if (code == 422) {
         view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
       }
@@ -281,7 +280,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
                   Gaps.vGap16,
                   Text(
                     S.current!.linkRequestSubmittedSuccessfully,
-                    style: MTextStyles.textSubtitle,
+                    style: MTextStyles.textMain18,
                     textAlign: TextAlign.center,
                   ),
                   Gaps.vGap30,
