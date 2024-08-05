@@ -310,6 +310,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
         EventBusUtils.getInstance().fire(ReloadEvent(isRefresh: true));
       }
     }, onError: (code, msg) {
+      print(msg+'doddd'+' '+code.toString());
       view.closeProgress();
       view.showToasts(msg, "error");
     });

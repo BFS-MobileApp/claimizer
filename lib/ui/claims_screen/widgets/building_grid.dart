@@ -27,7 +27,7 @@ class _BuildingGridState extends State<BuildingGrid> {
   bool _dialogShown = false;
 
   void showConfirmDialog(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 800), () {
       // Use the root context to show the dialog
       if (mounted && _dialogShown) {
         showDialog(

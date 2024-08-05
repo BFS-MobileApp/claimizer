@@ -15,6 +15,7 @@ class BuildDescriptionField extends StatelessWidget {
       builder: (context, pr, child) =>  TextFormField(
         controller: pr.description,
         maxLines: 3,
+        textInputAction: TextInputAction.done,
         style: MTextStyles.textDark14,
         validator: (val){
           if(val!.isEmpty){

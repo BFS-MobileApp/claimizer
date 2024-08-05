@@ -71,10 +71,13 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     super.initState();
   }
 
+
+
   @override
   void dispose() {
     super.dispose();
     provider.homeFilter = '';
+    provider.reset();
   }
 
   List<String> cardTitles = [
