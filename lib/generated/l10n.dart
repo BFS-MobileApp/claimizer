@@ -535,6 +535,24 @@ class S {
     );
   }
 
+  String get emergencyContacts {
+    return Intl.message(
+      'Emergency Contacts',
+      name: 'emergencyContacts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get emergencyNumbers {
+    return Intl.message(
+      'Emergency Numbers',
+      name: 'emergencyNumbers',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy and Policy`
   String get privacyAndPolicy {
     return Intl.message(

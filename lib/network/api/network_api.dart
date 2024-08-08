@@ -28,7 +28,7 @@ class Api {
   static const String claimAvailableTimeApiCall = "claims/available-times";
   static const String getNotificationApiCall = "show-client-notifications";
   static const String fcmToken = "fcm-token";
-
+  static const String emergency = "emergency-contact";
   static String getClaimDetailsApiCall(String id) => "claim/$id";
 
   static String deleteClaimDetailsApiCall(int id) => "claims/$id";

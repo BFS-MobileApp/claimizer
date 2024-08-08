@@ -7,10 +7,10 @@ import 'package:Cliamizer/ui/edit_profile_screen/EditProfileScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../CommonUtils/log_utils.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
 import '../../CommonUtils/model_eventbus/ProfileEvent.dart';
@@ -68,6 +68,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: MColors.page_background,
       body: provider.instance!=null ?Padding(
@@ -225,6 +226,8 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
               ],
             ),
           ),
+          //SOS
+          emergencyNum(provider.getAvailableFrom, provider.getAvailableTo)
         ],
       ),
     );
@@ -243,6 +246,145 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch $_url');
     }
+  }
+
+  Widget emergencyNum(String startTimeStr, String endTimeStr) {
+    DateFormat dateFormat = DateFormat("hh:mm a"); // Correct format for 12-hour time with AM/PM
+    DateTime now = DateTime.now();
+    try {
+      // Parse the start and end times
+      DateTime startTime = dateFormat.parse(startTimeStr);
+      DateTime endTime = dateFormat.parse(endTimeStr);
+      print('Parsed Start Time: $startTime');
+      print('Parsed End Time: $endTime');
+
+      // Set the start and end times to today’s date
+      DateTime startDateTime = DateTime(now.year, now.month, now.day, startTime.hour, startTime.minute);
+      DateTime endDateTime = DateTime(now.year, now.month, now.day, endTime.hour, endTime.minute);
+
+      // Adjust end time to be the next day if it is earlier than start time
+      if (endDateTime.isBefore(startDateTime)) {
+        endDateTime = endDateTime.add(Duration(days: 1));
+      }
+
+      print('Start DateTime: $startDateTime');
+      print('End DateTime: $endDateTime');
+
+      // Check if the current time falls between start and end time
+      if (now.isAfter(startDateTime) && now.isBefore(endDateTime)) {
+        print('Current time is within the range.');
+        return Column(
+          children: [
+            divider(), // Assuming divider() returns a Divider widget
+            InkWell(
+              onTap: () {
+                showEmergencyContactsBottomSheet(context);
+              },
+              child: Row(
+                children: [
+                  Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
+                  SizedBox(width: 12), // Assuming Gaps.hGap12 is a SizedBox
+                  Text(S.of(context)!.emergencyNumbers, style: MTextStyles.textMainLight16),
+                ],
+              ),
+            ),
+          ],
+        );
+      } else {
+        print('Current time is outside the range.');
+        return const SizedBox();
+      }
+    } catch (e) {
+      print('Error parsing time: $e');
+      return const SizedBox(); // Return an empty widget if there's an error
+    }
+  }
+
+
+
+  void showEmergencyContactsBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  width: 40.0,
+                  height: 5.0,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                S.of(context)!.emergencyContacts,
+                style: MTextStyles.textMainLight16.copyWith(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: provider.getCompanies[0].emergencyContacts.length,
+                itemBuilder: (context, index) {
+                  final contact = provider.getCompanies[0].emergencyContacts[index];
+                  return InkWell(
+                    onTap: (){
+                      makePhoneCall(contact.number);
+                    },
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                      title: Text(
+                        contact.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      subtitle: Text(
+                        contact.number,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                      leading: InkWell(
+                        onTap: (){
+                          makePhoneCall(contact.number);
+                        },
+                        child: Icon(Icons.phone, size: 24.0, color: Colors.blue),
+                      ),
+                      onTap: () {
+                        // Add functionality to call the number
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void makePhoneCall(String phone) async{
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phone,
+    );
+    await launchUrl(launchUri);
   }
 
   Widget accountWidget() {
