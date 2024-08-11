@@ -57,7 +57,7 @@ class Company {
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
     company: json["company"] ?? '',
-    availableFrom: json["available_from"]?? "10:00 AM",
+    availableFrom: json["available_from"]?? "01:00 PM",
     availableTo: json["available_to"] ?? "08:00 AM",
     emergencyContacts: json["emergency_contacts"] == null
         ? []

@@ -1,15 +1,18 @@
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/app_headline.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
+import 'package:Cliamizer/helper.dart';
 import 'package:Cliamizer/ui/claims_screen/ClaimsProvider.dart';
 import 'package:Cliamizer/ui/home_screen/HomePresenter.dart';
 import 'package:Cliamizer/ui/home_screen/HomeProvider.dart';
+import 'package:Cliamizer/ui/home_screen/emergency_screen.dart';
 import 'package:Cliamizer/ui/home_screen/widgets/home_card_item.dart';
 import 'package:Cliamizer/ui/home_screen/widgets/remember_that_item.dart';
 import 'package:Cliamizer/ui/main_screens/MainProvider.dart';
 import 'package:Cliamizer/ui/notification_screen/NotificationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -76,6 +79,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     mPresenter.getStatisticsApiCall();
     mPresenter.getUserName();
     mPresenter.getUserImage();
+    mPresenter.test();
     super.initState();
   }
 
@@ -97,7 +101,25 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
       S.current!.cancelledClaims,
       S.current!.closedClaims
     ];
+
+    Widget emergencyButton(){
+      if(Helper.checkEmergencyNumbersDate(provider.getAvailableFrom, provider.getAvailableTo)){
+        return FloatingActionButton(
+            child: Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EmergencyScreen(companies: provider.getCompanies,)),
+              );
+            }
+        );
+      } else {
+        return const SizedBox();
+      }
+    }
+
     return Scaffold(
+      floatingActionButton: emergencyButton(),
       backgroundColor: MColors.background_color,
       body: SafeArea(
         child: SingleChildScrollView(

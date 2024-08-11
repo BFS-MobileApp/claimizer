@@ -31,7 +31,7 @@ class UnitsDataBean {
 
   bool? available;
 
-  int requestId;
+  String requestId;
 
   UnitsDataBean({
     required this.id,
@@ -49,16 +49,16 @@ class UnitsDataBean {
 
   UnitsDataBean.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        code = json['code'],
-        name = json['name'],
+        code = json['code']??'',
+        name = json['name']??'',
         type = json['type']??'',
-        company = json['company'],
+        company = json['company']??'',
         companyId = json['company_id'],
-        building = json['building'],
+        building = json['building']??'',
         startAt = json['start_at']??'',
         endAt = json['end_at']??'',
         available = json['available'] ?? true,
-        requestId = json['request_id'] ?? 0;
+        requestId = json['request_id'] ?? '';
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();

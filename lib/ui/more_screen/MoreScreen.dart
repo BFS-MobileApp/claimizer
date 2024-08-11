@@ -1,6 +1,7 @@
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/image_loader.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
+import 'package:Cliamizer/helper.dart';
 import 'package:Cliamizer/network/api/network_api.dart';
 import 'package:Cliamizer/res/styles.dart';
 import 'package:Cliamizer/ui/edit_profile_screen/EditProfileScreen.dart';
@@ -61,6 +62,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
           setState(() {
             setSelected(value);
             provider.language = value;
+            print('languageeeeeeeee '+value);
           }),
         }
     });
@@ -226,8 +228,6 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
               ],
             ),
           ),
-          //SOS
-          emergencyNum(provider.getAvailableFrom, provider.getAvailableTo)
         ],
       ),
     );
@@ -248,61 +248,33 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
     }
   }
 
-  Widget emergencyNum(String startTimeStr, String endTimeStr) {
-    DateFormat dateFormat = DateFormat("hh:mm a"); // Correct format for 12-hour time with AM/PM
-    DateTime now = DateTime.now();
-    try {
-      // Parse the start and end times
-      DateTime startTime = dateFormat.parse(startTimeStr);
-      DateTime endTime = dateFormat.parse(endTimeStr);
-      print('Parsed Start Time: $startTime');
-      print('Parsed End Time: $endTime');
-
-      // Set the start and end times to today’s date
-      DateTime startDateTime = DateTime(now.year, now.month, now.day, startTime.hour, startTime.minute);
-      DateTime endDateTime = DateTime(now.year, now.month, now.day, endTime.hour, endTime.minute);
-
-      // Adjust end time to be the next day if it is earlier than start time
-      if (endDateTime.isBefore(startDateTime)) {
-        endDateTime = endDateTime.add(Duration(days: 1));
-      }
-
-      print('Start DateTime: $startDateTime');
-      print('End DateTime: $endDateTime');
-
-      // Check if the current time falls between start and end time
-      if (now.isAfter(startDateTime) && now.isBefore(endDateTime)) {
-        print('Current time is within the range.');
-        return Column(
-          children: [
-            divider(), // Assuming divider() returns a Divider widget
-            InkWell(
-              onTap: () {
-                showEmergencyContactsBottomSheet(context);
-              },
-              child: Row(
-                children: [
-                  Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
-                  SizedBox(width: 12), // Assuming Gaps.hGap12 is a SizedBox
-                  Text(S.of(context)!.emergencyNumbers, style: MTextStyles.textMainLight16),
-                ],
-              ),
+  /*Widget emergencyNum(String startTimeStr, String endTimeStr) {
+    if (Helper.checkEmergencyNumbersDate(startTimeStr ,endTimeStr )) {
+      print('Current time is within the range.');
+      return Column(
+        children: [
+          divider(), // Assuming divider() returns a Divider widget
+          InkWell(
+            onTap: () {
+              showEmergencyContactsBottomSheet(context);
+            },
+            child: Row(
+              children: [
+                Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
+                SizedBox(width: 12), // Assuming Gaps.hGap12 is a SizedBox
+                Text(S.of(context)!.emergencyNumbers, style: MTextStyles.textMainLight16),
+              ],
             ),
-          ],
-        );
-      } else {
-        print('Current time is outside the range.');
-        return const SizedBox();
-      }
-    } catch (e) {
-      print('Error parsing time: $e');
-      return const SizedBox(); // Return an empty widget if there's an error
+          ),
+        ],
+      );
+    } else {
+      print('Current time is outside the range.');
+      return const SizedBox();
     }
-  }
+  }*/
 
-
-
-  void showEmergencyContactsBottomSheet(BuildContext context) {
+  /*void showEmergencyContactsBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -340,7 +312,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                 itemBuilder: (context, index) {
                   final contact = provider.getCompanies[0].emergencyContacts[index];
                   return InkWell(
-                    onTap: (){
+                    onTap: () {
                       makePhoneCall(contact.number);
                     },
                     child: ListTile(
@@ -348,7 +320,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                       title: Text(
                         contact.title,
                         style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400, // Reduced fontWeight
                           fontSize: 16.0,
                         ),
                       ),
@@ -359,33 +331,21 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                           fontSize: 14.0,
                         ),
                       ),
-                      leading: InkWell(
-                        onTap: (){
-                          makePhoneCall(contact.number);
-                        },
-                        child: Icon(Icons.phone, size: 24.0, color: Colors.blue),
-                      ),
+                      leading: Icon(Icons.phone, size: 24.0, color: Colors.blue),
                       onTap: () {
-                        // Add functionality to call the number
+                        makePhoneCall(contact.number);
+                        Navigator.pop(context);
                       },
                     ),
                   );
                 },
-              ),
+              )
             ],
           ),
         );
       },
     );
-  }
-
-  void makePhoneCall(String phone) async{
-    final Uri launchUri = Uri(
-      scheme: 'tel',
-      path: phone,
-    );
-    await launchUrl(launchUri);
-  }
+  }*/
 
   Widget accountWidget() {
     return Container(
@@ -496,4 +456,22 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+extension DateTimeExtension on DateTime {
+  bool isAfterOrEqual(DateTime other) {
+    return isAtSameMomentAs(other) || isAfter(other);
+  }
+
+  bool isBeforeOrEqual(DateTime other) {
+    return isAtSameMomentAs(other) || isBefore(other);
+  }
+
+  bool isBetween({required DateTime from, required DateTime to}) {
+    return isAfterOrEqual(from) && isBeforeOrEqual(to);
+  }
+
+  bool isBetweenExclusive({required DateTime from, required DateTime to}) {
+    return isAfter(from) && isBefore(to);
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:Cliamizer/network/models/emergency_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../generated/l10n.dart';
@@ -48,7 +49,42 @@ class HomeProvider extends ChangeNotifier {
   set claimStatusColors(ClaimColor value) {
     _claimStatusColors = value;
     notifyListeners();
+
+
   }
+
+  List<Company> _companies = [];
+  String _company = '';
+  String _availableFrom = '';
+  String _availableTo = '';
+
+  set companiesList(List<Company> list){
+    _companies = list;
+    notifyListeners();
+  }
+
+  set companyName(String value){
+    _company = value;
+    notifyListeners();
+  }
+
+  set availableFromDate(String value){
+    _availableFrom = value;
+    notifyListeners();
+  }
+
+  set availableToDate(String value){
+    _availableTo = value;
+    notifyListeners();
+  }
+
+  List<Company> get getCompanies => _companies;
+
+  String get getCompany =>_company;
+
+  String get getAvailableFrom =>_availableFrom;
+
+  String get getAvailableTo =>_availableTo;
 
   // List<String> _cardTitles = [
   //   S.current.allClaims,
