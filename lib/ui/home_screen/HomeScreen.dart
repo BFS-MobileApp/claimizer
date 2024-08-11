@@ -86,6 +86,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
   @override
   void didUpdateWidget(covariant HomeScreen oldWidget) {
     mPresenter.getStatisticsApiCall();
+    mPresenter.test();
     super.didUpdateWidget(oldWidget);
   }
 
@@ -103,7 +104,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     ];
 
     Widget emergencyButton(){
-      if(Helper.checkEmergencyNumbersDate(provider.getAvailableFrom, provider.getAvailableTo)){
+      if(Helper.checkEmergencyNumbersDate(provider.getAvailableFrom, provider.getAvailableTo) && provider.getCompanies.isNotEmpty){
         return FloatingActionButton(
             child: Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
             onPressed: (){
