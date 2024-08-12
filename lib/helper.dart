@@ -5,7 +5,7 @@ class Helper{
   static bool checkEmergencyNumbersDate(String startTimeStr, String endTimeStr) {
     print('hereeeeeeeeeeeee' + startTimeStr);
     print('hereeeeeeeeeeeee' + DateTime.now().toString());
-    DateFormat dateFormat = DateFormat('h:mm a', 'en_US');
+    DateFormat dateFormat = DateFormat('HH:mm:ss', 'en_US');
     DateTime now = DateTime.now();
     try {
       DateTime startTime = dateFormat.parse(startTimeStr);
