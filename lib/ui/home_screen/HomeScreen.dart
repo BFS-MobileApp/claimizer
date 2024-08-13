@@ -103,10 +103,16 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
       S.current!.closedClaims
     ];
 
+    //Helper.checkEmergencyNumbersDate(provider.getAvailableFrom, provider.getAvailableTo) &&
+
     Widget emergencyButton(){
       if(Helper.checkEmergencyNumbersDate(provider.getAvailableFrom, provider.getAvailableTo) && provider.getCompanies.isNotEmpty){
         return FloatingActionButton(
-            child: Image.asset(ImageUtils.getImagePath('emergency'), height: 5.h, width: 5.w),
+            child: SvgPicture.asset(
+              ImageUtils.getSVGPath("emergencyIcon"),
+              width: 4.w,
+              height: 4.h,
+            ),
             onPressed: (){
               Navigator.push(
                 context,

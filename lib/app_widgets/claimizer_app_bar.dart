@@ -13,7 +13,13 @@ class ClaimizerAppBar extends StatelessWidget {
     Key? key,
     required this.title,
   }) : super(key: key);
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  String capitalize(String s){
+    if(title != '') {
+      return s[0].toUpperCase() + s.substring(1);
+    }else {
+      return '';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Row(

@@ -3,9 +3,16 @@ import 'package:Cliamizer/app_widgets/claimizer_app_bar.dart';
 import 'package:Cliamizer/generated/l10n.dart';
 import 'package:Cliamizer/network/models/emergency_model.dart';
 import 'package:Cliamizer/res/gaps.dart';
+import 'package:Cliamizer/res/setting.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../res/colors.dart';
 
 class EmergencyScreen extends StatefulWidget {
 
@@ -27,16 +34,43 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     await launchUrl(launchUri);
   }
 
+  Widget appBar(){
+    return Row(
+      children: [
+        InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Setting.mobileLanguage.value != Locale("en")
+                ? RotatedBox(
+              quarterTurns: 2,
+              child: SvgPicture.asset(
+                ImageUtils.getSVGPath("back_icon"),
+              ),
+            )
+                : SvgPicture.asset(
+              ImageUtils.getSVGPath("back_icon"),
+            )),
+        Expanded(
+          child: Center(
+            child: AutoSizeText(
+              S.of(context)!.emergencyContacts,
+              style: GoogleFonts.montserrat(fontWeight: FontWeight.w500 , fontSize: 16.sp , color: MColors.black),
+            ),
+          ),
+        )
+      ],
+    );
+  }
   Widget screenWidget() {
     return ListView(
       children: [
         Container(
             margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.w),
-            child: ClaimizerAppBar(title: S.current!.emergencyContacts)),
-        Gaps.vGap40,
-        Image.asset(ImageUtils.getImagePath('sos'), height: 20.h, width: 20.w),
-        Gaps.vGap15,
-        ListView.separated(
+            child: appBar()
+        ),
+        Gaps.vGap12,
+        ListView.builder(
           shrinkWrap: true,
           physics: ClampingScrollPhysics(), // Ensure it scrolls properly
           itemCount: widget.companies[0].emergencyContacts.length,
@@ -46,30 +80,43 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
               onTap: () {
                 makePhoneCall(contact.number);
               },
-              child: ListTile(
-                contentPadding: EdgeInsets.only(right: 5.w, left: 5.w),
-                title: Text(
-                  contact.title,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, // Set to bold
-                    fontSize: 18.0, // Increased font size
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 1.h , horizontal: 2.w),
+                padding: EdgeInsets.all(2.h),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                     color: MColors.primary_color,
+                      width: 1.0
+                  ),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10.0) //                 <--- border radius here
                   ),
                 ),
-                subtitle: Text(
-                  contact.number,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14.0,
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(contact.title , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 12.sp , color: Colors.black),),
+                    SizedBox(height: 1.h,),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            ImageUtils.getSVGPath("emergencyCall"),
+                            width: 4.w,
+                            height: 4.h,
+                          ),
+                          SizedBox(width: 2.w,),
+                          Text(contact.number , style: TextStyle(fontWeight: FontWeight.w600 , fontSize: 15.sp , color: Colors.black),),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                leading: Icon(Icons.phone, size: 24.0, color: Colors.blue),
               ),
             );
           },
-          separatorBuilder: (context, index) => Divider(
-            color: Colors.grey, // Customize the divider color
-            thickness: 1,       // Customize the thickness
-          ),
         ),
       ],
     );
