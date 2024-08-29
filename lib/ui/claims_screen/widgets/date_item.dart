@@ -23,7 +23,7 @@ class _StartEndDatePickerFieldState extends State<DateItem> {
             onTap: () async{
               final DateTime? picked = await showDatePicker(
                   context: context,
-                  initialDate: DateTime.parse(widget.model.startDate),
+                  initialDate: widget.model.startDate == '' ? DateTime.now() : DateTime.parse(widget.model.startDate),
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now().add(Duration(days: 100000)));
               if (picked != null) {
@@ -59,7 +59,7 @@ class _StartEndDatePickerFieldState extends State<DateItem> {
             onTap: () async{
               final DateTime? picked = await showDatePicker(
                   context: context,
-                  initialDate: DateTime.parse(widget.model.endDate),
+                  initialDate: widget.model.endDate == '' ? DateTime.now() : DateTime.parse(widget.model.endDate),
                   firstDate: DateTime(1900),
                   lastDate: DateTime.now().add(Duration(days: 100000)));
               if (picked != null) {

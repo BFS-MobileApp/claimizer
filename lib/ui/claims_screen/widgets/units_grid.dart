@@ -99,6 +99,7 @@ class UnitsGrid extends StatelessWidget {
     RenewModel model = RenewModel();
     final DateFormat _dateFormat = DateFormat('yyyy-MM-dd',"en");
     setDate(model, unit);
+    //model.setContractNo = unit.code;
     showDialog(
       context: context,
       builder: (BuildContext context) {

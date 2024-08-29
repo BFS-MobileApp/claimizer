@@ -21,8 +21,8 @@ class RenewModel {
   String get getDescription => _descriptionController.text;
 
   // Setters
-  set contractNo(TextEditingController value) {
-    _contractNo = value;
+  set setContractNo(String value) {
+    _contractNo.text = value;
   }
 
   set setContractNumber(String value) {

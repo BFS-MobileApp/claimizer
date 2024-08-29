@@ -58,7 +58,7 @@ class UnitsDataBean {
         startAt = json['start_at']??'',
         endAt = json['end_at']??'',
         available = json['available'] ?? true,
-        requestId = json['request_id'] ?? '';
+        requestId = json['request_id']?.toString() ?? '';
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
