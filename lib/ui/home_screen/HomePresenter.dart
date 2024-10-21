@@ -90,7 +90,7 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
     'all',
     'new',
     'assigned',
-    'inProgress',
+    'started',
     'completed',
     'cancelled',
     'closed',

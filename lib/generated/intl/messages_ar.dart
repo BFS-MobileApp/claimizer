@@ -232,5 +232,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "linkRequestSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage("تم تقديم طلب الربط بنجاح"),
     "OneOfOurCustomerServices": MessageLookupByLibrary.simpleMessage("سيتم التواصل معكم في أقرب وقت"),
     "emergencyContacts": MessageLookupByLibrary.simpleMessage("اتصالات الطوارئ"),
+    "unitRenewSuccessfully": MessageLookupByLibrary.simpleMessage("تم تقديم طلب التجديد للوحدة بنجاح"),
   };
 }

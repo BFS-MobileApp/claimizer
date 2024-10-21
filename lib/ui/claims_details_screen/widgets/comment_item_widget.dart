@@ -1,5 +1,6 @@
 import 'package:Cliamizer/network/models/ClaimDetailsResponse.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import '../../../CommonUtils/FullScreenImage.dart';
@@ -57,11 +58,15 @@ class ClaimCommentItemWidget extends StatelessWidget {
                   Gaps.vGap4,
                   Container(
                     width: 50.w,
-                    child: Text(commentsData.comment??"",
+                    child: HtmlWidget(commentsData.comment,),
+                  ),
+                  /*Container(
+                    width: 50.w,
+                    child: Text(commentsData.comment,
                         style: MTextStyles.textGray12.copyWith(
                           color: MColors.primary_light_color,
                         )),
-                  ),
+                  ),*/
                   Gaps.vGap4,
                   Text(formatDate(commentsData.createdAt??""),
                       style: MTextStyles.textGray10.copyWith(

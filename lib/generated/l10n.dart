@@ -1084,6 +1084,15 @@ class S {
     );
   }
 
+  String get unitRenewSuccessfully{
+    return Intl.message(
+      'Unit Renew Contract Submitted Successfully. ',
+      name: 'unitRenewSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Upload any files`
   String get uploadAnyFiles {
     return Intl.message(

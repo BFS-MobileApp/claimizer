@@ -44,6 +44,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
     if(view.provider.homeFilter!=null&&view.provider.homeFilter!='all'){
       params['status'] = view.provider.homeFilter;
     }
+    print('ahmeeeeeeeeeeed'+view.provider.homeFilter);
     getAllClaimsApiCall(params);
   }
 
@@ -108,7 +109,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
                     children: [
                       SvgPicture.asset(ImageUtils.getSVGPath("done")),
                       Gaps.vGap16,
-                      Text(S.current!.linkRequestSubmittedSuccessfully,
+                      Text(S.current!.unitRenewSuccessfully,
                           style: MTextStyles.textMain18.copyWith(
                             color: MColors.black,
                           )),
