@@ -129,7 +129,7 @@ class Unit {
       : id = json['id'],
         code = json['code'],
         name = json['name'],
-        type = json['type'],
+        type = json['type']??'',
         building = json['building'],
         startAt = json['start_at'],
         endAt = json['end_at'];
