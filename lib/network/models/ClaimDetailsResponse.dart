@@ -4,7 +4,7 @@ class ClaimDetailsResponse {
   ClaimDetailsResponse({this.data});
 
   ClaimDetailsResponse.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ? ClaimsDetailsDataBean.fromJson(json['data'] as Map<String, dynamic>) : null;
+    data = json['data'] != null ? ClaimsDetailsDataBean.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -31,7 +31,7 @@ class ClaimsDetailsDataBean {
   dynamic rate;
   dynamic feedback;
   String createdAt;
-  List<String>? files;
+  List<dynamic>? files;
   Unit? unit;
   Category? category;
   Category? subCategory;
@@ -62,26 +62,26 @@ class ClaimsDetailsDataBean {
   });
 
   ClaimsDetailsDataBean.fromJson(Map<String, dynamic> json) :
-        id = json['id'] as int,
-        referenceId = json['reference_id'] as String,
-        status = json['status'] as String,
-        description = json['description'] as String,
-        availableDate = json['available_date'] as String,
-        availableTime = json['available_time'] as String,
+        id = json['id'],
+        referenceId = json['reference_id'],
+        status = json['status'] ,
+        description = json['description'] ,
+        availableDate = json['available_date'] ,
+        availableTime = json['available_time'] ,
         employeeId = json['employee_id'],
-        startDate = json['start_date'] as String,
-        endDate = json['end_date'] as String,
-        createdBy = json['created_by'] as String,
-        priority = json['priority'] as String,
+        startDate = json['start_date'] ,
+        endDate = json['end_date'] ,
+        createdBy = json['created_by'] ,
+        priority = json['priority'] ,
         rate = json['rate'],
         feedback = json['feedback'],
-        createdAt = json['created_at'] as String,
-        files = (json['files'] as List<dynamic>?)?.cast<String>(),
-        unit = json['unit'] != null ? Unit.fromJson(json['unit'] as Map<String, dynamic>) : null,
-        category = json['category'] != null ? Category.fromJson(json['category'] as Map<String, dynamic>) : null,
-        subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] as Map<String, dynamic>) : null,
-        type = json['type'] != null ? Category.fromJson(json['type'] as Map<String, dynamic>) : null,
-        comments = json['comments'] != null ? Comments.fromJson(json['comments'] as Map<String, dynamic>) : null;
+        createdAt = json['created_at'] ,
+        files = json['files'],
+        unit = json['unit'] != null ? Unit.fromJson(json['unit']) : null,
+        category = json['category'] != null ? Category.fromJson(json['category'] ) : null,
+        subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] ) : null,
+        type = json['type'] != null ? Category.fromJson(json['type'] ) : null,
+        comments = json['comments'] != null ? Comments.fromJson(json['comments']) : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
@@ -140,13 +140,13 @@ class Unit {
   });
 
   Unit.fromJson(Map<String, dynamic> json) :
-        id = json['id'] as int,
-        code = json['code'] as String,
-        name = json['name'] as String,
-        type = json['type'] as String,
-        building = json['building'] as String,
-        startAt = json['start_at'] as String,
-        endAt = json['end_at'] as String;
+        id = json['id'] ,
+        code = json['code'] ,
+        name = json['name'] ,
+        type = json['type'] ,
+        building = json['building'] ,
+        startAt = json['start_at'] ,
+        endAt = json['end_at'] ;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -173,9 +173,9 @@ class Category {
   });
 
   Category.fromJson(Map<String, dynamic> json) :
-        id = json['id'] as int,
-        code = json['code'] as String,
-        name = json['name'] as String;
+        id = json['id'] ,
+        code = json['code'] ,
+        name = json['name'] ;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -192,8 +192,8 @@ class Comments {
   Comments({required this.data});
 
   Comments.fromJson(Map<String, dynamic> json) :
-        data = (json['data'] as List<dynamic>)
-            .map((dynamic e) => CommentsData.fromJson(e as Map<String, dynamic>))
+        data = (json['data'] )
+            .map((dynamic e) => CommentsData.fromJson(e))
             .toList();
 
   Map<String, dynamic> toJson() {
@@ -219,11 +219,11 @@ class CommentsData {
   });
 
   CommentsData.fromJson(Map<String, dynamic> json) :
-        id = json['id'] as int,
-        comment = json['comment'] as String,
-        createdAt = json['created_at'] as String,
-        files = (json['files'] as List<dynamic>?)?.cast<String>(),
-        user = json['user'] != null ? User.fromJson(json['user'] as Map<String, dynamic>) : null;
+        id = json['id'] ,
+        comment = json['comment'] ,
+        createdAt = json['created_at'],
+        files = json['files'],
+        user = json['user'] != null ? User.fromJson(json['user']) : null;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -242,7 +242,7 @@ class User {
   User({required this.data});
 
   User.fromJson(Map<String, dynamic> json) :
-        data = UserData.fromJson(json['data'] as Map<String, dynamic>);
+        data = UserData.fromJson(json['data']);
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -267,11 +267,11 @@ class UserData {
   });
 
   UserData.fromJson(Map<String, dynamic> json) :
-        id = json['id'] as int,
-        refCode = json['ref_code'] as String,
-        name = json['name'] as String,
-        email = json['email'] as String,
-        avatar = json['avatar'] as String;
+        id = json['id'] ,
+        refCode = json['ref_code'] ,
+        name = json['name'] ,
+        email = json['email'] ,
+        avatar = json['avatar'] ;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

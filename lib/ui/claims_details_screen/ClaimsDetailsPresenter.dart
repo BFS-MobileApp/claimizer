@@ -22,6 +22,7 @@ import 'ClaimsDetailsScreen.dart';
 
 class ClaimsDetailsPresenter extends BasePresenter<ClaimsDetailsScreenState> {
   getClaimDetailsDataApiCall(String id) async {
+    print('yes here');
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token)  {
       view.showProgress(isDismiss: false);
