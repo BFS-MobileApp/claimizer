@@ -14,6 +14,7 @@ class CommentsWidget extends StatelessWidget {
  const CommentsWidget({Key? key,required this.presenter,required this.commentsData,required this.claimId,}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    print('tessssssssst'+commentsData.data.length.toString());
      return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,7 +26,7 @@ class CommentsWidget extends StatelessWidget {
           itemCount: commentsData.data.length,
           separatorBuilder: (context, index) => Divider(color: MColors.dividerColor,),
           itemBuilder: (context, index) => ClaimCommentItemWidget(
-            apiStrings: commentsData.data[index].files == null ? [] : commentsData.data[index].files!,
+            apiStrings: [],
             commentsData: commentsData.data[index],
           )),
         Gaps.vGap12,

@@ -76,7 +76,7 @@ class ClaimsDetailsDataBean {
         rate = json['rate'],
         feedback = json['feedback'],
         createdAt = json['created_at'] ,
-        files = json['files'] as List<dynamic>?,
+        files = (json['files'] as List<dynamic>?) ?? [],
         unit = json['unit'] != null ? Unit.fromJson(json['unit'] as Map<String, dynamic>) : null,
         category = json['category'] != null ? Category.fromJson(json['category'] as Map<String, dynamic>) : null,
         subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] as Map<String, dynamic>) : null,
@@ -208,32 +208,32 @@ class Comments {
 class CommentsData {
   int id;
   String comment;
+  int user_id;
   String createdAt;
-  List<String>? files;
-  User? user;
+  String updated_at;
 
   CommentsData({
     required this.id,
     required this.comment,
     required this.createdAt,
-    this.files,
-    this.user,
+    required this.user_id,
+    required this.updated_at
   });
 
   CommentsData.fromJson(Map<String, dynamic> json) :
-        id = json['id'] ,
-        comment = json['comment'] ,
-        createdAt = json['created_at'],
-        files = json['files'],
-        user = json['user'] != null ? User.fromJson(json['user']) : null;
+        id = json['id'] ??0,
+        comment = json['comment'] ??'',
+        createdAt = json['created_at']??'',
+        updated_at = json['updated_at']??'',
+        user_id = json['user_id']??0;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
       'comment': comment,
       'created_at': createdAt,
-      'files': files,
-      'user': user?.toJson(),
+      'user_id':user_id,
+      'updated_at':updated_at
     };
   }
 }

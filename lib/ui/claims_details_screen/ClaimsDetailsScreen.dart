@@ -9,6 +9,7 @@ import 'package:Cliamizer/ui/claims_details_screen/widgets/comments_widget.dart'
 import 'package:Cliamizer/ui/claims_details_screen/widgets/description_widget.dart';
 import 'package:Cliamizer/ui/claims_details_screen/widgets/files_widgets.dart';
 import 'package:Cliamizer/ui/claims_details_screen/widgets/item_widget.dart';
+import 'package:Cliamizer/ui/home_screen/HomeScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -80,6 +81,18 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
     );
   }
 
+  Widget test(ClaimsDetailsProvider pr){
+    if(pr.instance.comments == null){
+      print('test11111');
+      print(pr.instance.comments);
+      return SizedBox();
+    }
+    return CommentsWidget(
+      commentsData: pr.instance.comments,
+      presenter: mPresenter,
+      claimId: widget.claimsDataBean!.referenceId,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -137,15 +150,16 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                             valueColor: MColors.primary_light_color,
                           ),
                           DescriptionWidget(value: pr.instance.description),
-                          pr.instance.files == null ? SizedBox(): FilesWidget(
+                          pr.instance.files == null || pr.instance.files.isEmpty ? SizedBox(): FilesWidget(
                             apiStrings: pr.instance.files,
                             count: pr.instance.files.length,
                           ),
-                          pr.instance.comments == null ? SizedBox(): CommentsWidget(
+                          /*pr.instance.comments == null ? SizedBox(): CommentsWidget(
                             commentsData: pr.instance.comments,
                             presenter: mPresenter,
                             claimId: widget.claimsDataBean!.referenceId,
-                          ),
+                          ),*/
+                          test(pr),
                           Visibility(
                             visible: pr.instance.status.toLowerCase() != "closed" &&
                                 pr.instance.status != "مغلق" &&
@@ -203,7 +217,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                                   "claim_id", widget.claimsDataBean!.id.toString()));
                                                             }
                                                             mPresenter.doPostCommentApiCall(
-                                                                formData, widget.claimsDataBean!.referenceId);
+                                                                formData, widget.claimsDataBean!.referenceId , context);
                                                           } else if (pr.file.path != '') {
                                                             FormData formData = new FormData.fromMap({
                                                               "file[0]": await MultipartFile.fromFile(
@@ -214,7 +228,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                               "claim_id": widget.claimsDataBean!.id,
                                                             });
                                                             mPresenter.doPostCommentApiCall(
-                                                                formData, widget.claimsDataBean!.referenceId);
+                                                                formData, widget.claimsDataBean!.referenceId , context);
                                                           } else {
                                                             FormData formData = FormData();
                                                             formData = new FormData.fromMap({
@@ -222,7 +236,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                               "claim_id": widget.claimsDataBean!.id,
                                                             });
                                                             mPresenter.doPostCommentApiCall(
-                                                                formData, widget.claimsDataBean!.referenceId);
+                                                                formData, widget.claimsDataBean!.referenceId , context);
                                                           }
                                                           setState(() {
                                                           });
@@ -256,6 +270,11 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                       pr.comment.clear();
                                       pr.file = File('');
                                       pr.imageFiles = [];
+                                      pr.isDateLoaded = true;
+                                      Future.delayed(Duration(milliseconds: 1000), () {
+                                        Navigator.pop(context);
+                                      });
+                                      //Navigator.pop(context);
                                     });
                                     // showDialog(
                                     //   context: context,

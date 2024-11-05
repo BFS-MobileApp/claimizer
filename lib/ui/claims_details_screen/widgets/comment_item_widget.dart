@@ -40,7 +40,7 @@ class ClaimCommentItemWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              commentsData.user != null
+              /*commentsData. != null
                   ? Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
@@ -55,23 +55,22 @@ class ClaimCommentItemWidget extends StatelessWidget {
                 ),
               )
                   : SizedBox(),
-              Gaps.hGap12,
+              Gaps.hGap12,*/
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  /*Container(
                     width: 50.w,
-                    child: commentsData.user != null ? Text(commentsData.user!.data.name,
+                    child: Text(commentsData..name,
                         style: MTextStyles.textMain14.copyWith(
                           color: MColors.black,
                         )) : SizedBox(),
                   ),
-                  Gaps.vGap4,
-
-                  commentsData.user != null ? Container(
+                  Gaps.vGap4,*/
+                  Container(
                     width: 50.w,
                     child: HtmlWidget(commentsData.comment,),
-                  ) : SizedBox(),
+                  ),
                   /*Container(
                     width: 50.w,
                     child: Text(commentsData.comment,
@@ -80,10 +79,10 @@ class ClaimCommentItemWidget extends StatelessWidget {
                         )),
                   ),*/
                   Gaps.vGap4,
-                  commentsData.user != null ? Text(formatDate(commentsData.createdAt),
+                  Text(formatDate(commentsData.createdAt),
                       style: MTextStyles.textGray10.copyWith(
                         color: MColors.black,
-                      )) : SizedBox(),
+                      )),
                   Gaps.vGap12,
                 ],
               ),

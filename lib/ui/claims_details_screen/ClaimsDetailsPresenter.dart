@@ -57,9 +57,8 @@ class ClaimsDetailsPresenter extends BasePresenter<ClaimsDetailsScreenState> {
     });
   }
 
-  Future doPostCommentApiCall(dynamic bodyParams,String claimId) async {
+  Future doPostCommentApiCall(dynamic bodyParams,String claimId , BuildContext ctx) async {
     view.showProgress();
-
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
@@ -75,6 +74,7 @@ class ClaimsDetailsPresenter extends BasePresenter<ClaimsDetailsScreenState> {
             view.provider.imageFiles = [];
             view.provider.file = File('');
             view.provider.comment.clear();
+            view.closeProgress();
           } else {
             view.showToasts("Error", 'error');
           }
@@ -89,7 +89,8 @@ class ClaimsDetailsPresenter extends BasePresenter<ClaimsDetailsScreenState> {
           } else {
             view.showToasts("Error", 'error');
           }
-        });
+        }
+      );
   }
 
 
