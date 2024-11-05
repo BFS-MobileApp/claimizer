@@ -76,12 +76,14 @@ class ClaimsDetailsDataBean {
         rate = json['rate'],
         feedback = json['feedback'],
         createdAt = json['created_at'] ,
-        files = json['files'],
-        unit = json['unit'] != null ? Unit.fromJson(json['unit']) : null,
-        category = json['category'] != null ? Category.fromJson(json['category'] ) : null,
-        subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] ) : null,
-        type = json['type'] != null ? Category.fromJson(json['type'] ) : null,
-        comments = json['comments'] != null ? Comments.fromJson(json['comments']) : null;
+        files = json['files'] as List<dynamic>?,
+        unit = json['unit'] != null ? Unit.fromJson(json['unit'] as Map<String, dynamic>) : null,
+        category = json['category'] != null ? Category.fromJson(json['category'] as Map<String, dynamic>) : null,
+        subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] as Map<String, dynamic>) : null,
+        type = json['type'] != null ? Category.fromJson(json['type'] as Map<String, dynamic>) : null,
+        comments = json['comments'] is List
+            ? (json['comments'].isEmpty ? Comments(data: []) : Comments(data: (json['comments'] as List).map((item) => CommentsData.fromJson(item)).toList()))
+            : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{

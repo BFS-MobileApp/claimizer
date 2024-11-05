@@ -25,7 +25,14 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
   @override
   void initState() {
     widget.provider = context.read<ClaimsDetailsProvider>();
+    if (widget.provider.file != null) {
+      print("File path: ${widget.provider.file.path}");
+    } else {
+      print("pr.file is null");
+    }
+
     super.initState();
+
   }
 
   Future<void> pickImages() async {
@@ -46,8 +53,6 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
     });
       Navigator.pop(context);
   }
-
-  // File pr.file;
 
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
@@ -150,7 +155,7 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                pr.file != null
+                (pr.file.path.isNotEmpty)
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Image.file(
@@ -159,7 +164,7 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
                           height: 10.w,
                           fit: BoxFit.cover,
                         ))
-                    : pr.imageFiles != null&&pr.imageFiles.isNotEmpty
+                    : pr.imageFiles.isNotEmpty
                         ? Row(
                             children: [
                               Icon(
@@ -184,7 +189,7 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
                           ),
                 Spacer(),
                 Visibility(
-                  visible: pr.imageFiles != null || pr.file != null,
+                  visible: pr.imageFiles.isNotEmpty  || pr.file.path != '',
                   child: InkWell(
                     onTap: () async {
                       pr.imageFiles = [];

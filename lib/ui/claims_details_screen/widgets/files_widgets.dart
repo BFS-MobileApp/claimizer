@@ -10,23 +10,24 @@ import '../../../res/gaps.dart';
 import '../../../res/styles.dart';
 
 class FilesWidget extends StatelessWidget {
-  final List<String> apiStrings;
+  final List<dynamic> apiStrings;
   final int count;
 
   const FilesWidget({Key? key,required this.count, required this.apiStrings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> stringWidgets = [];
+    /*List<Widget> stringWidgets = [];
 
     for (String apiString in apiStrings) {
+      print(apiString);
       // extract values from apiString and add them to a widget
       stringWidgets.add(ImageLoader(
-        imageUrl: apiString,
+        imageUrl: apiString[0]['file_url'],
         width: 16.w,
         height: 16.w,
       ));
-    }
+    }*/
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,13 +44,13 @@ class FilesWidget extends StatelessWidget {
             itemBuilder: (context, index) => GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return FullScreenImage(image: apiStrings[index],);
+                  return FullScreenImage(image: apiStrings[index]['file_name'],);
                 }));
               },
               child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 2.w),
                   child: ImageLoader(
-                    imageUrl: apiStrings[index],
+                    imageUrl: apiStrings[index]['file_name'],
                     width: 16.w,
                     height: 16.w,
                   )),

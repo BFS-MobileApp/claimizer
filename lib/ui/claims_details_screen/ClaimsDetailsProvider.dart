@@ -25,18 +25,18 @@ class ClaimsDetailsProvider<T> extends BaseProvider<T> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
-  File? _file;
-  List<XFile>? _imageFiles;
+  File _file = File('');
+  List<XFile> _imageFiles = [];
 
 
-  File get file => _file!;
+  File get file => _file;
 
   set file(File value) {
     _file = value;
     notifyListeners();
   }
 
-  List<XFile> get imageFiles => _imageFiles!;
+  List<XFile> get imageFiles => _imageFiles;
 
   set imageFiles(List<XFile> value) {
     _imageFiles = value;

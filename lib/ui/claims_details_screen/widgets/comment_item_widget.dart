@@ -21,45 +21,57 @@ class ClaimCommentItemWidget extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    List<Widget> stringWidgets = [];
+    /*List<Widget> stringWidgets = [];
 
-    for (String apiString in apiStrings) {
-      // extract values from apiString and add them to a widget
-      stringWidgets.add(ImageLoader(
-        imageUrl: apiString,
-        width: 16.w,
-        height: 16.w,
-      ));
-    }
+    if(apiStrings != null){
+      for (String apiString in apiStrings) {
+        // extract values from apiString and add them to a widget
+        stringWidgets.add(ImageLoader(
+          imageUrl: apiString,
+          width: 16.w,
+          height: 16.w,
+        ));
+      }
+    }*/
+
     return Container(
       margin: EdgeInsets.symmetric(vertical: 2.w),
       child:Column(
         children: [
           Row(
             children: [
-              Container(
-                  decoration:BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
+              commentsData.user != null
+                  ? Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: ImageLoader(
+                    imageUrl: commentsData.user!.data.avatar,
+                    height: 48,
+                    width: 48,
                   ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: ImageLoader(imageUrl: commentsData.user!.data.avatar,height: 48,width: 48,))),
+                ),
+              )
+                  : SizedBox(),
               Gaps.hGap12,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     width: 50.w,
-                    child: Text(commentsData.user!.data.name?? "",
+                    child: commentsData.user != null ? Text(commentsData.user!.data.name,
                         style: MTextStyles.textMain14.copyWith(
                           color: MColors.black,
-                        )),
+                        )) : SizedBox(),
                   ),
                   Gaps.vGap4,
-                  Container(
+
+                  commentsData.user != null ? Container(
                     width: 50.w,
                     child: HtmlWidget(commentsData.comment,),
-                  ),
+                  ) : SizedBox(),
                   /*Container(
                     width: 50.w,
                     child: Text(commentsData.comment,
@@ -68,10 +80,10 @@ class ClaimCommentItemWidget extends StatelessWidget {
                         )),
                   ),*/
                   Gaps.vGap4,
-                  Text(formatDate(commentsData.createdAt??""),
+                  commentsData.user != null ? Text(formatDate(commentsData.createdAt),
                       style: MTextStyles.textGray10.copyWith(
                         color: MColors.black,
-                      )),
+                      )) : SizedBox(),
                   Gaps.vGap12,
                 ],
               ),

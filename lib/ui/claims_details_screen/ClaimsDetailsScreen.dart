@@ -137,11 +137,11 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                             valueColor: MColors.primary_light_color,
                           ),
                           DescriptionWidget(value: pr.instance.description),
-                          FilesWidget(
+                          pr.instance.files == null ? SizedBox(): FilesWidget(
                             apiStrings: pr.instance.files,
                             count: pr.instance.files.length,
                           ),
-                          CommentsWidget(
+                          pr.instance.comments == null ? SizedBox(): CommentsWidget(
                             commentsData: pr.instance.comments,
                             presenter: mPresenter,
                             claimId: widget.claimsDataBean!.referenceId,
@@ -191,7 +191,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                               S.of(context)!.enterYourNotesInCommentField, 'warning');
                                                         } else {
                                                           final formData = FormData();
-                                                          if (pr.imageFiles != null&&pr.imageFiles.isNotEmpty) {
+                                                          if (pr.imageFiles.isNotEmpty) {
                                                             for (var i = 0; i < pr.imageFiles.length; i++) {
                                                               final file = await pr.imageFiles[i].readAsBytes();
                                                               formData.files.add(MapEntry(
@@ -204,7 +204,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                             }
                                                             mPresenter.doPostCommentApiCall(
                                                                 formData, widget.claimsDataBean!.referenceId);
-                                                          } else if (pr.file != null) {
+                                                          } else if (pr.file.path != '') {
                                                             FormData formData = new FormData.fromMap({
                                                               "file[0]": await MultipartFile.fromFile(
                                                                 pr.file.path,
@@ -224,7 +224,8 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                                             mPresenter.doPostCommentApiCall(
                                                                 formData, widget.claimsDataBean!.referenceId);
                                                           }
-                                                          setState(() {});
+                                                          setState(() {
+                                                          });
                                                         }
                                                       }
                                                     },
