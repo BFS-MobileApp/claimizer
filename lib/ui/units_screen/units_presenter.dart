@@ -68,16 +68,30 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<UnitRequestsResponse>(Method.get,
-        options: Options(headers: header),queryParams: params, endPoint: Api.unitRequestApiCall, onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        view.provider.unitsRequestList = data.data!;
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-    });
+
+    await requestFutureData<UnitRequestsResponse>(
+      Method.get,
+      options: Options(headers: header),
+      queryParams: params,
+      endPoint: Api.unitRequestApiCall,
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null && data.data != null) {
+          data.data!.sort((a, b) {
+            final dateA = DateTime.tryParse(a.createdAt ?? '') ?? DateTime(0);
+            final dateB = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(0);
+            return dateB.compareTo(dateA); // Descending order
+          });
+
+          view.provider.unitsRequestList = data.data!;
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+      },
+    );
   }
+
 
   Future getFilteredUnitRequestsApiCall(Map<String, dynamic> params) async {
     Map<String, dynamic> header = Map();
