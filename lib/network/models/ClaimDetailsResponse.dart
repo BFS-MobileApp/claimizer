@@ -81,9 +81,7 @@ class ClaimsDetailsDataBean {
         category = json['category'] != null ? Category.fromJson(json['category'] as Map<String, dynamic>) : null,
         subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] as Map<String, dynamic>) : null,
         type = json['type'] != null ? Category.fromJson(json['type'] as Map<String, dynamic>) : null,
-        comments = json['comments'] is List
-            ? (json['comments'].isEmpty ? Comments(data: []) : Comments(data: (json['comments'] as List).map((item) => CommentsData.fromJson(item)).toList()))
-            : null;
+        comments = json['comments'] != null ? Comments.fromJson(json['comments']) : null;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
@@ -193,14 +191,14 @@ class Comments {
 
   Comments({required this.data});
 
-  Comments.fromJson(Map<String, dynamic> json) :
-        data = (json['data'] )
-            .map((dynamic e) => CommentsData.fromJson(e))
-            .toList();
+  Comments.fromJson(Map<String, dynamic> json)
+      : data = (json['data'] as List<dynamic>)
+      .map((e) => CommentsData.fromJson(e))
+      .toList();
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'data': data.map((CommentsData v) => v.toJson()).toList(),
+      'data': data.map((v) => v.toJson()).toList(),
     };
   }
 }
@@ -208,32 +206,32 @@ class Comments {
 class CommentsData {
   int id;
   String comment;
-  int user_id;
   String createdAt;
-  String updated_at;
+  User user;
+  List<dynamic>? files;
 
   CommentsData({
     required this.id,
     required this.comment,
     required this.createdAt,
-    required this.user_id,
-    required this.updated_at
+    required this.user,
+    required this.files
   });
 
-  CommentsData.fromJson(Map<String, dynamic> json) :
-        id = json['id'] ??0,
-        comment = json['comment'] ??'',
-        createdAt = json['created_at']??'',
-        updated_at = json['updated_at']??'',
-        user_id = json['user_id']??0;
+  CommentsData.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        comment = json['comment'] ?? '',
+        createdAt = json['created_at'] ?? '',
+        files = json['files'],
+        user = User.fromJson(json['user']);
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
       'comment': comment,
       'created_at': createdAt,
-      'user_id':user_id,
-      'updated_at':updated_at
+      'user': user.toJson(),
+      'files':files
     };
   }
 }
@@ -243,8 +241,8 @@ class User {
 
   User({required this.data});
 
-  User.fromJson(Map<String, dynamic> json) :
-        data = UserData.fromJson(json['data']);
+  User.fromJson(Map<String, dynamic> json)
+      : data = UserData.fromJson(json['data']);
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
@@ -269,11 +267,11 @@ class UserData {
   });
 
   UserData.fromJson(Map<String, dynamic> json) :
-        id = json['id'] ,
-        refCode = json['ref_code'] ,
-        name = json['name'] ,
-        email = json['email'] ,
-        avatar = json['avatar'] ;
+        id = json['id'] ??0,
+        refCode = json['ref_code'] ??'',
+        name = json['name']??'' ,
+        email = json['email'] ??'' ,
+        avatar = json['avatar'] ??'' ;
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{

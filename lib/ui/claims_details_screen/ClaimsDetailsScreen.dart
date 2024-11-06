@@ -82,7 +82,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
   }
 
   Widget test(ClaimsDetailsProvider pr){
-    if(pr.instance.comments == null){
+    if (pr.instance.comments == null || pr.instance.comments!.data.isEmpty){
       print('test11111');
       print(pr.instance.comments);
       return SizedBox();

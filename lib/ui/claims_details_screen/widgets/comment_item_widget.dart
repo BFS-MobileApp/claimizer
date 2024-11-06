@@ -86,6 +86,23 @@ class ClaimCommentItemWidget extends StatelessWidget {
                   Gaps.vGap12,
                 ],
               ),
+              SizedBox(
+                height: 50,
+                child: (commentsData.files != null && commentsData.files!.isNotEmpty) ?  GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return FullScreenImage(image: commentsData.files![0]['file_url'],);
+                    }));
+                  },
+                  child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2.w),
+                      child: ImageLoader(
+                        imageUrl: commentsData.files![0]['file_url'],
+                        width: 16.w,
+                        height: 16.w,
+                      )),
+                ): SizedBox(),
+              ),
               Spacer(),
             ],
           ),
