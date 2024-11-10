@@ -341,7 +341,9 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.provider.selectedUnit = '';
         } else if (data.status == "fail") {
           view.showToasts(data.message!, 'error');
-        }
+        } /*else {
+          view.showToasts(data.message!, 'error');
+        }*/
       }
     }, onError: (code, msg) {
       view.closeProgress();

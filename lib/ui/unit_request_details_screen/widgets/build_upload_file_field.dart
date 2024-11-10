@@ -149,7 +149,7 @@ class _BuildUploadFileFieldState extends State<BuildUploadFileField> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                pr.file != null
+                pr.file.path != ''
                     ? ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.file(

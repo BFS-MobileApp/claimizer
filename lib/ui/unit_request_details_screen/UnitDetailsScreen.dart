@@ -28,6 +28,7 @@ import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import 'UnitDetailsPresenter.dart';
 import 'UnitDetailsProvider.dart';
+import 'widgets/unit_details_files.dart';
 
 class UnitRequestDetailsScreen extends StatefulWidget {
   static const String TAG = "/UnitRequestDetailsScreen";
@@ -110,6 +111,10 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                           ItemWidget(
                             title: S.of(context)!.userRemarks,
                             value: pr.instance!.userRemarks ?? S.current!.na,
+                          ),
+                          UnitDetailsFiles(
+                            contractImage: pr.instance!.contractAttach.toString(),
+                            idImage: pr.instance!.clientGovId.toString(),
                           ),
                           CommentsWidget(
                             commentsData: pr.instance!.comments!,

@@ -73,26 +73,57 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 60.w,
-                        child: ElevatedButton.icon(
-                          onPressed: getImageFromCamera,
-                          icon: Icon(Icons.camera_alt, color: MColors.text_button_color),
-                          label: Text(S.of(context)!.takePhoto,
-                              style: MTextStyles.textMain14.copyWith(color: MColors.text_button_color)),
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Container(
-                        width: 60.w,
-                        child: ElevatedButton.icon(
-                          onPressed: pickImageFromGallery,
-                          icon: Icon(Icons.photo_library, color: MColors.text_button_color),
-                          label: Text(
-                            S.of(context)!.chooseFromGallery,
-                            style: MTextStyles.textMain14.copyWith(color: MColors.text_button_color),
+                      Text(S.of(context)!.uploadImageFrom,
+                          style: MTextStyles.textMain14.copyWith(color: MColors.primary_text_color)),
+                      SizedBox(height: 30),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: getImageFromCamera,
+                            child: Container(
+                              width: 40.w,
+                              padding: EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                  color: MColors.primary_color.withOpacity(.1),
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.camera_alt, color: MColors.primary_color),
+                                  Gaps.vGap6,
+                                  FittedBox(
+                                    child: Text(S.of(context)!.takePhoto,
+                                        style: MTextStyles.textMain12.copyWith(color: MColors.primary_color)),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: pickImageFromGallery,
+                            child: Container(
+                              width: 40.w,
+                              padding: EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                  color: MColors.primary_color.withOpacity(.1),
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.photo_library, color: MColors.primary_color),
+                                  Gaps.vGap6,
+                                  FittedBox(
+                                    child: Text(S.of(context)!.fromGallery,
+                                        style: MTextStyles.textMain12.copyWith(color: MColors.primary_color)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
