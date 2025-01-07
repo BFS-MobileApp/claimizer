@@ -69,6 +69,8 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
   Future doLoginApiCallWithSocial(Map<String, dynamic> bodyParams , String socialMedial) async {
     view.showProgress(isDismiss: false);
     var url = Uri.https('claimizer.com', '/api/v2/token');
+    print(bodyParams['email']);
+    print(bodyParams['name']);
     var response = await http.post(url, body: {'email': bodyParams['email'], 'name':bodyParams['name']});
     if(response.statusCode == 200){
       SocialMedialLogin login = SocialMedialLogin.fromJson(jsonDecode(response.body));
