@@ -138,12 +138,12 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
                           style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
                         ),
                         style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(MColors.primary_color),
-                            elevation: WidgetStatePropertyAll(0),
-                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                            backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
+                            elevation: MaterialStatePropertyAll(0),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             )),
-                            padding: WidgetStateProperty.all<EdgeInsets>(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
                                 EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
                       )
                     ],

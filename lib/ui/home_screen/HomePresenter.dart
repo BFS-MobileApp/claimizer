@@ -24,7 +24,7 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
   }
 
   Future<void> test() async {
-    var url = Uri.parse('https://claimizer.com/api/v2/emergency-contact');
+    var url = Uri.parse('https://api.claimizer.com/tenant/emergency-contact');
     String token = '';
     String lang = '';
     Map<String, String> header = {};

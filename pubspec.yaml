@@ -38,7 +38,7 @@ dependencies:
   fluintl: ^2.0.0
 
   #https://github.com/dart-lang/intl
-  intl: ^0.19.0
+  intl: ^0.18.1
   modal_bottom_sheet: ^2.1.2
   responsive_builder: ^0.7.0
   #charts_flutter:

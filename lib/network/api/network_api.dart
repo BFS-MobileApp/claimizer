@@ -1,6 +1,6 @@
 class Api {
   //base Urls
-  static const String baseUrl = "$base/api/v2/";
+  static const String baseUrl = "https://api.claimizer.com/tenant/";
 
   //static const String base = "https://beta.claimizer.com";
   static const String base = "https://claimizer.com";
