@@ -63,6 +63,7 @@ dependencies:
 #
 #  # https://github.com/flutter/plugins/tree/master/packages/url_launcher
   url_launcher: ^6.3.1
+  url_launcher_ios: ^6.3.2
   #
 #   https://github.com/peng8350/flutter_pulltorefresh
   pull_to_refresh: ^2.0.0
