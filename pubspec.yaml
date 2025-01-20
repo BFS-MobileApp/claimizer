@@ -145,6 +145,7 @@ flutter_icons:
 
 dependency_overrides:
   win32: ^5.5.4
+  archive: ^3.4.10
 
 flutter:
 
