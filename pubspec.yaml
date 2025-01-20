@@ -62,8 +62,8 @@ dependencies:
   google_sign_in: ^6.2.1
 #
 #  # https://github.com/flutter/plugins/tree/master/packages/url_launcher
-  url_launcher: ^6.2.4
-#
+  url_launcher: ^6.3.1
+  #
 #   https://github.com/peng8350/flutter_pulltorefresh
   pull_to_refresh: ^2.0.0
 
@@ -142,7 +142,8 @@ flutter_icons:
   image_path: "assets/images/ic_launcher.png"
 
 
-
+dependency_overrides:
+  win32: ^5.5.4
 
 flutter:
 
