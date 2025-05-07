@@ -70,7 +70,7 @@ class _AllClaimsState extends State<AllClaims> {
                                   },
                                   child: Container(
                                       decoration:
-                                          BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                                          BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                                       margin: index == 0 ? EdgeInsets.only(bottom: 12) : EdgeInsets.symmetric(vertical: 12),
                                       padding: EdgeInsets.all(14),
                                       child: Column(
@@ -89,15 +89,14 @@ class _AllClaimsState extends State<AllClaims> {
                                                         pr?.claimsList[index]?.unit?.building ?? S.current!.na,
                                                         maxLines: 2,
                                                         style:
-                                                            TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+                                                        Theme.of(context).appBarTheme.toolbarTextStyle,
                                                         textAlign: TextAlign.start,
                                                       ),
                                                     ),
                                                   ),
                                                   AutoSizeText(
                                                     S.of(context)!.requestCode + "\n" + pr.claimsList[index].referenceId,
-                                                    style: TextStyle(
-                                                        fontWeight: FontWeight.w500, color: MColors.subText_color),
+                                                    style: Theme.of(context).appBarTheme.toolbarTextStyle,
                                                   ),
                                                 ],
                                               ),
@@ -112,7 +111,7 @@ class _AllClaimsState extends State<AllClaims> {
                                                   child: AutoSizeText(
                                                     pr?.claimsList[index]?.status ?? '',
                                                     maxLines: 1,
-                                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                                                    style: Theme.of(context).appBarTheme.titleTextStyle,
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ),

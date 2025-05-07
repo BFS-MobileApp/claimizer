@@ -98,7 +98,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
     super.build(context);
     return Consumer<ClaimsDetailsProvider>(builder: (context, pr, child) {
       return Scaffold(
-        backgroundColor: MColors.page_background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: pr.instance != null
             ? SafeArea(
                 child: Padding(
@@ -109,7 +109,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 6.w),
                       margin: EdgeInsets.symmetric(vertical: 2.w),
-                      decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -447,7 +447,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                       contentPadding: EdgeInsets.all(24),
                                       title: Text(
                                         S.current!.closeClaim,
-                                        style: MTextStyles.textBoldDark14,
+                                        style: Theme.of(context).appBarTheme.titleTextStyle,
                                       ),
                                       actions: [
                                         ElevatedButton(
@@ -457,7 +457,7 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                           },
                                           child: Text(
                                             S.of(context)!.confirm,
-                                            style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+                                            style: Theme.of(context).appBarTheme.titleTextStyle,
                                           ),
                                           style: ButtonStyle(
                                               backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
@@ -475,14 +475,13 @@ class ClaimsDetailsScreenState extends BaseState<ClaimsDetailsScreen, ClaimsDeta
                                           },
                                           child: Text(
                                             S.of(context)!.cancel,
-                                            style: MTextStyles.textWhite14
-                                                .copyWith(fontWeight: FontWeight.w700, color: MColors.primary_color),
+                                            style: Theme.of(context).appBarTheme.titleTextStyle,
                                           ),
                                         ),
                                       ],
                                       content: Text(
                                         S.of(context)!.areYouSureToCloseThisClaim,
-                                        style: MTextStyles.textMainLight16,
+                                        style: Theme.of(context).appBarTheme.titleTextStyle,
                                       ),
                                     );
                                   },

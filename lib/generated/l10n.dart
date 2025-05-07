@@ -54,6 +54,15 @@ class S {
       args: [],
     );
   }
+  /// `Dark Mode`
+  String get darkMode {
+    return Intl.message(
+      'Dark Mode',
+      name: 'Dark Mode',
+      desc: '',
+      args: [],
+    );
+  }
 
   /// `Plumber & expart nearby you`
   String get intro_text_3 {

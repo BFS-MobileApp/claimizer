@@ -25,7 +25,7 @@ class UnitRequestDataItem extends StatelessWidget {
               title,
               maxFontSize: 12,
               maxLines: 2,
-              style: TextStyle(color: MColors.subtitlesColor, fontWeight: FontWeight.w700),
+              style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           ),
           // Spacer(),
@@ -36,7 +36,7 @@ class UnitRequestDataItem extends StatelessWidget {
               textAlign: TextAlign.end,
               maxLines: 2,
               maxFontSize: 12,
-              style: TextStyle(color: MColors.subText_color),
+              style: Theme.of(context).appBarTheme.titleTextStyle,
             ),
           )
         ],

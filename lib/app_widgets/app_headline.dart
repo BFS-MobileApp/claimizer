@@ -28,7 +28,7 @@ class AppHeadline extends StatelessWidget {
           ),
           AutoSizeText(title,
               maxLines: 1,
-              style: TextStyle(color: MColors.headline_text_color, fontWeight: FontWeight.bold)),
+              style:  Theme.of(context).appBarTheme.titleTextStyle,)
         ],
       ),
     );

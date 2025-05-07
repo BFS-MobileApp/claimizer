@@ -15,15 +15,10 @@ class ItemWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title,
-            style: MTextStyles.textMain16.copyWith(
-              color: MColors.black,
-            )),
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         Gaps.vGap8,
         Text(value,
-            style: MTextStyles.textMain14.copyWith(
-              color: valueColor ?? MColors.black,
-              fontWeight: FontWeight.w400,
-            )),
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         Gaps.vGap12,
         Gaps.vGap12,
       ],

@@ -4,7 +4,7 @@ import 'package:Cliamizer/base/view/base_state.dart';
 import 'package:Cliamizer/ui/units_screen/units_screen.dart';
 import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sizer/sizer.dart';
 

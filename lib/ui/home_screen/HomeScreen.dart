@@ -127,7 +127,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
 
     return Scaffold(
       floatingActionButton: emergencyButton(),
-      backgroundColor: MColors.background_color,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
             child: Column(
@@ -142,12 +142,10 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                           child: Column(
                             children: [
                               Text("${S.of(context)!.welcome}",
-                                  style: TextStyle(
-                                      color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                                  style:  Theme.of(context).appBarTheme.titleTextStyle,),
                               Text("${provider.name}",
                                   maxLines: 2,
-                                  style: TextStyle(
-                                      color: MColors.headline_text_color, fontSize: 12.sp, fontWeight: FontWeight.w700)),
+                                  style:  Theme.of(context).appBarTheme.titleTextStyle,),
                             ],
                           )
                       ),
@@ -157,6 +155,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                             Navigator.push(context, CupertinoPageRoute(builder: (_) => NotificationScreen()));
                           },
                           child: SvgPicture.asset(
+                            color:  Theme.of(context).iconTheme.color,
                             ImageUtils.getSVGPath('notification'),
                             width: 8.w,
                             height: 8.w,

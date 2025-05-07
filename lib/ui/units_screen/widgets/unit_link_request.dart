@@ -78,7 +78,7 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
                           ));
                     },
                     child: Container(
-                        decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                        decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                         padding: EdgeInsets.symmetric(horizontal: 14, vertical: 3.w),
                         margin: index == 0 ? EdgeInsets.only(bottom: 12) : EdgeInsets.symmetric(vertical: 12),
                         child: Column(

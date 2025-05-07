@@ -20,6 +20,7 @@ import '../../generated/l10n.dart';
 import '../../res/colors.dart';
 import '../../res/gaps.dart';
 import '../../res/setting.dart';
+import '../../styles/dark_theme_provider.dart';
 import '../user/login_screen/LoginScreen.dart';
 import 'MorePresenter.dart';
 import 'MoreProvider.dart';
@@ -70,9 +71,10 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
 
   @override
   Widget build(BuildContext context) {
+
     super.build(context);
     return Scaffold(
-      backgroundColor: MColors.page_background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: provider.instance!=null ?Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 60),
         child: ListView(
@@ -83,66 +85,67 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
   }
 
   Widget profileWidget() => Container(
-        decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
-        child: Column(
+    decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
+    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
+    child: Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 1.w,
-                  height: 5.w,
-                  margin: EdgeInsetsDirectional.only(end: 2.w),
-                  decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
-                ),
-                Text(S.current!.profile, style: MTextStyles.textMain18),
-                Spacer(),
-                editProfileButton()
-              ],
+            Container(
+              width: 1.w,
+              height: 5.w,
+              margin: EdgeInsetsDirectional.only(end: 2.w),
+              decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
             ),
-            Gaps.vGap16,
-            Row(
-              children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(50),
-                    child: ImageLoader(imageUrl: provider.instance.avatar,width: 16.w,height: 16.w,fit: BoxFit.cover,)),
-                Gaps.hGap12,
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 10, top: 6),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(provider.instance.name, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 10.sp)),
-                      Text(provider.instance.email, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 7.sp)),
-                    ],
-                  ),
-                )
-              ],
-            ),
+            Text(S.current!.profile, style: Theme.of(context).appBarTheme.titleTextStyle),
+            Spacer(),
+            editProfileButton()
           ],
         ),
-      );
+        Gaps.vGap16,
+        Row(
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: ImageLoader(imageUrl: provider.instance.avatar,width: 16.w,height: 16.w,fit: BoxFit.cover,)),
+            Gaps.hGap12,
+            Padding(
+              padding: const EdgeInsetsDirectional.only(start: 10, top: 6),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(provider.instance.name, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 15.sp)),
+                  Text(provider.instance.email, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 12.sp)),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
+    ),
+  );
 
   Widget editProfileButton() => InkWell(
-        onTap: () {
-          Navigator.push(context, CupertinoPageRoute(builder: (_) => EditProfileScreen()));
-        },
-        child: Container(
-          width: 8.w,
-          height: 8.w,
-          padding: EdgeInsets.all(6),
-          decoration:
-              BoxDecoration(border: Border.all(color: MColors.primary_color), borderRadius: BorderRadius.circular(8)),
-          child: SvgPicture.asset(
-            ImageUtils.getSVGPath('edit-2'),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-      );
+    onTap: () {
+      Navigator.push(context, CupertinoPageRoute(builder: (_) => EditProfileScreen()));
+    },
+    child: Container(
+      width: 8.w,
+      height: 8.w,
+      padding: EdgeInsets.all(6),
+      decoration:
+      BoxDecoration(border: Border.all(color: MColors.primary_color), borderRadius: BorderRadius.circular(8)),
+      child: SvgPicture.asset(
+        ImageUtils.getSVGPath('edit-2'),
+        fit: BoxFit.fitWidth,
+      ),
+    ),
+  );
 
   Widget settingsWidget() {
+    final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
-      decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
       child: Column(
         children: [
@@ -156,24 +159,24 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                 fit: BoxFit.fitWidth,
               ),
               Gaps.hGap12,
-              Text(S.of(context)!.language, style: MTextStyles.textMainLight16),
+              Text(S.of(context)!.language, style: Theme.of(context).appBarTheme.titleTextStyle),
               Spacer(),
               Transform.scale(
                   scale: 0.2.w,
                   child: Consumer<MoreProvider>(
                     builder: (context, pr, child) =>
                         CupertinoSwitch(
-                        activeColor: Color(0xff44A4F2),
-                        value: Setting.mobileLanguage.value == Locale('en'),
-                        onChanged: (value) {
-                          if (value) {
-                            setSelected("en");
-                            mPresenter.passReloadByEventPath();
-                          } else {
-                            setSelected("ar");
-                            mPresenter.passReloadByEventPath();
-                          }
-                        }),
+                            activeColor: Color(0xff44A4F2),
+                            value: Setting.mobileLanguage.value == Locale('en'),
+                            onChanged: (value) {
+                              if (value) {
+                                setSelected("en");
+                                mPresenter.passReloadByEventPath();
+                              } else {
+                                setSelected("ar");
+                                mPresenter.passReloadByEventPath();
+                              }
+                            }),
                   )),
             ],
           ),
@@ -190,7 +193,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.help, style: MTextStyles.textMainLight16),
+                Text(S.of(context)!.help, style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
@@ -207,7 +210,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.support, style: MTextStyles.textMainLight16),
+                Text(S.of(context)!.support, style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
@@ -224,9 +227,27 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.privacyAndPolicy, style: MTextStyles.textMainLight16),
+                Text(S.of(context)!.privacyAndPolicy, style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
+          ),
+          divider(),
+          Row(
+            children: [
+              Icon(Icons.dark_mode,color: Colors.red,),
+              Gaps.hGap12,
+              Text(S.of(context)!.darkMode, style: Theme.of(context).appBarTheme.titleTextStyle),
+              Spacer(),
+              Transform.scale(
+                  scale: 0.2.w,
+                  child: CupertinoSwitch(
+                    activeColor: Color(0xff44A4F2),
+                    value: themeChange.darkTheme,
+                    onChanged: (bool value) {
+                      themeChange.darkTheme = value;
+                    },
+                  )),
+            ],
           ),
         ],
       ),
@@ -349,7 +370,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
 
   Widget accountWidget() {
     return Container(
-      decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
       child: Column(
         children: [
@@ -390,7 +411,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.logOut, style: MTextStyles.textMainLight16),
+                Text(S.of(context)!.logOut, style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),

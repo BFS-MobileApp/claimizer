@@ -70,14 +70,14 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
     ];
     super.build(context);
     return Scaffold(
-      backgroundColor: MColors.page_background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<UnitProvider>(
         builder: (context, pr, child) => Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 0),
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
@@ -90,7 +90,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                           decoration:
                               BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
                         ),
-                        Text(S.of(context)!.unitsProperty, style: MTextStyles.textMain18),
+                        Text(S.of(context)!.unitsProperty, style: Theme.of(context).appBarTheme.titleTextStyle),
                       ],
                     ),
                     Gaps.vGap16,
@@ -150,7 +150,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
               Visibility(
                 visible: pr.selectedIndex != 0,
                 child: Container(
-                  decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
                   child: Row(
                     children: [

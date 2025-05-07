@@ -95,7 +95,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     print(provider.selectedIndex);
     mPresenter.view.closeProgress();
     return Scaffold(
-      backgroundColor: MColors.page_background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<ClaimsProvider>(
         builder: (context, pr, child) => Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 0),
@@ -103,7 +103,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
                   children: [
@@ -126,7 +126,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                               shadowColor: MColors.dividerColor,
                               color: pr.selectedIndex == pageIndex ? MColors.primary_color : Colors.white,
                               child: Container(
-                                width: 120.sp,
+                                width: 50.sp,
                                 height: 120.sp,
                                 padding: EdgeInsets.all(10),
                                 child: Column(
@@ -165,7 +165,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
               Visibility(
                 visible: pr.selectedIndex != 0,
                 child: Container(
-                  decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                   padding: EdgeInsets.all(12),
                   margin: EdgeInsets.only(bottom: 12),
                   child: Row(

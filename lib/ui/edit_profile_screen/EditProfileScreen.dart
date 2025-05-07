@@ -98,7 +98,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
               length: 2,
               initialIndex: 0,
               child: Scaffold(
-                backgroundColor: MColors.page_background,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: pr.isDateLoaded
                     ? SafeArea(
                   child: ListView(
@@ -109,12 +109,12 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                       Gaps.vGap12,
                       Gaps.vGap8,
                       Container(
-                        color: MColors.page_background,
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         padding: EdgeInsets.symmetric(horizontal: 6.w),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
                           Container(
                             decoration:
-                            BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+                            BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                             child: Column(
                               children: [
@@ -168,7 +168,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                                     onTap: (index) {
                                       pr.selectedTabIndex = index;
                                     },
-                                    labelStyle: TextStyle(fontSize: 8.sp),
+                                    labelStyle: TextStyle(fontSize: 13.sp),
                                     tabs: [
                                       Tab(text: S.of(context)!.basicInfo),
                                       Tab(text: S.of(context)!.updatePassword),
@@ -717,7 +717,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
 
   Widget _buildBasicInfoContent(EditProfileProvider provider) {
     return Container(
-      decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       margin: EdgeInsets.only(bottom:20),
       child: Form(
@@ -811,7 +811,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
 
   Widget _buildUpdatePasswordContent(EditProfileProvider provider) {
     return Container(
-      decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       child: Form(
         key: _formKey,

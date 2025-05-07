@@ -17,7 +17,7 @@ class NoDataWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 20),
       margin: EdgeInsets.symmetric(vertical: 20),
       decoration: BoxDecoration(
-        color: MColors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(8)
       ),
       child: RefreshIndicator(
@@ -37,19 +37,13 @@ class NoDataWidget extends StatelessWidget {
               SizedBox(height: 20),
               Text(
                 S.of(context)!.noResults,
-                style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: MColors.black),
+                style: Theme.of(context).appBarTheme.titleTextStyle,
               ),
               SizedBox(height: 20),
               Text(
                 S.of(context)!.sorryThereAreNoResultsForThisSearchPleaseTry,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w500,
-                    color: MColors.primary_light_color),
+                style: Theme.of(context).appBarTheme.titleTextStyle,
               ),
               // SpinKitSpinningLines(
               //     color: MColors.gray_99.withOpacity(.5)),

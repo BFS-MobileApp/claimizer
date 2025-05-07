@@ -22,13 +22,13 @@ class SearchAboutUnitByQR extends StatelessWidget {
       builder: (context, pr, child) => Container(
         padding: EdgeInsets.symmetric(vertical: 4.w, horizontal: 8.w),
         margin: EdgeInsets.symmetric(vertical: 2.w),
-        decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
         child: ListView(
           // mainAxisSize: MainAxisSize.min,
           children: [
             Center(
                 child: AutoSizeText(S.current!.newLinkRequest,
-                    style: TextStyle(fontWeight: FontWeight.w600, color: MColors.primary_text_color))),
+                    style: Theme.of(context).appBarTheme.titleTextStyle)),
             Gaps.vGap8,
             Gaps.vGap8,
             Gaps.vGap8,
@@ -64,7 +64,7 @@ class SearchAboutUnitByQR extends StatelessWidget {
                 },
                 child: Text(
                   S.of(context)!.search,
-                  style: MTextStyles.textMain14.copyWith(fontWeight: FontWeight.w700, color: MColors.white),
+                  style:Theme.of(context).appBarTheme.titleTextStyle,
                 ),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
@@ -85,7 +85,7 @@ class SearchAboutUnitByQR extends StatelessWidget {
                     BoxDecoration(color: Color(0xffDA1414).withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   pr.message ?? "",
-                  style: MTextStyles.textMain14.copyWith(fontSize: 9.sp),
+                  style: Theme.of(context).appBarTheme.titleTextStyle,
                 ),
               ),
             ),

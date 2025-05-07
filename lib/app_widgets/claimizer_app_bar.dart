@@ -32,10 +32,12 @@ class ClaimizerAppBar extends StatelessWidget {
                 ? RotatedBox(
                     quarterTurns: 2,
                     child: SvgPicture.asset(
+    color: Theme.of(context).iconTheme.color,
                       ImageUtils.getSVGPath("back_icon"),
                     ),
                   )
                 : SvgPicture.asset(
+              color: Theme.of(context).iconTheme.color,
                     ImageUtils.getSVGPath("back_icon"),
                   )),
         Expanded(

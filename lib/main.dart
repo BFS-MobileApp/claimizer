@@ -2,6 +2,8 @@ import 'package:Cliamizer/app_widgets/message_item.dart';
 import 'package:Cliamizer/res/setting.dart';
 import 'package:Cliamizer/route/application.dart';
 import 'package:Cliamizer/route/routers.dart';
+import 'package:Cliamizer/styles/dark_theme_provider.dart';
+import 'package:Cliamizer/styles/dark_theme_style.dart';
 import 'package:Cliamizer/styles/light_theme_style.dart';
 import 'package:Cliamizer/ui/claims_details_screen/ClaimsDetailsProvider.dart';
 import 'package:Cliamizer/ui/claims_screen/ClaimsProvider.dart';
@@ -92,15 +94,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  DarkThemeProvider themeChangeProvider = DarkThemeProvider();
+  void getCurrentTheme() async {
+    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
+  }
   @override
   void initState() {
     super.initState();
+    getCurrentTheme();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => DarkThemeProvider()),
         ChangeNotifierProvider(create: (context) => IntroProvider()),
         ChangeNotifierProvider(create: (context) => MainProvider()),
         ChangeNotifierProvider(create: (context) => MoreProvider()),
@@ -113,31 +121,42 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
       ],
-      child: ValueListenableBuilder(
-        valueListenable: Setting.mobileLanguage,
-        builder: (context, Locale local, _) {
-          return Sizer(
-            builder: (context, orientation, deviceType) {
-              return OKToast(
-                child: MaterialApp(
-                  locale: local,
-                  localizationsDelegates: [
-                    S.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                  supportedLocales: S.delegate.supportedLocales,
-                  debugShowCheckedModeBanner: false,
-                  title: "Claimizer",
-                  theme: LightStyles.lightTheme(context),
-                  home: SplashScreen(),
-                  scaffoldMessengerKey: MessageWidget.scaffoldMessengerKey,
-                ),
-              );
-            },
-          );
-        },
+      child: ChangeNotifierProvider(
+        create: (_)=> themeChangeProvider,
+        child: Consumer<DarkThemeProvider>(
+            builder: (context,darkThemeProvider,child) {
+              return
+                ValueListenableBuilder(
+                  valueListenable: Setting.mobileLanguage,
+                  builder: (context, Locale local, _) {
+                    return Sizer(
+                      builder: (context, orientation, deviceType) {
+                        return OKToast(
+                          child: MaterialApp(
+                            locale: local,
+                            localizationsDelegates: [
+                              S.delegate,
+                              GlobalCupertinoLocalizations.delegate,
+                              GlobalMaterialLocalizations.delegate,
+                              GlobalWidgetsLocalizations.delegate,
+                            ],
+                            supportedLocales: S.delegate.supportedLocales,
+                            debugShowCheckedModeBanner: false,
+                            title: "Claimizer",
+                            theme: darkThemeProvider.darkTheme ? DarkStyle.darkTheme(context) // Apply Dark Theme
+                                :
+                            LightStyles.lightTheme(context),
+                            home: SplashScreen(),
+                            scaffoldMessengerKey: MessageWidget
+                                .scaffoldMessengerKey,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+            }
+        ),
       ),
     );
   }

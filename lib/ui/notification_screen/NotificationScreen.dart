@@ -40,7 +40,7 @@ class NotificationScreenState extends BaseState<NotificationScreen, Notification
       create: (context) => provider,
       builder: (context, child) => Consumer<NotificationProvider>(
         builder: (context, pr, child) => Scaffold(
-          backgroundColor: MColors.page_background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 50, 20, 0),
             child: Column(
@@ -121,7 +121,7 @@ class NotificationScreenState extends BaseState<NotificationScreen, Notification
                             ),
                             Gaps.vGap16,
                             Container(
-                              decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+                              decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                               child: ListView.builder(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -134,7 +134,7 @@ class NotificationScreenState extends BaseState<NotificationScreen, Notification
                                         Container(
                                           height: 32,
                                           width: 32,
-                                          decoration: BoxDecoration(color: MColors.page_background, borderRadius: BorderRadius.circular(16)),
+                                          decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(16)),
                                           padding: EdgeInsets.all(6),
                                           child: SvgPicture.asset(ImageUtils.getSVGPath("notification-bing")),
                                         ),
@@ -146,12 +146,12 @@ class NotificationScreenState extends BaseState<NotificationScreen, Notification
                                                 width: 70.w,
                                                 child: Text(
                                                   pr.notificationList[index].items![nIndex].title ?? "",
-                                            style: MTextStyles.textDark14,
+                                            style: Theme.of(context).appBarTheme.titleTextStyle,
                                           ),),
                                             Gaps.vGap6,
                                             Text(
                                               pr.notificationList[index].diffDate ?? "",
-                                          style: MTextStyles.textDark12,
+                                          style: Theme.of(context).appBarTheme.titleTextStyle,
                                         ),
                                           ],
                                         )

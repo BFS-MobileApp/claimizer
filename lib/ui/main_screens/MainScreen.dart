@@ -79,12 +79,13 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
               bottomNavigationBar: Container(
                 height: 10.h,
                 padding: EdgeInsets.only(top: 1.h, left: 1.w, right: 1.w,bottom: 1.h),
-                color: MColors.white,
+                color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
                 child: TabBar(
                   controller: pr.tabController,
-                  labelStyle:  TextStyle(fontSize: 7.sp),
+                  labelStyle:  Theme.of(context).bottomNavigationBarTheme.unselectedLabelStyle,
                   isScrollable: false,
-                  unselectedLabelColor: MColors.subText_color,
+                  unselectedLabelColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+                  labelColor: Colors.red,
                   automaticIndicatorColorAdjustment: true,
                   indicatorWeight: 3,
                   indicatorSize: TabBarIndicatorSize.label,
@@ -92,32 +93,46 @@ class MainScreenState extends BaseState<MainScreen, MainPresenter>
                     Tab(
                       icon: SvgPicture.asset(
                         ImageUtils.getSVGPath('home'),
-                        color: pr.tabController.index == 0 ? MColors.primary_color : MColors.tabsTextColor,
-                        width: 11.sp,
+                        color: pr.tabController.index == 0
+                            ? Colors.red
+                            : Colors.red,
+
+
+                        width: 16.sp,
                       ),
                       text: S.of(context)!.home,
                     ),
                     Tab(
                       icon: SvgPicture.asset(
                         ImageUtils.getSVGPath('claims'),
-                        color: pr.tabController.index == 1 ? MColors.primary_color : MColors.tabsTextColor,
-                        width: 10.sp,
+                        color: pr.tabController.index == 0
+                            ? Colors.red
+                            : Colors.red,
+
+
+                        width: 15.sp,
                       ),
                       text: S.of(context)!.claims,
                     ),
                     Tab(
                       icon: SvgPicture.asset(
                         ImageUtils.getSVGPath('units'),
-                        color: pr.tabController.index == 2 ? MColors.primary_color : MColors.tabsTextColor,
-                        width: 13.sp,
+                        color: pr.tabController.index == 0
+                            ? Colors.red
+                            : Colors.red,
+
+                        width: 18.sp,
                       ),
                       text: S.of(context)!.units,
                     ),
                     Tab(
                       icon: Icon(
                         Icons.more_horiz_rounded,
-                        color: pr.tabController.index == 3 ? MColors.primary_color : MColors.tabsTextColor,
-                        size: 13.sp,
+                        color: pr.tabController.index == 0
+                            ? Colors.red
+                            : Colors.red,
+
+                        size: 18.sp,
                       ),
                       text: S.of(context)!.more,
                     ),

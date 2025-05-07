@@ -55,7 +55,7 @@ class _ExistingUnitListState extends State<ExistingUnitList> {
                   itemCount: pr.unitsList.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                       padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
                       margin: index == 0 ? EdgeInsets.zero : EdgeInsets.symmetric(vertical: 2.w),
                       child: Column(
@@ -68,11 +68,11 @@ class _ExistingUnitListState extends State<ExistingUnitList> {
                                 children: [
                                     Text(
                                       pr.unitsList[index].name ?? "",
-                                      style: MTextStyles.textBoldDark16,
+                                      style: Theme.of(context).appBarTheme.titleTextStyle,
                                     ),
                                     Text(
                                       S.of(context)!.unitCode + pr.unitsList[index].code,
-                                      style: MTextStyles.textSubtitle,
+                                      style: Theme.of(context).appBarTheme.titleTextStyle,
                                     ),
                                   ],
                                 ),
