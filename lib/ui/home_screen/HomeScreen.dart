@@ -2,13 +2,17 @@ import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/app_headline.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
 import 'package:Cliamizer/helper.dart';
+import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
 import 'package:Cliamizer/ui/claims_screen/ClaimsProvider.dart';
+import 'package:Cliamizer/ui/edit_profile_screen/EditProfileScreen.dart';
 import 'package:Cliamizer/ui/home_screen/HomePresenter.dart';
 import 'package:Cliamizer/ui/home_screen/HomeProvider.dart';
 import 'package:Cliamizer/ui/home_screen/emergency_screen.dart';
 import 'package:Cliamizer/ui/home_screen/widgets/home_card_item.dart';
 import 'package:Cliamizer/ui/home_screen/widgets/remember_that_item.dart';
 import 'package:Cliamizer/ui/main_screens/MainProvider.dart';
+import 'package:Cliamizer/ui/main_screens/MainScreen.dart';
+import 'package:Cliamizer/ui/more_screen/MoreProvider.dart';
 import 'package:Cliamizer/ui/notification_screen/NotificationScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +20,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import '../../CommonUtils/LocalNotification.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
 import '../../CommonUtils/model_eventbus/ProfileEvent.dart';
 import '../../CommonUtils/model_eventbus/ReloadHomeEevet.dart';
+import '../../app_widgets/image_loader.dart';
 import '../../generated/l10n.dart';
 import '../../res/colors.dart';
+import '../unit_request_details_screen/UnitDetailsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -32,6 +39,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   HomeProvider provider = HomeProvider();
+  MoreProvider moreProvider = MoreProvider();
   MainProvider mainProvider = MainProvider();
   ClaimsProvider claimsProvider = ClaimsProvider();
   bool refresh = true;
@@ -61,6 +69,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     provider = context.read<HomeProvider>();
     mainProvider = context.read<MainProvider>();
     claimsProvider = context.read<ClaimsProvider>();
+    moreProvider = context.read<MoreProvider>();
     EventBusUtils.getInstance().on<ProfileEvent>().listen((event) {
       if (event.username != null) {
         provider.name = event.username!;
@@ -70,6 +79,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
       }
       setState(() {});
     });
+
     EventBusUtils.getInstance().on<ReloadEvent>().listen((event) {
       if (event.isRefresh != null || event.isLangChanged != null) {
         mPresenter.getStatisticsApiCall();
@@ -77,8 +87,8 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
       setState(() {});
     });
     mPresenter.getStatisticsApiCall();
+    // mPresenter.getProfileData();
     mPresenter.getUserName();
-    mPresenter.getUserImage();
     mPresenter.test();
     super.initState();
   }
@@ -163,27 +173,39 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                       SizedBox(
                         width: 8,
                       ),
-                      Container(
-                        width: 7.w,
-                        height: 7.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(200),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfileScreen()));
+                        },
+                        child: Container(
+                          width: 7.w,
+                          height: 7.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(200),
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(200),
+                              child:
+                          ImageLoader(
+                            imageUrl: provider.avatar,
+                            width: 16.w,
+                            height: 16.w,
+                            fit: BoxFit.cover,
+                          ) ),
                         ),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200), child: Image.asset(ImageUtils.getImagePath("logo"))),
                       )
                     ],
                   ),
                 ),
                 const SizedBox(
-                  height: 40,
+                  height: 10,
                 ),
                 AppHeadline(
                   title: S.of(context)!.statisticsForYourClaims,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                 ),
                 const SizedBox(
-                  height: 18,
+                  height: 10,
                 ),
                 Selector<HomeProvider, List<String>>(
                   selector: (_, provider) => provider.claimsStatistics,
@@ -193,7 +215,7 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 15 / 10,
+                      childAspectRatio: 15 / 7.5,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       children: List.generate(
@@ -213,26 +235,44 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 10),
                 Visibility(
                   visible: provider.rememberThatList.isNotEmpty,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AppHeadline(title: S.of(context)!.rememberThat, padding: const EdgeInsets.symmetric(horizontal: 20)),
+                      AppHeadline(title: S.of(context).rememberThat, padding: const EdgeInsets.symmetric(horizontal: 20)),
                       const SizedBox(height: 18),
                       Container(
                         height: 18.h,
                         child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (_, index) =>
-                                RememberThatItem(index: index, aboutToExpireUnits: provider.rememberThatList[index]),
+                                InkWell(
+                                  onTap: (){
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => UnitRequestDetailsScreen(
+                                            id: provider.rememberThatList[index].id,
+                                            unitRequestDataBean:
+                                            UnitRequestDataBean(refCode:
+                                            provider.rememberThatList[index].refCode,
+                                              id: provider.rememberThatList[index].id,
+                                            )
+                                          ),
+                                        ));
+                                  },
+                                    child: RememberThatItem(
+                                        index: index,
+                                        aboutToExpireUnits: provider.rememberThatList[index])
+                                ),
                             separatorBuilder: (_, index) => SizedBox(
                               width: 3.w,
                             ),
                             itemCount: provider.rememberThatList.length),
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 ),

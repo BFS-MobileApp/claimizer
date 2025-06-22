@@ -53,7 +53,7 @@ class ClaimTypeGrid extends StatelessWidget {
                                 pr.claimTypeList[index].name!,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 9.sp,
+                                  fontSize: 13.sp,
                                   color: pr.selectedClaimTypeIndex == index ? Colors.white : Colors.black,
                                 ),
                               ),

@@ -9,7 +9,7 @@ class UnitDetailsProvider<T> extends BaseProvider<UnitRequestDetailsDataBean> {
   bool _isDateLoaded = false;
   bool _internetStatus = true;
   TextEditingController _contractNo = TextEditingController();
-  DateTime? _endDate;
+  DateTime? _endDate = DateTime.now();
 
   File get contractImg => _contractImg;
 
@@ -91,8 +91,8 @@ class UnitDetailsProvider<T> extends BaseProvider<UnitRequestDetailsDataBean> {
     _identityImg = value;
     notifyListeners();
   }
-  DateTime? _unlinkDate;
-  String _unlinkStatus = '';
+  DateTime? _unlinkDate = DateTime.now();
+  String _unlinkStatus = 'finished';
   TextEditingController _unlinkReason = TextEditingController();
 
   TextEditingController get unlinkReason => _unlinkReason;

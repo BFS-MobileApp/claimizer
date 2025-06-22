@@ -18,10 +18,11 @@ class BuildDatePicker extends StatelessWidget {
       builder: (context, pr, child) => GestureDetector(
         onTap: () async {
           final DateTime? picked = await showDatePicker(
-              context: context,
-              initialDate: pr.selectedDate ?? DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now().add(Duration(days: 100000)));
+            context: context,
+            initialDate: pr.selectedDate ?? DateTime.now(),
+            firstDate: DateTime.now(), // Disables all past dates
+            lastDate: DateTime.now().add(Duration(days: 100000)),
+          );
           if (picked != null) {
             pr.selectedDate = picked;
           }

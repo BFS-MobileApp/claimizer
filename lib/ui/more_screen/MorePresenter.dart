@@ -33,6 +33,8 @@ class MorePresenter extends BasePresenter<MoreScreenState> {
             view.provider.setData(data.profileDataBean);
             view.provider.isDateLoaded = true;
             view.closeProgress();
+            print("#####################" + data.profileDataBean!.avatar);
+            Prefs.setUserImage(data.profileDataBean!.avatar);
           }else{
             view.closeProgress();
           }

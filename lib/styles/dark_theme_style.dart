@@ -101,9 +101,9 @@ class DarkStyle {
 
       // 🔹 App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: MColors.second_dark_color,
+        backgroundColor: MColors.white,
         titleTextStyle: GoogleFonts.montserrat(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
           color: MColors.white,
         ),

@@ -14,13 +14,10 @@ class ItemWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AutoSizeText(title, style: TextStyle(color: MColors.black, fontWeight: FontWeight.w700)),
+        AutoSizeText(title, style: Theme.of(context).appBarTheme.titleTextStyle),
         Gaps.vGap8,
         AutoSizeText(value,
-            style: TextStyle(
-              color: valueColor ?? MColors.black,
-              fontWeight: FontWeight.w400,
-            )),
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         Gaps.vGap12,
         Gaps.vGap12,
       ],

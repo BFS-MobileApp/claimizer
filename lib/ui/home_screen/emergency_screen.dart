@@ -96,7 +96,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(contact.title , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 12.sp , color: Colors.black),),
+                    Text(contact.title , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15.sp , color: Colors.black),),
                     SizedBox(height: 1.h,),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 2.w),

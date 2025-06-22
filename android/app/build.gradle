@@ -30,7 +30,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.app.claimizer"
-    compileSdk 34
+    compileSdk 35
     ndkVersion "25.1.8937393"
 
 
@@ -55,7 +55,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()+16
-        versionName flutterVersionName
+        versionName "1.0.7"
         multiDexEnabled = true
     }
 

@@ -1,59 +1,26 @@
 {
   "project_info": {
-    "project_number": "688584279084",
-    "project_id": "claimizer-a73e7",
-    "storage_bucket": "claimizer-a73e7.appspot.com"
+    "project_number": "691924647362",
+    "project_id": "claimizer-new",
+    "storage_bucket": "claimizer-new.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:688584279084:android:6498e044a8dd5fd1993d89",
+        "mobilesdk_app_id": "1:691924647362:android:22c4432172919cb80f6a5b",
         "android_client_info": {
           "package_name": "com.app.claimizer"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "688584279084-7keh32jiadhi3jmpgds1aevjribpd2mb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.claimizer",
-            "certificate_hash": "41a7d13a8306639d3dfaeffd04ea11102ee3d0a9"
-          }
-        },
-        {
-          "client_id": "688584279084-g16fpmqgl8rmir3f5slqffl8kbdgvij6.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.app.claimizer",
-            "certificate_hash": "93a4419342ea172231025b49cb11bf6aa9fa059a"
-          }
-        },
-        {
-          "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBRBNeUwID2o8BR0nXXGKjWplXC6Vj7ISQ"
+          "current_key": "AIzaSyBnnAfKw2KzQf_psIcmKXNCL3znVFLpFM0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "688584279084-10sbhe7q6nvfhsompug64etvqripk8p6.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.app.claimizer.claimizerClient"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

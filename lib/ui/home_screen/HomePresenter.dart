@@ -4,13 +4,22 @@ import 'package:Cliamizer/CommonUtils/preference/Prefs.dart';
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
 import 'package:Cliamizer/network/models/emergency_model.dart';
 import 'package:Cliamizer/ui/home_screen/HomeScreen.dart';
+import 'package:Cliamizer/ui/more_screen/MorePresenter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import '../../CommonUtils/log_utils.dart';
+import '../../app_widgets/LoginRequiredDialog.dart';
+import '../../generated/l10n.dart';
 import '../../network/api/network_api.dart';
+import '../../network/exception/error_status.dart';
+import '../../network/models/ProfileResponse.dart';
 import '../../network/models/StatisticsResponse.dart';
 import '../../network/network_util.dart';
 import 'package:http/http.dart' as http;
 
 class HomePresenter extends BasePresenter<HomeScreenState> {
+
+  final MorePresenter morePresenter = MorePresenter();
   void getUserName() async {
     await Prefs.getUserName.then((value) {
       view.provider.name = value;
@@ -20,6 +29,7 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
   void getUserImage() async {
     await Prefs.getUserImage.then((value) {
       view.provider.avatar = value;
+      print("Event received: ${value}");
     });
   }
 
@@ -77,6 +87,7 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
         view.provider.claimsStatistics.add(data.data!.claims!.completed.toString());
         view.provider.claimsStatistics.add(data.data!.claims!.cancelled.toString());
         view.provider.claimsStatistics.add(data.data!.claims!.closed.toString());
+        getProfileData();
       }
     }, onError: (code, msg) {
       view.closeProgress();
@@ -85,6 +96,40 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
       }
     });
   }
+  getProfileData() async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token)  {
+      view.showProgress(isDismiss: false);
+      header['Authorization'] = "Bearer $token";
+      requestFutureData<ProfileResponse>(
+        Method.get,
+        endPoint: Api.profileApiCall,
+        options: Options(headers: header),
+        onSuccess: (data)  async {
+          if (data != null) {
+            view.provider.setData(data.profileDataBean);
+            view.provider.isDateLoaded = true;
+            view.closeProgress();
+            // print("#####################" + data.profileDataBean!.avatar);
+            Prefs.setUserImage(data.profileDataBean!.avatar);
+            getUserImage();
+          }else{
+            view.closeProgress();
+          }
+        },
+        onError: (code, msg) {
+          Log.d(msg);
+          if(code == ErrorStatus.UNKNOWN_ERROR)
+            view.provider.internetStatus = false;
+          view.closeProgress();
+          if(code == ErrorStatus.UNAUTHORIZED)
+            showDialog( context: view.context,builder: (_)=>
+                LoginRequiredDialog( message: S.of(view.context)!.sessionTimeoutPleaseLogin),barrierDismissible: false);
+        },
+      );
+    });
+  }
+
 
   List<String> statusList = [
     'all',

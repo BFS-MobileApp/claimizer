@@ -37,9 +37,7 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
       return ;
     }
     if (pickedFiles.isNotEmpty) {
-      setState(() {
         widget.provider.imageFiles = pickedFiles;
-      });
     }
     Navigator.pop(context);
   }
@@ -47,8 +45,6 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
   // File pr.file;
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-
-    setState(() {
       if (pickedFile != null) {
         widget.provider.file = File(pickedFile.path);
       } else {
@@ -60,7 +56,6 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
         Navigator.pop(context);
         Navigator.pop(context);
       }
-    });
     Navigator.pop(context);
   }
 
@@ -153,7 +148,7 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
                 )
                     : Text(
                   S.current!.uploadAnyFiles,
-                  style: MTextStyles.textDark14,
+                  style: Theme.of(context).appBarTheme.titleTextStyle,
                 ),
                 Spacer(),
                 InkWell(

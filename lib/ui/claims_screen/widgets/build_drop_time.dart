@@ -18,14 +18,16 @@ class BuildTimeDropDown extends StatelessWidget {
         decoration: new BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: MColors.textFieldBorder),
-          color: Colors.white,
+          color: Theme.of(context).highlightColor,
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
+            style: Theme.of(context).textTheme.bodyLarge,
+            dropdownColor: Theme.of(context).indicatorColor,
             isExpanded: true,
             hint: Text(
               S.of(context)!.availableTime,
-              style: MTextStyles.textMain14.copyWith(color: MColors.light_text_color),
+              style: MTextStyles.textMain14.copyWith(color: Theme.of(context).scaffoldBackgroundColor),
             ),
             value: pr.selectedTimeValue,
             onChanged: (String? newValue) {

@@ -56,7 +56,7 @@ class CategoriesGrid extends StatelessWidget {
                                   if (pr.categoriesList[index]?.icon != null)
                                     SvgPicture.network(
                                       pr.categoriesList[index]?.icon ?? '',
-                                      width: 40,
+                                      width: 60,
                                     ),
                                   SizedBox(
                                     height: 8,
@@ -66,7 +66,7 @@ class CategoriesGrid extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                     maxLines: 3,
                                     style: TextStyle(
-                                      fontSize: 9.sp,
+                                      fontSize: 14.sp,
                                       color: pr.selectedClaimCategoryIndex == index ? Colors.white : Colors.black,
                                     ),
                                   ),

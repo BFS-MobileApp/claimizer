@@ -104,7 +104,7 @@ class _BuildingGridState extends State<BuildingGrid> {
                   color: MColors.primary_color,
                 ),
                 Gaps.hGap8,
-                Text(S.of(context)!.selectBuilding, style: MTextStyles.textMain16),
+                Text(S.of(context)!.selectBuilding, style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
             pr.buildingsList.isNotEmpty
@@ -131,7 +131,7 @@ class _BuildingGridState extends State<BuildingGrid> {
                     padding: EdgeInsets.all(8),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: pr.selectedBuildingIndex == index ? MColors.primary_color : Colors.white,
+                      color: pr.selectedBuildingIndex == index ? MColors.primary_color : Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: MColors.dividerColor.withOpacity(.6), width: 2),
                     ),
@@ -139,7 +139,7 @@ class _BuildingGridState extends State<BuildingGrid> {
                       pr.buildingsList[index].name!,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 9.sp,
+                        fontSize: 13.sp,
                         color: pr.selectedBuildingIndex == index ? Colors.white : Colors.black,
                       ),
                     ),

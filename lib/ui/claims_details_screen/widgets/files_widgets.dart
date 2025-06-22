@@ -19,7 +19,6 @@ class FilesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     print(apiStrings[0]['file_url']);
     /*List<Widget> stringWidgets = [];
-
     for (String apiString in apiStrings) {
       print(apiString);
       // extract values from apiString and add them to a widget
@@ -45,13 +44,13 @@ class FilesWidget extends StatelessWidget {
             itemBuilder: (context, index) => GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
-                  return FullScreenImage(image: apiStrings[index]['file_url'],);
+                  return FullScreenImage(image: apiStrings[index],);
                 }));
               },
               child: Container(
                   margin: EdgeInsets.symmetric(horizontal: 2.w),
                   child: ImageLoader(
-                    imageUrl: apiStrings[index]['file_url'],
+                    imageUrl: apiStrings[index],
                     width: 16.w,
                     height: 16.w,
                   )),

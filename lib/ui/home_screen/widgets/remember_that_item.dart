@@ -41,9 +41,9 @@ class RememberThatItem extends StatelessWidget {
               ),
               Expanded(
                   child: Text(
-                S.of(context)!.youNeedToRenewUnit + " " + aboutToExpireUnits!.propertyName!,
+                S.of(context)!.youNeedToRenewUnit + " " + aboutToExpireUnits!.id.toString(),
                 maxLines: 2,
-                style: TextStyle(color: Colors.black.withOpacity(.8), fontSize: 10.sp, fontWeight: FontWeight.w500),
+                style: TextStyle(color: Colors.black.withOpacity(.8), fontSize: 15.sp, fontWeight: FontWeight.w500),
               )),
               SizedBox(
                 width: 10,
@@ -62,10 +62,10 @@ class RememberThatItem extends StatelessWidget {
           Gaps.vGap5,
           FittedBox(
             child: AutoSizeText(
-               S.of(context)!.unit +
-                              aboutToExpireUnits!.propertyName! +
+               // S.of(context)!.unit +
+               //                aboutToExpireUnits!.propertyName! +
                               S.of(context)!.contractEndsOn +
-                              aboutToExpireUnits!.requestEndAt!,
+                              aboutToExpireUnits!.endAt!,
               maxLines: 2,
               style: TextStyle(
                   color: Colors.black54,

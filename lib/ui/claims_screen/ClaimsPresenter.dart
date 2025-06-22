@@ -196,6 +196,12 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
         view.closeProgress();
         view.provider.buildingsList.clear();
         view.provider.buildingsList = data.data!;
+        if(view.provider.buildingsList.length == 1){
+          view.provider.selectedBuilding = view.provider.buildingsList.first.name!;
+          view.provider.selectedBuildingIndex = view.provider.buildingsList.first.id!;
+          getUnitsApiCall(view.provider.selectedBuildingIndex);
+          view.provider.currentStep = 1;
+        }
       }
     }, onError: (code, msg) {
 
@@ -219,6 +225,14 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
       view.provider.dataLoaded = true;
       if (data != null) {
         view.provider.unitsList = data.data;
+        if(view.provider.unitsList.length == 1){
+          view.provider.selectedUnit = view.provider.unitsList.first.name;
+          view.provider.selectedUnitIndex = view.provider.unitsList.first.id;
+          view.provider.companyId = view.provider.unitsList.first.companyId;
+          getCategoryApiCall(view.provider.selectedUnitIndex
+          );
+          view.provider.currentStep = 2;
+        }
       }
     }, onError: (code, msg) {
       view.provider.dataLoaded = true;
@@ -279,7 +293,7 @@ class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
       view.closeProgress();
       if (data != null) {
         view.provider.claimAvailableTimeList = data.data!;
-        view.provider.selectedTimeValue = (data.data!.isNotEmpty ? data.data![0].name : null)!;
+        view.provider.selectedTimeValue = (data.data!.isNotEmpty ? data.data![0].name : "Select Time");
       }
     }, onError: (code, msg) {
       view.closeProgress();

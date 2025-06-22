@@ -58,94 +58,124 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
     });
     mPresenter.getProfileData();
     Prefs.getAppLocal.then((value) => {
-      if (value != null)
-        {
-          setState(() {
-            setSelected(value);
-            provider.language = value;
-            print('languageeeeeeeee '+value);
-          }),
-        }
-    });
+          if (value != null)
+            {
+              setState(() {
+                setSelected(value);
+                provider.language = value;
+                print('languageeeeeeeee ' + value);
+              }),
+            }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-
     super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: provider.instance!=null ?Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 60),
-        child: ListView(
-          children: [profileWidget(), Gaps.vGap12, settingsWidget(), Gaps.vGap12, Gaps.vGap8, accountWidget() , /*deleteAccountWidget()*/],
-        ),
-      ) : mPresenter.showProgress(),
+      body: provider.instance != null
+          ? Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 5),
+              child: ListView(
+                children: [
+                  profileWidget(),
+                  Gaps.vGap12,
+                  settingsWidget(),
+                  Gaps.vGap12,
+                  Gaps.vGap8,
+                  accountWidget(), /*deleteAccountWidget()*/
+                ],
+              ),
+            )
+          : mPresenter.showProgress(),
     );
   }
 
   Widget profileWidget() => Container(
-    decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
-    child: Column(
-      children: [
-        Row(
+        decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: BorderRadius.circular(8)),
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
+        child: Column(
           children: [
-            Container(
-              width: 1.w,
-              height: 5.w,
-              margin: EdgeInsetsDirectional.only(end: 2.w),
-              decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
+            Row(
+              children: [
+                Container(
+                  width: 1.w,
+                  height: 5.w,
+                  margin: EdgeInsetsDirectional.only(end: 2.w),
+                  decoration: BoxDecoration(
+                      color: MColors.primary_color,
+                      borderRadius: BorderRadius.circular(4)),
+                ),
+                Text(S.current!.profile,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
+                Spacer(),
+                editProfileButton()
+              ],
             ),
-            Text(S.current!.profile, style: Theme.of(context).appBarTheme.titleTextStyle),
-            Spacer(),
-            editProfileButton()
+            Gaps.vGap16,
+            Row(
+              children: [
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: ImageLoader(
+                      imageUrl: provider.instance.avatar,
+                      width: 16.w,
+                      height: 16.w,
+                      fit: BoxFit.cover,
+                    )),
+                Gaps.hGap12,
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(start: 10, top: 6),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(provider.instance.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: MColors.dark_text_color,
+                              fontSize: 15.sp)),
+                      Text(provider.instance.email,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: MColors.dark_text_color,
+                              fontSize: 12.sp)),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ],
         ),
-        Gaps.vGap16,
-        Row(
-          children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: ImageLoader(imageUrl: provider.instance.avatar,width: 16.w,height: 16.w,fit: BoxFit.cover,)),
-            Gaps.hGap12,
-            Padding(
-              padding: const EdgeInsetsDirectional.only(start: 10, top: 6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(provider.instance.name, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 15.sp)),
-                  Text(provider.instance.email, style: TextStyle(fontWeight: FontWeight.w600, color: MColors.dark_text_color , fontSize: 12.sp)),
-                ],
-              ),
-            )
-          ],
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget editProfileButton() => InkWell(
-    onTap: () {
-      Navigator.push(context, CupertinoPageRoute(builder: (_) => EditProfileScreen()));
-    },
-    child: Container(
-      width: 8.w,
-      height: 8.w,
-      padding: EdgeInsets.all(6),
-      decoration:
-      BoxDecoration(border: Border.all(color: MColors.primary_color), borderRadius: BorderRadius.circular(8)),
-      child: SvgPicture.asset(
-        ImageUtils.getSVGPath('edit-2'),
-        fit: BoxFit.fitWidth,
-      ),
-    ),
-  );
+        onTap: () {
+          Navigator.push(
+              context, CupertinoPageRoute(builder: (_) => EditProfileScreen()));
+        },
+        child: Container(
+          width: 8.w,
+          height: 8.w,
+          padding: EdgeInsets.all(6),
+          decoration: BoxDecoration(
+              border: Border.all(color: MColors.primary_color),
+              borderRadius: BorderRadius.circular(8)),
+          child: SvgPicture.asset(
+            ImageUtils.getSVGPath('edit-2'),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+      );
 
   Widget settingsWidget() {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return Container(
-      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.w),
       child: Column(
         children: [
@@ -159,31 +189,31 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                 fit: BoxFit.fitWidth,
               ),
               Gaps.hGap12,
-              Text(S.of(context)!.language, style: Theme.of(context).appBarTheme.titleTextStyle),
+              Text(S.of(context)!.language,
+                  style: Theme.of(context).appBarTheme.titleTextStyle),
               Spacer(),
               Transform.scale(
                   scale: 0.2.w,
                   child: Consumer<MoreProvider>(
-                    builder: (context, pr, child) =>
-                        CupertinoSwitch(
-                            activeColor: Color(0xff44A4F2),
-                            value: Setting.mobileLanguage.value == Locale('en'),
-                            onChanged: (value) {
-                              if (value) {
-                                setSelected("en");
-                                mPresenter.passReloadByEventPath();
-                              } else {
-                                setSelected("ar");
-                                mPresenter.passReloadByEventPath();
-                              }
-                            }),
+                    builder: (context, pr, child) => CupertinoSwitch(
+                        activeColor: Color(0xff44A4F2),
+                        value: Setting.mobileLanguage.value == Locale('en'),
+                        onChanged: (value) {
+                          if (value) {
+                            setSelected("en");
+                            mPresenter.passReloadByEventPath();
+                          } else {
+                            setSelected("ar");
+                            mPresenter.passReloadByEventPath();
+                          }
+                        }),
                   )),
             ],
           ),
           divider(),
           // help
           InkWell(
-            onTap: ()=>_launchUrl(Api.help),
+            onTap: () => _launchUrl(Api.help),
             child: Row(
               children: [
                 SvgPicture.asset(
@@ -193,14 +223,15 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.help, style: Theme.of(context).appBarTheme.titleTextStyle),
+                Text(S.of(context)!.help,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
           divider(),
           // support
           InkWell(
-            onTap: ()=>_launchUrl(Api.contact),
+            onTap: () => _launchUrl(Api.contact),
             child: Row(
               children: [
                 SvgPicture.asset(
@@ -210,14 +241,15 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.support, style: Theme.of(context).appBarTheme.titleTextStyle),
+                Text(S.of(context)!.support,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
           divider(),
           // Privacy and Policy
           InkWell(
-            onTap: ()=>_launchUrl(Api.privacyPolicy),
+            onTap: () => _launchUrl(Api.privacyPolicy),
             child: Row(
               children: [
                 SvgPicture.asset(
@@ -227,16 +259,21 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.privacyAndPolicy, style: Theme.of(context).appBarTheme.titleTextStyle),
+                Text(S.of(context)!.privacyAndPolicy,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
           divider(),
           Row(
             children: [
-              Icon(Icons.dark_mode,color: Colors.red,),
+              Icon(
+                Icons.dark_mode,
+                color: Colors.red,
+              ),
               Gaps.hGap12,
-              Text(S.of(context)!.darkMode, style: Theme.of(context).appBarTheme.titleTextStyle),
+              Text(S.of(context)!.darkMode,
+                  style: Theme.of(context).appBarTheme.titleTextStyle),
               Spacer(),
               Transform.scale(
                   scale: 0.2.w,
@@ -253,6 +290,7 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
       ),
     );
   }
+
   void setSelected(String s) {
     if (s == 'en' || s == 'null')
       Setting.mobileLanguage.value = new Locale('en');
@@ -370,7 +408,9 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
 
   Widget accountWidget() {
     return Container(
-      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 3.h),
       child: Column(
         children: [
@@ -397,10 +437,14 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
           // divider(),
           // logout
           InkWell(
-            onTap: () {
-              Prefs.clearExpectLanguage();
+            onTap: () async {
+              await Prefs.clearExpectLanguage();
+              if (!context.mounted) return;
               Navigator.pushAndRemoveUntil(
-                  context, CupertinoPageRoute(builder: (_) => LoginScreen()), (route) => false);
+                context,
+                CupertinoPageRoute(builder: (_) => LoginScreen()),
+                (route) => false,
+              );
             },
             child: Row(
               children: [
@@ -411,7 +455,8 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                   fit: BoxFit.fitWidth,
                 ),
                 Gaps.hGap12,
-                Text(S.of(context)!.logOut, style: Theme.of(context).appBarTheme.titleTextStyle),
+                Text(S.of(context)!.logOut,
+                    style: Theme.of(context).appBarTheme.titleTextStyle),
               ],
             ),
           ),
@@ -423,13 +468,14 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
   Widget deleteAccountWidget() {
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     return Container(
-      decoration: BoxDecoration(color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+          color: MColors.whiteE, borderRadius: BorderRadius.circular(8)),
       padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.h),
       //margin: EdgeInsets.only(right: 15.w),
       child: Column(
         children: [
           InkWell(
-            onTap: () async{
+            onTap: () async {
               List<String> myList = [];
               myList = await Prefs.getDeleteAccount();
               if (!myList.contains(provider.instance.email)) {
@@ -443,13 +489,20 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               Navigator.pushAndRemoveUntil(
-                  context, CupertinoPageRoute(builder: (_) => LoginScreen()), (route) => false);
+                  context,
+                  CupertinoPageRoute(builder: (_) => LoginScreen()),
+                  (route) => false);
             },
             child: Row(
               children: [
-                Icon(Icons.delete , size: 13.sp,color:  MColors.primary_color,),
+                Icon(
+                  Icons.delete,
+                  size: 13.sp,
+                  color: MColors.primary_color,
+                ),
                 Gaps.hGap12,
-                Text(S.of(context)!.deleteAccount, style: MTextStyles.textMainLight16),
+                Text(S.of(context)!.deleteAccount,
+                    style: MTextStyles.textMainLight16),
               ],
             ),
           ),

@@ -82,6 +82,10 @@ class _AllClaimsState extends State<AllClaims> {
                                               Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
+                                                  AutoSizeText(
+                                                    S.of(context)!.requestCode + "\n" + pr.claimsList[index].referenceId,
+                                                    style: Theme.of(context).appBarTheme.toolbarTextStyle,
+                                                  ),
                                                   FittedBox(
                                                     child: SizedBox(
                                                       width: Utils.sWidth(40, context),
@@ -93,10 +97,6 @@ class _AllClaimsState extends State<AllClaims> {
                                                         textAlign: TextAlign.start,
                                                       ),
                                                     ),
-                                                  ),
-                                                  AutoSizeText(
-                                                    S.of(context)!.requestCode + "\n" + pr.claimsList[index].referenceId,
-                                                    style: Theme.of(context).appBarTheme.toolbarTextStyle,
                                                   ),
                                                 ],
                                               ),

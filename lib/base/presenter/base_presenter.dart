@@ -16,6 +16,10 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
   // Cancel network request
   late CancelToken _cancelToken;
 
+  void attachView(V view) {
+    this.view = view;
+  }
+
   BasePresenter() {
     _cancelToken = CancelToken();
   }
@@ -37,7 +41,9 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
   }
 
   @override
-  void initState() {}
+  void initState() {
+
+  }
 
   Future<void> requestFutureData<T>(Method method,
       {String? endPoint,

@@ -11,32 +11,63 @@ class BuildUnlinkStatusDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<UnitDetailsProvider>(
-      builder: (context, pr, child) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        decoration: new BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: MColors.primary_color.withOpacity(.1)
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            isExpanded: true,
-            hint: Text(
-              S.of(context)!.unitStatus,
-              style: MTextStyles.textMain14.copyWith(color: MColors.black),
-            ),
-            value: pr.unlinkStatus,
-            onChanged: (String? newValue) {
-              pr.unlinkStatus = newValue!;
-            },
-            items: [
-              // DropdownMenuItem(child: Text(S.of(context).unlinkStatus), value: ''),
-              DropdownMenuItem(child: Text(S.of(context)!.finished), value: 'finished'),
-              DropdownMenuItem(child: Text(S.of(context)!.terminated), value: 'terminated'),
-              DropdownMenuItem(child: Text(S.of(context)!.canceled), value: 'canceled'),
-            ],
+      builder: (context, provider, child) {
+        // Initialize with first value if unlinkStatus is empty
+        final initialValue = provider.unlinkStatus.isEmpty
+            ? 'finished'
+            : provider.unlinkStatus;
+
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: MColors.primary_color.withOpacity(.1),
           ),
-        ),
-      ),
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField<String>(
+              isExpanded: true,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: MColors.error_color),
+                ),
+              ),
+              hint: Text(
+                S.of(context)!.unitStatus,
+                style: MTextStyles.textMain14.copyWith(color: MColors.black),
+              ),
+              value: initialValue,
+              onChanged: (String? newValue) {
+                if (newValue != null) {
+                  provider.unlinkStatus = newValue;
+                } else {
+                  provider.unlinkStatus = ''; // Or your default value
+                }
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context)!.pleaseSelectStatus;
+                }
+                return null;
+              },
+              items: [
+                DropdownMenuItem(
+                  value: 'finished',
+                  child: Text(S.of(context)!.finished),
+                ),
+                DropdownMenuItem(
+                  value: 'terminated',
+                  child: Text(S.of(context)!.terminated),
+                ),
+                DropdownMenuItem(
+                  value: 'canceled',
+                  child: Text(S.of(context)!.canceled),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

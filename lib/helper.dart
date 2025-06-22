@@ -1,3 +1,8 @@
+import 'dart:ui';
+
+import 'package:Cliamizer/res/assets_manager.dart';
+import 'package:Cliamizer/res/colors.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Helper{
@@ -39,6 +44,104 @@ class Helper{
       print(e.toString());
       return false;
     }
+  }
+  static String removeSeconds(String dateTimeString) {
+    DateTime parsedDateTime = DateTime.parse(dateTimeString);
+    String formattedDate = DateFormat('yyyy-MM-dd h:mm').format(parsedDateTime);
+    return formattedDate;
+  }
+
+  static Color getLogColor(String status){
+    switch (status){
+      case 'New':
+        return Colors.yellow;
+      case 'Assigned':
+        return Colors.blue;
+      case 'Started':
+        return Colors.cyan;
+      case 'Completed':
+        return Colors.green;
+      case 'Closed':
+        return Colors.green;
+      case 'Cancelled':
+        return Colors.red;
+      case 'جديد':
+        return Colors.yellow;
+      case 'تم اختيار فني':
+        return Colors.blue;
+      case 'بدأت':
+        return Colors.cyan;
+      case 'مكتمل':
+        return Colors.green;
+      case 'مغلق':
+        return Colors.green;
+      case 'ملغي':
+        return Colors.red;
+      default:
+        return MColors.primary_color;
+    }
+  }
+  static String getLogImage(String status){
+    switch (status){
+      case 'New':
+        return AssetsManager.newClaims;
+      case 'Assigned':
+        return AssetsManager.assignedClaims;
+      case 'Started':
+        return AssetsManager.startedClaims;
+      case 'Completed':
+        return AssetsManager.completedClaims;
+      case 'Closed':
+        return AssetsManager.closedClaims;
+      case 'Cancelled':
+        return AssetsManager.canceledClaims;
+      case 'جديد':
+        return AssetsManager.newClaims;
+      case 'تم اختيار فني':
+        return AssetsManager.assignedClaims;
+      case 'بدأت':
+        return AssetsManager.startedClaims;
+      case 'مكتمل':
+        return AssetsManager.completedClaims;
+      case 'مغلق':
+        return AssetsManager.closedClaims;
+      case 'ملغي':
+        return AssetsManager.canceledClaims;
+      default:
+        return '';
+    }
+  }
+  static String extractDate(String dateTime) {
+    if(dateTime == ''){
+      return '-';
+    }
+    return dateTime.split(' ')[0];
+  }
+
+  static String extractTime(String dateTime) {
+    if(dateTime == ''){
+      return '-';
+    }
+    String time = dateTime.split(' ')[1];
+    return time.substring(0, 5);
+  }
+
+  static String calculateDuration(String startOn, String endOn) {
+    if(startOn == '' || endOn == ''){
+      return '${0}D ${0}H ${0}M';
+    }
+    DateTime start = DateTime.parse(startOn);
+    DateTime end = DateTime.parse(endOn);
+
+    Duration duration = end.difference(start);
+
+    int days = duration.inDays;
+    int hours = duration.inHours % 24;
+    int minutes = duration.inMinutes % 60;
+
+    // Formatting the result
+    String result = '${days}d ${hours}h ${minutes}m';
+    return result;
   }
 }
 

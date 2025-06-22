@@ -39,8 +39,8 @@ class MTextStyles {
 
   static const TextStyle textBoldWhite14 = const TextStyle(fontSize: Dimens.font_sp14, color: MColors.white, fontWeight: FontWeight.bold);
 
-  static TextStyle textDark14 = GoogleFonts.montserrat(fontSize: Dimens.font_sp14, fontWeight: FontWeight.w500, color: MColors.text_dark);
-  static TextStyle textWhite14 = GoogleFonts.montserrat(fontSize: Dimens.font_sp14, fontWeight: FontWeight.w500, color: MColors.white);
+  static TextStyle textDark14 = GoogleFonts.montserrat(fontSize: Dimens.font_sp18, fontWeight: FontWeight.w500, color: MColors.text_dark);
+  static TextStyle textWhite14 = GoogleFonts.montserrat(fontSize: Dimens.font_sp18, fontWeight: FontWeight.w500, color: MColors.white);
 
 
   static const TextStyle textWhiteDD14 = const TextStyle(

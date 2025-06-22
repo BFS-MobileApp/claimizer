@@ -15,7 +15,6 @@ class ClaimDetailsResponse {
     return data;
   }
 }
-
 class ClaimsDetailsDataBean {
   int id;
   String referenceId;
@@ -37,6 +36,9 @@ class ClaimsDetailsDataBean {
   Category? subCategory;
   Category? type;
   Comments? comments;
+  List<Employee> employees;
+  List<Logs> logs;
+  List<Time> times;
 
   ClaimsDetailsDataBean({
     required this.id,
@@ -59,6 +61,9 @@ class ClaimsDetailsDataBean {
     this.subCategory,
     this.type,
     this.comments,
+    required this.times,
+    required this.employees,
+    required this.logs,
   });
 
   ClaimsDetailsDataBean.fromJson(Map<String, dynamic> json) :
@@ -81,7 +86,18 @@ class ClaimsDetailsDataBean {
         category = json['category'] != null ? Category.fromJson(json['category'] as Map<String, dynamic>) : null,
         subCategory = json['subCategory'] != null ? Category.fromJson(json['subCategory'] as Map<String, dynamic>) : null,
         type = json['type'] != null ? Category.fromJson(json['type'] as Map<String, dynamic>) : null,
-        comments = json['comments'] != null ? Comments.fromJson(json['comments']) : null;
+        comments = json['comments'] != null ? Comments.fromJson(json['comments']) : null,
+        employees = json['employees'] != null
+            ? List<Employee>.from((json['employees'] as List).map((e) => Employee.fromJson(e)))
+            : [],
+        times = json['times'] != null
+            ? List<Time>.from((json['times'] as List).map((e) => Time.fromJson(e)))
+            : [],
+        logs = json['logs'] != null
+            ? List<Logs>.from((json['logs'] as List).map((e) => Logs.fromJson(e)))
+            : [];
+
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{
@@ -119,7 +135,133 @@ class ClaimsDetailsDataBean {
     return data;
   }
 }
+class TimeCreatedBy {
+  int id;
+  String name;
+  String avatar;
 
+  TimeCreatedBy({
+    required this.id,
+    required this.name,
+    required this.avatar,
+  });
+
+  factory TimeCreatedBy.fromJson(Map<String, dynamic> json) => TimeCreatedBy(
+    id: json["id"]??0,
+    name: json["name"]??'',
+    avatar: json["avatar"]??'',
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "avatar": avatar,
+  };
+}
+class CreatedBy {
+  int id;
+  String name;
+
+  CreatedBy({
+    required this.id,
+    required this.name,
+  });
+
+  factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
+    id: json["id"]??0,
+    name: json["name"]??'',
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+  };
+}
+class Time {
+  int id;
+  String startOn;
+  String endOn;
+  TimeCreatedBy createdBy;
+
+  Time({
+    required this.id,
+    required this.startOn,
+    required this.endOn,
+    required this.createdBy,
+  });
+
+  factory Time.fromJson(Map<String, dynamic> json) => Time(
+    id: json["id"]??0,
+    startOn: json["start_on"]??'',
+    endOn: json["end_on"]??'',
+    createdBy: TimeCreatedBy.fromJson(json["created_by"]??''),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "start_on": startOn,
+    "end_on": endOn,
+    "created_by": createdBy.toJson(),
+  };
+}
+class Logs {
+  String name;
+  dynamic badge;
+  String createdAt;
+  dynamic reason;
+  CreatedBy createdBy;
+
+  Logs({
+    required this.name,
+    required this.badge,
+    required this.createdAt,
+    required this.reason,
+    required this.createdBy,
+  });
+
+  factory Logs.fromJson(Map<String, dynamic> json) => Logs(
+    name: json["name"]??'',
+    badge: json["badge"]??'',
+    createdAt: json["created_at"]??'',
+    reason: json["reason"]??'',
+    createdBy: CreatedBy.fromJson(json["created_by"]??{}),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "badge": badge,
+    "created_at": createdAt,
+    "reason": reason,
+    "created_by": createdBy.toJson(),
+  };
+}
+class Employee {
+  int id;
+  String name;
+  String imageUrl;
+  String created_at;
+
+  Employee({
+    required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.created_at
+  });
+
+  factory Employee.fromJson(Map<String, dynamic> json) => Employee(
+    id: json["id"] ?? 0,
+    name: json["name"] ?? '',
+    imageUrl: json["image_url"] ?? '',
+    created_at: json["created_at"] ??'',
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "image_url": imageUrl,
+    "created_at":created_at
+  };
+}
 class Unit {
   int id;
   String code;
@@ -160,7 +302,6 @@ class Unit {
     };
   }
 }
-
 class Category {
   int id;
   String code;
@@ -185,7 +326,6 @@ class Category {
     };
   }
 }
-
 class Comments {
   List<CommentsData> data;
 
@@ -202,7 +342,6 @@ class Comments {
     };
   }
 }
-
 class CommentsData {
   int id;
   String comment;
@@ -235,7 +374,6 @@ class CommentsData {
     };
   }
 }
-
 class User {
   UserData data;
 
@@ -250,7 +388,6 @@ class User {
     };
   }
 }
-
 class UserData {
   int id;
   String refCode;

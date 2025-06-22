@@ -479,7 +479,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                 Padding(
                     padding:  EdgeInsets.only(top: 3 , right: 3.w),
                     child: Text(
-                      S.of(context)!.continueWithApple,
+                      S.of(context).continueWithApple,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w600 , fontSize: 10.sp),
                     )
                 ),

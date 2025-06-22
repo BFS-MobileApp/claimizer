@@ -70,11 +70,11 @@ class LightStyles {
         titleLarge: GoogleFonts.montserrat(
             fontSize: 17.sp, color: MColors.primary_text_color),
         titleMedium: GoogleFonts.montserrat(
-            fontSize: 14.sp, color: MColors.hint_color),
+            fontSize: 17.sp, color: MColors.hint_color),
         titleSmall: GoogleFonts.montserrat(
             fontSize: 14.sp, color: MColors.primary_text_color),
         labelSmall: GoogleFonts.montserrat(
-            fontSize: 14.sp, color: MColors.text_button_color, fontWeight: FontWeight.w500),
+            fontSize: 17.sp, color: MColors.text_button_color, fontWeight: FontWeight.w500),
         labelMedium: GoogleFonts.montserrat(
             fontSize: 17.sp, fontWeight: FontWeight.w600, color: MColors.primary_text_color),
       ),
@@ -83,7 +83,7 @@ class LightStyles {
       appBarTheme: AppBarTheme(
         backgroundColor: MColors.primary_color,
         titleTextStyle: GoogleFonts.montserrat(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
           color: MColors.black,
         ),

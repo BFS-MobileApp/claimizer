@@ -19,9 +19,7 @@ class UnitDetailsFiles extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(S.of(context)!.allFiles,
-            style: MTextStyles.textMain16.copyWith(
-              color: MColors.black,
-            )),
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         Gaps.vGap12,
         SizedBox(
           height: 74,

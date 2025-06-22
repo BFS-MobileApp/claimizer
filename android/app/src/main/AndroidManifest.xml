@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.app.claimizer">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Required permission for internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="tel" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
-        </intent>
-    </queries>
+    <!-- Optional for showing notifications on older versions -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:enableOnBackInvokedCallback="true"
-        android:usesCleartextTraffic="true"
-        >
+        android:usesCleartextTraffic="true">
 
+        <!-- Flutter Entry Point -->
         <activity
             android:name="io.flutter.embedding.android.FlutterActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -31,6 +26,7 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- MainActivity -->
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -44,16 +40,58 @@
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Firebase Messaging Service -->
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="true"
+            tools:replace="android:exported">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
+        <!-- Optional: To receive token on app start -->
+        <service
+            android:name="com.google.firebase.components.ComponentDiscoveryService"
+            android:exported="false">
+            <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+        </service>
+
+        <!-- Receive on reboot -->
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            tools:replace="android:permission">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required for FCM -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_color" />
+
+        <!-- Required Firebase embedding -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-
 
 </manifest>

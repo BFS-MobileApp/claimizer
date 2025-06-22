@@ -4,6 +4,7 @@ import 'package:Cliamizer/base/view/base_state.dart';
 import 'package:Cliamizer/ui/units_screen/units_screen.dart';
 import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sizer/sizer.dart';
@@ -11,6 +12,7 @@ import 'package:sizer/sizer.dart';
 import '../../CommonUtils/SizeConfig2.dart';
 import '../../CommonUtils/image_utils.dart';
 import '../../CommonUtils/preference/Prefs.dart';
+import '../../app_widgets/force_update_page.dart';
 import '../main_screens/MainScreen.dart';
 import 'SplashPresenter.dart';
 import 'SplashProvider.dart';
@@ -54,8 +56,10 @@ class SplashScreenState extends BaseState<SplashScreen, SplashPresenter> with Au
 
   @override
   void initState() {
+    checkVersion(context);
     mPresenter.setAppLanguage();
     initSplash();
+
     super.initState();
   }
 
@@ -65,6 +69,26 @@ class SplashScreenState extends BaseState<SplashScreen, SplashPresenter> with Au
     if (_subscription != null) {
       _subscription!.cancel();
     }
+  }
+  Future<void> checkVersion(BuildContext context) async {
+    final newVersion = NewVersionPlus(
+      androidId: 'com.app.claimizer',
+      iOSId: '6475397389',
+    );
+
+    final status = await newVersion.getVersionStatus();
+
+    if (status!.canUpdate) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => ForceUpdatePage(updateUrl: status.appStoreLink)),
+      );
+    }
+
+  }
+  Future<String> getCurrentVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return info.version;
   }
 
   void getAppVersion() async {

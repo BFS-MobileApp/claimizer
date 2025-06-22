@@ -30,10 +30,16 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
       await requestFutureData<LoginResponse>(Method.post, endPoint: Api.loginApiCall, params: bodyParams,
           onSuccess: (data) {
             if (data != null) {
-              Map<String, dynamic> exitingParams = Map();
-              saveUser(data);
-              sendFcmToken();
-              getExistingUnitsApiCall(exitingParams);
+              if(data.data!.role!.contains("employee")){
+                view.closeProgress();
+                view.provider.setError('You Don''t Have Permission to LogIn');
+              }else{
+                Map<String, dynamic> exitingParams = Map();
+                saveUser(data);
+                sendFcmToken();
+                getExistingUnitsApiCall(exitingParams);
+              }
+
             }
           }, onError: (code, msg) {
             view.closeProgress();

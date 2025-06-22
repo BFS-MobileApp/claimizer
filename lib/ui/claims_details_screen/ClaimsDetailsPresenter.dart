@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
 import 'package:Cliamizer/network/models/ClaimDetailsResponse.dart';
 import 'package:Cliamizer/network/models/general_response.dart';
 import 'package:dio/dio.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-
 import '../../CommonUtils/log_utils.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
 import '../../CommonUtils/model_eventbus/ReloadClaimsEevet.dart';
@@ -92,6 +90,64 @@ class ClaimsDetailsPresenter extends BasePresenter<ClaimsDetailsScreenState> {
         }
       );
   }
+
+
+  Future addRateApiCall({
+    required int rate,
+    required String feedback,
+    required String claimId,
+    required BuildContext ctx,
+    required String referenceId,
+  }) async {
+    view.showProgress();
+
+    Map<String, dynamic> header = {};
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+
+    Map<String, dynamic> bodyParams = {
+      "rate": rate.toString(),
+      "feedback": feedback,
+      "claim_id": claimId,
+    };
+
+    await requestFutureData<GeneralResponse>(
+      Method.post,
+      endPoint: Api.doAddRatingApiCall(claimId),
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+
+        if (data != null) {
+          getClaimDetailsDataApiCall(referenceId);
+          Log.d("Rating Success: ${data.toString()}");
+          Navigator.pop(view.context);
+          view.showToasts(S.of(view.context)!.rateAdded, 'success');
+        } else {
+          view.showToasts("Something went wrong", 'error');
+        }
+      },
+      onError: (code, msg) {
+        Log.d("Rating Error: $msg");
+        view.closeProgress();
+
+        if (code == ErrorStatus.UNAUTHORIZED) {
+          showDialog(
+            context: view.context,
+            builder: (_) => LoginRequiredDialog(
+              message: S.of(view.context)!.sessionTimeoutPleaseLogin,
+            ),
+            barrierDismissible: false,
+          );
+        } else {
+          view.showToasts("Error submitting rating", 'error');
+        }
+      },
+    );
+  }
+
 
 
   closeClaimApiCall(String code) async {

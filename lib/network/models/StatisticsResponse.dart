@@ -29,8 +29,15 @@ class Data {
       : claims = json['claims'] != null ? Claims.fromJson(json['claims']) : null,
         claimColor = json['claim_color'] != null ? ClaimColor.fromJson(json['claim_color']) : null,
         aboutToExpireUnits = json['aboutToExpireUnits'] != null
-            ? List<AboutToExpireUnits>.from(json['aboutToExpireUnits'].map((x) => AboutToExpireUnits.fromJson(x)))
+            ? json['aboutToExpireUnits'] is Map<String, dynamic>
+            ? (json['aboutToExpireUnits'] as Map<String, dynamic>)
+            .values
+            .map((x) => AboutToExpireUnits.fromJson(x))
+            .toList()
+            : [] // it's an empty list
             : null;
+
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
@@ -113,43 +120,89 @@ class ClaimColor {
 class AboutToExpireUnits {
   int? id;
   String? refCode;
-  String? propertyName;
-  String? queryCode;
+  int? userId;
+  int? unitId;
   String? startAt;
   String? endAt;
-  String? requestStartAt;
-  String? requestEndAt;
+  String? createdAt;
+  String? updatedAt;
+  String? contractNumber;
+  String? contractAttach;
+  String? clientGovId;
+  String? remarks;
+  String? status;
+  String? requestRemarks;
+  String? statusNote;
+  String? canceledAt;
+  String? cancelReason;
+  int? breaker;
+  dynamic unit; // assuming `unit` is null or dynamic for now
 
-  AboutToExpireUnits(
-      {this.id,
-        this.refCode,
-        this.propertyName,
-        this.queryCode,
-        this.startAt,
-        this.endAt,
-        this.requestStartAt,
-        this.requestEndAt});
+  AboutToExpireUnits({
+    this.id,
+    this.refCode,
+    this.userId,
+    this.unitId,
+    this.startAt,
+    this.endAt,
+    this.createdAt,
+    this.updatedAt,
+    this.contractNumber,
+    this.contractAttach,
+    this.clientGovId,
+    this.remarks,
+    this.status,
+    this.requestRemarks,
+    this.statusNote,
+    this.canceledAt,
+    this.cancelReason,
+    this.breaker,
+    this.unit,
+  });
 
   AboutToExpireUnits.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         refCode = json['ref_code'],
-        propertyName = json['property_name'],
-        queryCode = json['query_code'],
+        userId = json['user_id'],
+        unitId = json['unit_id'],
         startAt = json['start_at'],
         endAt = json['end_at'],
-        requestStartAt = json['request_start_at'],
-        requestEndAt = json['request_end_at'];
+        createdAt = json['created_at'],
+        updatedAt = json['updated_at'],
+        contractNumber = json['contract_number'],
+        contractAttach = json['contract_attach'],
+        clientGovId = json['client_gov_id'],
+        remarks = json['remarks'],
+        status = json['status'],
+        requestRemarks = json['request_remarks'],
+        statusNote = json['status_note'],
+        canceledAt = json['canceled_at'],
+        cancelReason = json['cancel_reason'],
+        breaker = json['breaker'],
+        unit = json['unit']; // keep this dynamic until structure is known
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = {};
     data['id'] = id;
     data['ref_code'] = refCode;
-    data['property_name'] = propertyName;
-    data['query_code'] = queryCode;
+    data['user_id'] = userId;
+    data['unit_id'] = unitId;
     data['start_at'] = startAt;
     data['end_at'] = endAt;
-    data['request_start_at'] = requestStartAt;
-    data['request_end_at'] = requestEndAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['contract_number'] = contractNumber;
+    data['contract_attach'] = contractAttach;
+    data['client_gov_id'] = clientGovId;
+    data['remarks'] = remarks;
+    data['status'] = status;
+    data['request_remarks'] = requestRemarks;
+    data['status_note'] = statusNote;
+    data['canceled_at'] = canceledAt;
+    data['cancel_reason'] = cancelReason;
+    data['breaker'] = breaker;
+    data['unit'] = unit;
     return data;
   }
 }
+

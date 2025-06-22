@@ -19,16 +19,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import '../../CommonUtils/FullScreenImage.dart';
 import '../../CommonUtils/image_utils.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
 import '../../CommonUtils/model_eventbus/ReloadClaimsEevet.dart';
 import '../../app_widgets/app_headline.dart';
 import '../../app_widgets/custom_stepper.dart' as appStepper;
+import '../../app_widgets/image_loader.dart';
 import '../../generated/l10n.dart';
 import '../../res/colors.dart';
 import '../../res/gaps.dart';
 import '../../res/setting.dart';
 import '../../res/styles.dart';
+import '../claims_details_screen/widgets/files_widgets.dart';
 import 'ClaimsPresenter.dart';
 
 class ClaimsScreen extends StatefulWidget {
@@ -81,8 +84,8 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   }
 
   List<String> cardTitles = [
-    S.current!.addNewClaim,
-    S.current!.myClaims,
+    S.current.addNewClaim,
+    S.current.myClaims,
   ];
   List<String> cardImages = [
     'newclaims',
@@ -107,7 +110,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
                   children: [
-                    AppHeadline(title: S.of(context)!.claimManagement),
+                    AppHeadline(title: S.of(context).claimManagement),
                     Gaps.vGap16,
                     Container(
                       alignment: Alignment.center,
@@ -146,7 +149,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                             color: pr.selectedIndex == pageIndex
                                                 ? Colors.white
                                                 : MColors.light_text_color,
-                                            fontSize: 10.sp),
+                                            fontSize: 15.sp),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -178,7 +181,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                             style: MTextStyles.textDark14,
                             controller: pr.searchController,
                             decoration: InputDecoration(
-                              hintText: S.current!.search,
+                              hintText: S.current.search,
                               hintStyle: MTextStyles.textGray14,
                               border: OutlineInputBorder(
                                   borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
@@ -232,19 +235,19 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(S.of(context)!.newClaimsDetails, style: MTextStyles.textMain18),
+                                    Text(S.of(context).newClaimsDetails, style: MTextStyles.textMain14),
                                   ],
                                 ),
                                 Gaps.vGap12,
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.yourBuilding,
-                                        style: MTextStyles.textMain16.copyWith(
+                                    Text(S.of(context).yourBuilding,
+                                        style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                         )),
                                     Gaps.vGap8,
-                                    Text(pr.selectedBuilding ?? "",
+                                    Text(pr.selectedBuilding ,
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -256,12 +259,12 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.yourUnit,
-                                        style: MTextStyles.textMain16.copyWith(
+                                    Text(S.of(context).yourUnit,
+                                        style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                         )),
                                     Gaps.vGap8,
-                                    Text(pr.selectedUnit ?? "",
+                                    Text(pr.selectedUnit,
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -273,12 +276,12 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.claimCategory,
-                                        style: MTextStyles.textMain16.copyWith(
+                                    Text(S.of(context).claimCategory,
+                                        style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                         )),
                                     Gaps.vGap8,
-                                    Text(pr.selectedCategory ?? "",
+                                    Text(pr.selectedCategory,
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -290,12 +293,12 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.claimSubCategory,
-                                        style: MTextStyles.textMain16.copyWith(
+                                    Text(S.of(context).claimSubCategory,
+                                        style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                         )),
                                     Gaps.vGap8,
-                                    Text(pr.selectedSubCategory ?? "",
+                                    Text(pr.selectedSubCategory ,
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -307,12 +310,12 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.claimType,
-                                        style: MTextStyles.textMain16.copyWith(
+                                    Text(S.of(context).claimType,
+                                        style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                         )),
                                     Gaps.vGap8,
-                                    Text(pr.selectedType ?? "",
+                                    Text(pr.selectedType ,
                                         style: MTextStyles.textMain14.copyWith(
                                           color: MColors.black,
                                           fontWeight: FontWeight.w400,
@@ -324,7 +327,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(S.of(context)!.availableTime,
+                                    Text(S.of(context).availableTime,
                                         style: MTextStyles.textMain16.copyWith(
                                           color: MColors.black,
                                         )),
@@ -344,8 +347,8 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(S.of(context)!.description,
-                                            style: MTextStyles.textMain16.copyWith(
+                                        Text(S.of(context).description,
+                                            style: MTextStyles.textMain14.copyWith(
                                               color: MColors.black,
                                             )),
                                         Gaps.vGap8,
@@ -358,6 +361,33 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                     ),
                                   ),
                                 ),
+                                Gaps.vGap12,
+                                Consumer<ClaimsProvider>(
+                                  builder: (context, provider, child) {
+                                    final hasCamera = provider.file.path.isNotEmpty;
+                                    final hasGallery = provider.imageFiles.isNotEmpty;
+                                    final total = provider.imageFiles.length + (hasCamera ? 1 : 0);
+
+                                    if (!hasCamera && !hasGallery) {
+                                      return Text(S.of(context)!.noFiles);
+                                    }
+
+                                    return SizedBox(
+                                      height: 74,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: total,
+                                        itemBuilder: (context, index) {
+                                          if (hasCamera && index == 0) {
+                                            return _buildImageItem(context, provider.file.path);
+                                          }
+                                          final adjustedIndex = hasCamera ? index - 1 : index;
+                                          return _buildImageItem(context, provider.imageFiles[adjustedIndex].path);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                                 Gaps.vGap30,
                                 Row(
                                   children: [
@@ -369,7 +399,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                           pr.isStepsFinished = !pr.isStepsFinished;
                                         },
                                         child: Text(
-                                          S.of(context)!.back,
+                                          S.of(context).back,
                                           style: MTextStyles.textMain14.copyWith(fontWeight: FontWeight.w700),
                                         ),
                                         style: ButtonStyle(
@@ -383,7 +413,12 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                 EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
                                       ),
                                     ),
-                                    SizedBox(width:14,),
+
+                                    // FilesWidget(
+                                    //   apiStrings: pr.imageFiles,
+                                    //   count: pr.imageFiles.length,
+                                    // ),
+                                    SizedBox(width:25,),
                                     Container(
                                       width: 30.w,
                                       margin: EdgeInsets.symmetric(vertical: 3.w),
@@ -421,7 +456,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                 file!,
                                                 filename: pr.file.path.split('/').last,
                                               ),
-                                              "unit_id": selectedUnitId,
+                                              "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
                                               "category_id": selectedCategoryId,
                                               "sub_category_id": selectedSubCategoryId,
                                               "claim_type_id": selectedTypeId,
@@ -435,7 +470,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                           } else {
                                             print('fuxcxxk');
                                             FormData formData = new FormData.fromMap({
-                                              "unit_id": selectedUnitId,
+                                              "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
                                               "category_id": selectedCategoryId,
                                               "sub_category_id": selectedSubCategoryId,
                                               "claim_type_id": selectedTypeId,
@@ -450,7 +485,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                             print(selectedSubCategoryId);
                                             print(provider.description.text);
                                             Map<String, dynamic> parms = Map();
-                                            parms['unit_id'] = selectedUnitId;
+                                            parms['unit_id'] = selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId;
                                             parms['category_id'] = selectedCategoryId;
                                             parms['sub_category_id'] = selectedSubCategoryId;
                                             parms['claim_type_id'] = selectedTypeId;
@@ -464,7 +499,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                         },
                                         child: Text(
                                           S.of(context)!.confirm,
-                                          style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+                                          style: MTextStyles.textWhite12.copyWith(fontWeight: FontWeight.w700),
                                         ),
                                         style: ButtonStyle(
                                             backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
@@ -485,7 +520,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                         : Container(
                             padding: EdgeInsets.symmetric(vertical: 20),
                             margin: EdgeInsets.symmetric(vertical: 2.w),
-                            decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+                            decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
                             child: Column(
                               children: [
                                 Padding(
@@ -504,16 +539,18 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                     child: SvgPicture.asset(
                                                       ImageUtils.getSVGPath("back_icon"),
                                                       width: 30,
+                                                      color: Theme.of(context).indicatorColor,
                                                     ),
                                                   )
                                                 : SvgPicture.asset(
                                                     ImageUtils.getSVGPath("back_icon"),
                                                     width: 30,
+                                              color: Theme.of(context).indicatorColor,
                                                   )),
                                       ),
                                       Expanded(
                                           child: Center(
-                                              child: Text(S.of(context)!.addNewClaim, style: MTextStyles.textMain18))),
+                                              child: Text(S.of(context).addNewClaim, style: Theme.of(context).appBarTheme.titleTextStyle))),
                                     ],
                                   ),
                                 ),
@@ -521,7 +558,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                 Expanded(
                                   child: Theme(
                                     data: ThemeData(
-                                        canvasColor: Colors.white,
+                                        canvasColor: Theme.of(context).scaffoldBackgroundColor,
                                         colorScheme:
                                             ColorScheme.light(primary: MColors.primary_color, secondary: Colors.teal)),
                                     child: appStepper.Stepper(
@@ -541,16 +578,16 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                                         return;
                                                       }
                                                       if (pr.selectedDate == null && pr.selectedTimeValue == null) {
-                                                        showToasts(S.of(context)!.youShouldSelectDateAndTime, "warning");
+                                                        showToasts(S.of(context).youShouldSelectDateAndTime, "warning");
                                                       } else {
                                                         pr.isStepsFinished = !pr.isStepsFinished;
                                                         // mPresenter.postClaimRequestApiCall();
                                                       }
                                                     },
                                                     child: Text(
-                                                      S.of(context)!.confirm,
+                                                      S.of(context).confirm,
                                                       style:
-                                                          MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+                                                          MTextStyles.textMain18.copyWith(fontWeight: FontWeight.w700),
                                                     ),
                                                     style: ButtonStyle(
                                                         backgroundColor:
@@ -665,7 +702,7 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  AppHeadline(title: S.of(context)!.selectAvailableTime),
+                                                  AppHeadline(title: S.of(context).selectAvailableTime),
                                                   Gaps.vGap10,
                                                   Gaps.vGap12,
                                                   BuildDatePicker(
@@ -709,6 +746,23 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     );
   }
 
+  Widget _buildImageItem(BuildContext context, String imagePath) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (_) {
+          return FullScreenImage(image: imagePath);
+        }));
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 2.w),
+        child: ImageLoader(
+          imageUrl: imagePath,
+          width: 16.w,
+          height: 16.w,
+        ),
+      ),
+    );
+  }
   Column buildDivider() {
     return Column(
       children: [

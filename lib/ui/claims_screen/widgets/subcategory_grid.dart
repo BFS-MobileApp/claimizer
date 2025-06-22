@@ -54,7 +54,7 @@ class SubcategoryGrid extends StatelessWidget {
                                   if (pr.subCategoryList[index]?.icon != null)
                                     SvgPicture.network(
                                       pr.subCategoryList[index]?.icon ?? '',
-                                      width: 40,
+                                      width: 60,
                                     ),
                                   SizedBox(
                                     height: 8,
@@ -63,7 +63,7 @@ class SubcategoryGrid extends StatelessWidget {
                                     pr.subCategoryList[index].name,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      fontSize: 9.sp,
+                                      fontSize: 14.sp,
                                       color: pr.selectedClaimSubCategoryIndex == index ? Colors.white : Colors.black,
                                     ),
                                   ),

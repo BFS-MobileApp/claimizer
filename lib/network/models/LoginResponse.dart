@@ -22,18 +22,21 @@ class LoginResponse {
 class Data {
   String? name;
   String? token;
+  String? role;
 
-  Data({this.name, this.token});
+  Data({this.name, this.token,this.role});
 
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     token = json['token'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['token'] = this.token;
+    data['role'] = this.role;
     return data;
   }
 }

@@ -31,6 +31,8 @@ class Api {
   static const String emergency = "emergency-contact";
   static String getClaimDetailsApiCall(String id) => "claim/$id";
 
+  static String doAddRatingApiCall(String claimId) => "claims/$claimId/addRate";
+
   static String deleteClaimDetailsApiCall(int id) => "claims/$id";
   static String closeClaimDetailsApiCall(String code) => "claim/$code";
   static String getUnitRequestDetailsApiCall(int id) => "request/$id";

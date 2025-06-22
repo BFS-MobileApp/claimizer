@@ -293,14 +293,14 @@ class UnitsGrid extends StatelessWidget {
                               pr.unitsList[index].name,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 9.sp,
+                                fontSize: 14.sp,
                                 color: pr.selectedUnitIndex == index
                                     ? Colors.white
                                     : Colors.black,
                               ),
                             ),
                             !pr.unitsList[index].available! ? Flexible(child: Text(S.of(context)!.renewUnitText, textAlign: TextAlign.center ,style: TextStyle(
-                              fontSize: 9.sp,
+                              fontSize: 13.sp,
                               color: Colors.amber,
                             ))) : SizedBox()
                           ],

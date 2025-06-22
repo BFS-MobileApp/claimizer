@@ -1,10 +1,11 @@
 import 'package:Cliamizer/network/models/emergency_model.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../base/provider/base_provider.dart';
 import '../../generated/l10n.dart';
 import '../../network/models/StatisticsResponse.dart';
 
-class HomeProvider extends ChangeNotifier {
+class HomeProvider<T> extends BaseProvider<T> {
   List<String> _claimsStatistics = [];
 
   List<String> get claimsStatistics => _claimsStatistics;
@@ -30,6 +31,23 @@ class HomeProvider extends ChangeNotifier {
 
   set name(String value) {
     _name = value;
+    notifyListeners();
+  }
+  bool _isDateLoaded = false;
+  bool _internetStatus = true;
+
+
+  bool get internetStatus => _internetStatus;
+
+  set internetStatus(bool value) {
+    _internetStatus = value;
+    notifyListeners();
+  }
+
+  bool get isDateLoaded => _isDateLoaded;
+
+  set isDateLoaded(bool value) {
+    _isDateLoaded = value;
     notifyListeners();
   }
 

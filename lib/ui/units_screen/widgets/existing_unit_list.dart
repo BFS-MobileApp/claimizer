@@ -70,10 +70,10 @@ class _ExistingUnitListState extends State<ExistingUnitList> {
                                       pr.unitsList[index].name ?? "",
                                       style: Theme.of(context).appBarTheme.titleTextStyle,
                                     ),
-                                    Text(
-                                      S.of(context)!.unitCode + pr.unitsList[index].code,
-                                      style: Theme.of(context).appBarTheme.titleTextStyle,
-                                    ),
+                                    // Text(
+                                    //   S.of(context)!.unitCode + pr.unitsList[index].code,
+                                    //   style: Theme.of(context).appBarTheme.titleTextStyle,
+                                    // ),
                                   ],
                                 ),
                               ],

@@ -6,16 +6,26 @@ class LocalNotification{
   FlutterLocalNotificationsPlugin();
 
   static void initialize() {
-    // initializationSettings  for Android
-    const InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: AndroidInitializationSettings("@mipmap/ic_launcher_foreground"),
+    const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'pushnotificationapp', // id
+      'Push Notification App Channel', // name
+      description: 'This channel is used for important notifications.',
+      importance: Importance.high,
     );
 
-    _notificationsPlugin.initialize(
-      initializationSettings,
+    final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
     );
+
+    _notificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
+
+    _notificationsPlugin.initialize(initializationSettings);
   }
+
 
 
   static void createAndDisplayNotification(RemoteMessage message) async {

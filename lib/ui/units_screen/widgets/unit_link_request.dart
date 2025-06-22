@@ -89,10 +89,10 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AutoSizeText(
-                                      pr.unitsRequestList[index].unitName ?? "",
-                                      style: TextStyle(color: MColors.text_dark, fontWeight: FontWeight.bold),
-                                    ),
+                                    // AutoSizeText(
+                                    //   pr.unitsRequestList[index].unitName ?? "",
+                                    //   style: TextStyle(color: MColors.text_dark, fontWeight: FontWeight.bold),
+                                    // ),
                                     AutoSizeText(
                                       S.of(context)!.unitRequestCode + "\n" + pr.unitsRequestList[index].refCode!,
                                       style: TextStyle(fontWeight: FontWeight.w500, color: MColors.subText_color),

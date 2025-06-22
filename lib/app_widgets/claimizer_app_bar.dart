@@ -47,7 +47,8 @@ class ClaimizerAppBar extends StatelessWidget {
               style: GoogleFonts.montserrat(fontWeight: FontWeight.w700, color: MColors.dark_text_color),
             ),
           ),
-        )
+        ),
+
       ],
     );
   }

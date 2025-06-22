@@ -106,8 +106,6 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.w),
                           child: ClaimizerAppBar(title: S.current!.editProfile)),
-                      Gaps.vGap12,
-                      Gaps.vGap8,
                       Container(
                         color: Theme.of(context).scaffoldBackgroundColor,
                         padding: EdgeInsets.symmetric(horizontal: 6.w),
@@ -153,7 +151,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                                     )
                                   ],
                                 ),
-                                Gaps.vGap12,
+                                // Gaps.vGap12,
                                 Material(
                                   color: MColors.primary_color.withOpacity(.08),
                                   borderRadius: BorderRadius.circular(30),
@@ -178,8 +176,6 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
                               ],
                             ),
                           ),
-                          Gaps.vGap16,
-                          Gaps.vGap12,
                           Container(
                             child: pr.selectedTabIndex == 0
                                 ? _buildBasicInfoContent(pr)
@@ -357,7 +353,7 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(50),
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z أ-ي]")),
+              // FilteringTextInputFormatter.allow(RegExp("[a-zA-Z أ-ي]")),
             ],
             maxLength: 50,
             maxLengthEnforced: false,
@@ -718,15 +714,14 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
   Widget _buildBasicInfoContent(EditProfileProvider provider) {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      margin: EdgeInsets.only(bottom:20),
+      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+      // margin: EdgeInsets.only(bottom:5),
       child: Form(
         key: provider.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildNameField(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildEmailField(context),
             // Gaps.vGap8,
@@ -744,13 +739,10 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
             //     ),
             //   ),
             // ),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildPhoneField(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildNotificationToggle(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildEditProfileButton(onTap: () {
               // editProfile();
@@ -819,13 +811,10 @@ class EditProfileScreenState extends BaseState<EditProfileScreen, EditProfilePre
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildOldPasswordField(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildPasswordField(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildConfirmPasswordField(context),
-            Gaps.vGap12,
             Gaps.vGap8,
             buildEditProfileButton(onTap: () {
               mPresenter.doEditPassword({

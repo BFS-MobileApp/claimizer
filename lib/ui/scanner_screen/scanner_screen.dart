@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:sizer/sizer.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../app_widgets/claimizer_app_bar.dart';
 import '../../generated/l10n.dart';
@@ -16,20 +16,12 @@ class ScannerScreen extends StatefulWidget {
 }
 
 class _ScannerScreenState extends State<ScannerScreen> {
-  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  QRViewController? controller;
-  Barcode? result;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  MobileScannerController controller = MobileScannerController();
+  bool isScanned = false;
 
   @override
   void dispose() {
-    controller!.pauseCamera();
-    controller!.stopCamera();
-    controller?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -83,9 +75,24 @@ class _ScannerScreenState extends State<ScannerScreen> {
                               'assets/images/bottom_end.png',
                               color: MColors.primary_color,
                             )),
-                        QRView(
-                          key: qrKey,
-                          onQRViewCreated: _onQRViewCreated,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: MobileScanner(
+                            controller: controller,
+                            onDetect: (BarcodeCapture capture) {
+                              final List<Barcode> barcodes = capture.barcodes;
+                              if (barcodes.isNotEmpty && !isScanned) {
+                                final String? code = barcodes.first.rawValue;
+                                if (code != null) {
+                                  setState(() {
+                                    isScanned = true;
+                                  });
+                                  widget.onScanDone(code);
+                                  Navigator.pop(context);
+                                }
+                              }
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -97,18 +104,5 @@ class _ScannerScreenState extends State<ScannerScreen> {
         ),
       ),
     );
-  }
-
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      result = scanData;
-      if (result != null) {
-        controller.stopCamera().then((value) {
-          widget.onScanDone(result!.code!);
-          Navigator.pop(context);
-        });
-      }
-    });
   }
 }
