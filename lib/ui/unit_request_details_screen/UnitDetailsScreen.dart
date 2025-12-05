@@ -741,48 +741,46 @@ class UnitRequestDetailsScreenState extends BaseState<UnitRequestDetailsScreen, 
                                               ElevatedButton(
                                                 onPressed: () async {
                                                   if (pr.formKeyRenew.currentState!.validate()) {
-                                                    if(pr.contractNo == null || pr.contractNo.text.isEmpty && pr.endDate == null){
+                                                    if ((pr.contractNo == null || pr.contractNo.text.isEmpty) && pr.endDate == null) {
                                                       showToasts(S.of(context)!.enterMissingData, 'warning');
-                                                    }
-                                                    else if (pr.contractNo == null || pr.contractNo.text.isEmpty) {
+                                                    } else if (pr.contractNo == null || pr.contractNo.text.isEmpty) {
                                                       showToasts(S.of(context)!.pleaseEnterContractNumber, 'warning');
-                                                    }
-                                                    else if(pr.endDate == null){
+                                                    } else if (pr.endDate == null) {
                                                       showToasts(S.of(context)!.pleaseEnterContractEndDate, 'warning');
-                                                    }
-                                                    else if (pr.contractImg.path.length !=0 || pr.identityImg.length !=0) {
-                                                      FormData formData = new FormData.fromMap({
-                                                        "contract_attach": await MultipartFile.fromFile(
+                                                    } else {
+                                                      // Only add files if paths are not empty
+                                                      Map<String, dynamic> data = {
+                                                        "contract_no": pr.contractNo.text,
+                                                        "note": pr.renewNotes.text,
+                                                        "end_at": pr.endDate.toString(),
+                                                        "id": pr.instance!.id,
+                                                      };
+
+                                                      if (pr.contractImg.path.isNotEmpty) {
+                                                        data["contract_attach"] = await MultipartFile.fromFile(
                                                           pr.contractImg.path,
                                                           filename: pr.contractImg.path.split('/').last,
                                                           contentType: MediaType('application', 'octet-stream'),
-                                                        ),
-                                                        "client_gov_id": await MultipartFile.fromFile(
+                                                        );
+                                                      }
+
+                                                      if (pr.identityImg.path.isNotEmpty) {
+                                                        data["client_gov_id"] = await MultipartFile.fromFile(
                                                           pr.identityImg.path,
                                                           filename: pr.identityImg.path.split('/').last,
                                                           contentType: MediaType('application', 'octet-stream'),
-                                                        ),
-                                                        "contract_no": pr.contractNo.text,
-                                                        "note": pr.renewNotes.text,
-                                                        "end_at": pr.endDate.toString(),
-                                                        "id": pr.instance!.id,
-                                                      });
+                                                        );
+                                                      }
+
+                                                      FormData formData = FormData.fromMap(data);
                                                       mPresenter.renewUnitLinkRequestApiCall(
-                                                          formData, widget.unitRequestDataBean!.id!);
-                                                      // Navigator.pop(context);
-                                                    }
-                                                    else {
-                                                      FormData formData = new FormData.fromMap({
-                                                        "contract_no": pr.contractNo.text,
-                                                        "note": pr.renewNotes.text,
-                                                        "end_at": pr.endDate.toString(),
-                                                        "id": pr.instance!.id,
-                                                      });
-                                                      mPresenter.renewUnitLinkRequestApiCall(
-                                                          formData, widget.unitRequestDataBean!.id!);
+                                                        formData,
+                                                        widget.unitRequestDataBean!.id!,
+                                                      );
                                                     }
                                                   }
                                                 },
+
                                                 child: Text(
                                                   S.of(context)!.renew,
                                                   style:

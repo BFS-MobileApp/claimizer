@@ -128,27 +128,27 @@ class _TechnicianHistoryState extends State<TechnicianHistory>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             const Text(''),
                             Text(
                               S.of(context).startOn,
                               style: TextStyle(
-                                  fontSize: 17.fSize,
+                                  fontSize: 15.fSize,
                                   fontWeight: FontWeight.w700,
                                   color: MColors.primary_color),
                             ),
                             Text(
                               S.of(context).endOn,
                               style: TextStyle(
-                                  fontSize: 17.fSize,
+                                  fontSize: 15.fSize,
                                   fontWeight: FontWeight.w700,
                                   color: MColors.primary_color),
                             ),
                             Text(
                               S.of(context).duration,
                               style: TextStyle(
-                                  fontSize: 17.fSize,
+                                  fontSize: 15.fSize,
                                   fontWeight: FontWeight.w700,
                                   color: MColors.primary_color),
                             ),
@@ -182,42 +182,36 @@ class _TechnicianHistoryState extends State<TechnicianHistory>
   Widget buildRow(String userImage, String startDate, String startTime, String endDate, String endTime, String duration) {
     return Container(
       margin: EdgeInsets.only(bottom: 20.0.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w), // Add horizontal padding
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ImageLoader(imageUrl: userImage , width: 25.w,height: 25.h,),
-          SizedBox(width: 17.0.w), // Dynamic width
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                startDate,
-                style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
-              ),
-              Text(
-                startTime,
-                style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
-              ),
-            ],
+          ImageLoader(imageUrl: userImage, width: 25.w, height: 25.h),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(startDate, style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500)),
+                Text(startTime, style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500)),
+              ],
+            ),
           ),
-          SizedBox(width: 45.0.w), // Dynamic width
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                endDate,
-                style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
-              ),
-              Text(
-                endTime,
-                style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
-              ),
-            ],
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(endDate, style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500)),
+                Text(endTime, style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500)),
+              ],
+            ),
           ),
-          SizedBox(width: 40.0.w), // Dynamic width
-          Text(
-            duration,
-            style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              duration,
+              style: TextStyle(fontSize: 14.fSize, fontWeight: FontWeight.w500),
+            ),
           ),
         ],
       ),
@@ -264,6 +258,7 @@ class _TechnicianHistoryState extends State<TechnicianHistory>
         alignment: Alignment.center,
         child: Text(
           text,
+          maxLines: 1,
           style: TextStyle(
             fontSize: 13.fSize,
             fontWeight: FontWeight.w600,

@@ -26,9 +26,9 @@ import '../../../res/colors.dart';
 class UnitsGrid extends StatelessWidget {
   const UnitsGrid(
       {Key? key,
-      required this.onSelected,
-      required this.presenter,
-      required this.id})
+        required this.onSelected,
+        required this.presenter,
+        required this.id})
       : super(key: key);
   final ClaimsPresenter presenter;
   final Function(int) onSelected;
@@ -67,12 +67,12 @@ class UnitsGrid extends StatelessWidget {
                 ),
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(MColors.primary_color),
-                  elevation: MaterialStatePropertyAll(0),
+                  MaterialStateProperty.all<Color>(MColors.primary_color),
+                  elevation: const MaterialStatePropertyAll(0),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  )),
+                        borderRadius: BorderRadius.circular(8),
+                      )),
                 ),
               ),
               TextButton(
@@ -97,9 +97,9 @@ class UnitsGrid extends StatelessWidget {
 
   void showRenewDialog(BuildContext context, UnitsDataBean unit) {
     RenewModel model = RenewModel();
-    final DateFormat _dateFormat = DateFormat('yyyy-MM-dd',"en");
+    final DateFormat _dateFormat = DateFormat('yyyy-MM-dd', "en");
     setDate(model, unit);
-    //model.setContractNo = unit.code;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -113,17 +113,31 @@ class UnitsGrid extends StatelessWidget {
           actions: [
             ElevatedButton(
               onPressed: () async {
-                print('here1');
-                if (model.getContractNumber == '' || model.startDate == ' '|| model.endDate == '') {
-                  presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                } else if (_dateFormat.parse(model.startDate).isAfter(_dateFormat.parse(model.endDate))) {
-                  presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
-                } else if (model.contractNo != '' && model.startDate != '' && model.endDate != '') {
-                  if (model.contractImage.path != '' || model.identifyImage.path != '') {
-                    FormData formData = new FormData.fromMap({
-                      "contract_attach": await MultipartFile.fromFile(model.contractImage.path, contentType: new MediaType('application', 'octet-stream'),
+                if (model.getContractNumber == '' ||
+                    model.startDate == ' ' ||
+                    model.endDate == '') {
+                  presenter.view
+                      .showToasts(S.of(context)!.enterAllData, 'error');
+                } else if (_dateFormat
+                    .parse(model.startDate)
+                    .isAfter(_dateFormat.parse(model.endDate))) {
+                  presenter.view
+                      .showToasts(S.of(context)!.dateErrorMessage, 'error');
+                } else if (model.contractNo != '' &&
+                    model.startDate != '' &&
+                    model.endDate != '') {
+                  if (model.contractImage.path != '' ||
+                      model.identifyImage.path != '') {
+                    FormData formData = FormData.fromMap({
+                      "contract_attach": await MultipartFile.fromFile(
+                        model.contractImage.path,
+                        contentType:
+                        MediaType('application', 'octet-stream'),
                       ),
-                      "client_gov_id": await MultipartFile.fromFile(model.identifyImage.path, contentType: new MediaType('application', 'octet-stream'),
+                      "client_gov_id": await MultipartFile.fromFile(
+                        model.identifyImage.path,
+                        contentType:
+                        MediaType('application', 'octet-stream'),
                       ),
                       "id": unit.requestId,
                       "contract_no": model.getContractNumber,
@@ -133,7 +147,7 @@ class UnitsGrid extends StatelessWidget {
                     Navigator.pop(context);
                     presenter.completeLinkRequestApiCall(formData, context);
                   } else {
-                    FormData formData = new FormData.fromMap({
+                    FormData formData = FormData.fromMap({
                       "id": unit.requestId,
                       "contract_no": model.getContractNumber,
                       "end_at": model.endDate,
@@ -144,7 +158,8 @@ class UnitsGrid extends StatelessWidget {
                   }
                 } else {
                   Navigator.pop(context);
-                  presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
+                  presenter.view
+                      .showToasts(S.of(context)!.enterAllData, 'error');
                 }
               },
               child: Text(
@@ -154,8 +169,8 @@ class UnitsGrid extends StatelessWidget {
               ),
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(MColors.primary_color),
-                elevation: MaterialStatePropertyAll(0),
+                MaterialStateProperty.all<Color>(MColors.primary_color),
+                elevation: const MaterialStatePropertyAll(0),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -189,8 +204,6 @@ class UnitsGrid extends StatelessWidget {
                   ],
                 ),
                 Gaps.vGap8,
-                Gaps.vGap8,
-                Gaps.vGap8,
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -203,7 +216,8 @@ class UnitsGrid extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    Text(S.current!.contractQuery, style: MTextStyles.textMain16),
+                    Text(S.current!.contractQuery,
+                        style: MTextStyles.textMain16),
                   ],
                 ),
                 Gaps.vGap8,
@@ -213,9 +227,7 @@ class UnitsGrid extends StatelessWidget {
                 Gaps.vGap8,
                 UnitNumber(name: unit.name),
                 Gaps.vGap8,
-                DateItem(
-                  model: model,
-                ),
+                DateItem(model: model),
                 Gaps.vGap8,
                 ContractNumber(
                   readOnly: false,
@@ -246,78 +258,78 @@ class UnitsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ClaimsProvider>(
-      builder: (ctx, pr, w) =>
-          Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppHeadline(title: S.of(context)!.selectUnit),
-          pr.unitsList.isNotEmpty
-              ? GridView.builder(
-                  itemCount: pr.unitsList.length,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 1.0,
-                    crossAxisSpacing: 8.0,
-                    mainAxisSpacing: 8.0,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        if (!pr.unitsList[index].available!) {
-                          showConfirmDialog(context, pr.unitsList[index]);
-                        } else {
-                          pr.selectedUnitIndex = index;
-                          pr.companyId = pr.unitsList[index].companyId;
-                          onSelected(pr.unitsList[index].id);
-                          pr.selectedUnit = pr.unitsList[index].name;
-                          pr.currentStep < 3 ? pr.currentStep += 1 : null;
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                            color: pr.selectedUnitIndex == index
-                                ? MColors.primary_color
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: MColors.dividerColor.withOpacity(.6),
-                                width: 2)),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 2.h,),
-                            Text(
-                              pr.unitsList[index].name,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: pr.selectedUnitIndex == index
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                            !pr.unitsList[index].available! ? Flexible(child: Text(S.of(context)!.renewUnitText, textAlign: TextAlign.center ,style: TextStyle(
-                              fontSize: 13.sp,
-                              color: Colors.amber,
-                            ))) : SizedBox()
-                          ],
-                        ),
-                      ),
-                    );
+      builder: (ctx, pr, w) {
+        // ✅ Filter available units only
+        final availableUnits =
+        pr.unitsList.where((u) => u.available == true).toList();
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppHeadline(title: S.of(context)!.selectUnit),
+            availableUnits.isNotEmpty
+                ? GridView.builder(
+              itemCount: availableUnits.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate:
+              const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () {
+                    pr.selectedUnitIndex = index;
+                    pr.companyId = availableUnits[index].companyId;
+                    onSelected(availableUnits[index].id);
+                    pr.selectedUnit = availableUnits[index].name;
+                    pr.currentStep < 3 ? pr.currentStep += 1 : null;
                   },
-                )
-              : pr.dataLoaded
-                  ? NoDataWidgetGrid(
-                      onRefresh: () async {
-                        presenter.getUnitsApiCall(id);
-                      },
-                    )
-                  : ClaimsLoading(),
-        ],
-      ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: pr.selectedUnitIndex == index
+                          ? MColors.primary_color
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: MColors.dividerColor.withOpacity(.6),
+                        width: 2,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 2.h),
+                        Text(
+                          availableUnits[index].name,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: pr.selectedUnitIndex == index
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            )
+                : pr.dataLoaded
+                ? NoDataWidgetGrid(
+              onRefresh: () async {
+                presenter.getUnitsApiCall(id);
+              },
+            )
+                : const ClaimsLoading(),
+          ],
+        );
+      },
     );
   }
 }

@@ -140,7 +140,7 @@ class Helper{
     int minutes = duration.inMinutes % 60;
 
     // Formatting the result
-    String result = '${days}d ${hours}h ${minutes}m';
+    String result = '${days}D ${hours}H ${minutes}M';
     return result;
   }
 }

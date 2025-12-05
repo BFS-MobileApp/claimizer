@@ -29,12 +29,9 @@ class Data {
       : claims = json['claims'] != null ? Claims.fromJson(json['claims']) : null,
         claimColor = json['claim_color'] != null ? ClaimColor.fromJson(json['claim_color']) : null,
         aboutToExpireUnits = json['aboutToExpireUnits'] != null
-            ? json['aboutToExpireUnits'] is Map<String, dynamic>
-            ? (json['aboutToExpireUnits'] as Map<String, dynamic>)
-            .values
+            ? (json['aboutToExpireUnits'] as List)
             .map((x) => AboutToExpireUnits.fromJson(x))
             .toList()
-            : [] // it's an empty list
             : null;
 
 

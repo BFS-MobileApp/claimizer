@@ -116,7 +116,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
     bool hasContractNumber = myUri.queryParameters.containsKey('contract_no');
     bool hasStartDate = myUri.queryParameters.containsKey('contract_start');
     bool hasEndDate = myUri.queryParameters.containsKey('contract_end');
-    String qrCode = myUri.queryParameters['qr_code']!;
+    String qrCode = myUri.queryParameters['qr_code'] ?? "";
     String contractNumber = myUri.queryParameters['contract_no']??'';
     String startDate = myUri.queryParameters['contract_start']?? '';
     String endDate = myUri.queryParameters['contract_end']??'';
@@ -280,6 +280,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
         if (data.status == "success") {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
               MainScreen(index: 0,)), (Route<dynamic> route) => false);
+          view.closeProgress();
           showDialog(
             context: view.context,
             builder: (context) => AlertDialog(

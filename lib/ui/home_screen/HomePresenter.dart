@@ -77,6 +77,7 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
       if (!isUpdateData) view.closeProgress();
       if (data != null) {
         print('~~~~~~~~~~~~~updated');
+        print('~~~~~~~~~~~~~' + view.provider.rememberThatList.toString());
         view.provider.claimsStatistics.clear();
         view.provider.rememberThatList = data.data!.aboutToExpireUnits!;
         view.provider.claimStatusColors = data.data!.claimColor!;

@@ -120,14 +120,11 @@ class TimelineItem extends StatelessWidget {
               style: TextStyle(fontSize: 14.fSize, color: Colors.black54),
             ),
             SizedBox(height: 4.h),
-            SizedBox(
-              width: 85, // Set your desired width
-              child: Text(
-                user,
-                style: TextStyle(fontSize: 14.fSize, color: Colors.black54),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Text(
+              user,
+              style: TextStyle(fontSize: 14.fSize, color: Colors.black54),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             )
 
           ],

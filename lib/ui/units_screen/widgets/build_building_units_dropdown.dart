@@ -43,7 +43,9 @@ class _BuildBuildingUnitDropDownState extends State<BuildBuildingUnitDropDown> {
                 S.of(context)!.selectUnit,
                 style: MTextStyles.textMain14.copyWith(color: MColors.light_text_color),
               ),
-              value: pr.selectedUnit,
+              value: pr.buildingUnitsList.any((e) => e.code == pr.selectedUnit)
+                  ? pr.selectedUnit
+                  : null,
               onChanged: (String? newValue) {
                 setState(() {
                   pr.selectedUnit = newValue!;
@@ -56,6 +58,7 @@ class _BuildBuildingUnitDropDownState extends State<BuildBuildingUnitDropDown> {
                 );
               }).toList(),
             ),
+
           ),
         );
       },

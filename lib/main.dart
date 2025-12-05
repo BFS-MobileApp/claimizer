@@ -121,43 +121,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
         ChangeNotifierProvider(create: (context) => NotificationProvider()),
       ],
-      child: ChangeNotifierProvider(
-        create: (_)=> themeChangeProvider,
-        child: Consumer<DarkThemeProvider>(
-            builder: (context,darkThemeProvider,child) {
-              return
-                ValueListenableBuilder(
-                  valueListenable: Setting.mobileLanguage,
-                  builder: (context, Locale local, _) {
-                    return Sizer(
-                      builder: (context, orientation, deviceType) {
-                        return OKToast(
-                          child: MaterialApp(
-                            locale: local,
-                            localizationsDelegates: [
-                              S.delegate,
-                              GlobalCupertinoLocalizations.delegate,
-                              GlobalMaterialLocalizations.delegate,
-                              GlobalWidgetsLocalizations.delegate,
-                            ],
-                            supportedLocales: S.delegate.supportedLocales,
-                            debugShowCheckedModeBanner: false,
-                            title: "Claimizer",
-                            theme: darkThemeProvider.darkTheme ? DarkStyle.darkTheme(context) // Apply Dark Theme
-                                :
-                            LightStyles.lightTheme(context),
-                            home: SplashScreen(),
-                            scaffoldMessengerKey: MessageWidget
-                                .scaffoldMessengerKey,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-            }
-        ),
-      ),
+      child: ChangeNotifierProvider( create: (_)=> themeChangeProvider, child: Consumer<DarkThemeProvider>( builder: (context,darkThemeProvider,child) { return ValueListenableBuilder( valueListenable: Setting.mobileLanguage, builder: (context, Locale local, _) { return Sizer( builder: (context, orientation, deviceType) { return OKToast( child: MaterialApp( locale: local, localizationsDelegates: [ S.delegate, GlobalCupertinoLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, ], supportedLocales: S.delegate.supportedLocales, debugShowCheckedModeBanner: false, title: "Claimizer", theme: darkThemeProvider.darkTheme ? DarkStyle.darkTheme(context)  : LightStyles.lightTheme(context), home: SplashScreen(), scaffoldMessengerKey: MessageWidget .scaffoldMessengerKey, ), ); }, ); }, ); } ), ),
+
     );
   }
 }
