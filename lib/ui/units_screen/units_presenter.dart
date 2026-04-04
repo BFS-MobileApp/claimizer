@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
@@ -25,8 +26,10 @@ import '../../res/gaps.dart';
 import '../../res/styles.dart';
 import '../home_screen/HomeProvider.dart';
 import 'units_screen.dart';
+import 'package:flutter/foundation.dart';
 
 class UnitPresenter extends BasePresenter<UnitsScreenState> {
+
 
   Future getExistingUnitsApiCall(Map<String, dynamic> params) async {
     Map<String, dynamic> header = Map();
@@ -109,6 +112,59 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.closeProgress();
         });
   }
+
+  Future searchUnitByDetails(Map<String, dynamic> bodyParams, String value, String contractNum,String startDate,String endDate) async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    view.showProgress(isDismiss: false);
+    await requestFutureData<NewLinkRequestResponse>(Method.post,
+        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
+          view.closeProgress();
+          if (data != null) {
+            if (data.status == "success") {
+              print('here');
+              view.provider.newLinkRequestDataBean = data.data;
+              view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+              view.provider.value.text = value ?? '';
+              view.provider.contractNo.text = contractNum ?? '';
+               view.provider.startDate = DateTime.parse(startDate);
+              view.provider.endDate = DateTime.parse(endDate);
+              view.provider.unitNumber = data.data.units!.propertyName;
+              view.provider.buildingUnitCode = data.data.units!.code;
+              print(data.data.units!.propertyName);
+              view.provider.hasStartDate = true;
+              view.provider.hasEndDate = true;
+              view.provider.contract = true;
+            } else if (data.status == "fail") {
+              view.provider.message = data.data.message;
+              view.showErrorDialog(
+                message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+              );
+            }
+          }
+        }, onError: (code, msg) {
+
+            view.closeProgress();
+
+            String displayMessage = msg;
+            try {
+              final parsed = jsonDecode(msg);
+              displayMessage = parsed['data']?['message']
+                  ?? parsed['message']
+                  ?? msg;
+            } catch (_) {
+              displayMessage = msg;
+            }
+
+            view.provider.message = displayMessage;
+            view.showErrorDialog(message: displayMessage);
+          if (code == 422) {
+            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+          }
+        });
+  }
   checkLinkHasParams(String link) {
     Uri myUri = Uri.parse(link);
     print(myUri.queryParameters.toString());
@@ -176,12 +232,16 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           view.provider.contract = true;
         } else if (data.status == "fail") {
           view.provider.message = data.data.message;
+          view.showErrorDialog(
+            message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+          );
         }
       }
     }, onError: (code, msg) {
       view.closeProgress();
       if (code == 404) {
         view.provider.message = S.current!.theQrCodeIsIncorrect;
+        view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
       }
       if (code == 422) {
         view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
@@ -213,12 +273,16 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
               view.provider.contract = false;
             } else if (data.status == "fail") {
               view.provider.message = data.data.message;
+              view.showErrorDialog(
+                message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+              );
             }
           }
         }, onError: (code, msg) {
           view.closeProgress();
           if (code == 404) {
             view.provider.message = S.current!.theQrCodeIsIncorrect;
+            view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
           }
 
           if (code == 422) {
@@ -251,12 +315,16 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           print(data.data!.units![0].propertyName);
         } else if (data.status == "fail") {
           view.provider.message = data.status;
+          view.showErrorDialog(
+            message: data.status ?? S.current!.anErrorOccurredTryAgainLater,
+          );
         }
       }
     }, onError: (code, msg) {
       view.closeProgress();
       if (code == 404) {
         view.provider.message = S.current!.theQrCodeIsIncorrect;
+        view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
       }
 
       if (code == 422) {
@@ -271,6 +339,20 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
+    if (kDebugMode) {
+      print("======= completeLinkRequestApiCall REQUEST =======");
+      print("Endpoint: ${Api.completeLinkRequestApiCall}");
+      print("Headers: $header");
+
+      if (bodyParams is FormData) {
+        for (var field in bodyParams.fields) {
+          print("${field.key}: ${field.value}");
+        }
+        for (var file in bodyParams.files) {
+          print("File -> ${file.key}: ${file.value.filename}");
+        }
+      }
+    }
     await requestFutureData<GeneralResponse>(Method.post,
         endPoint: Api.completeLinkRequestApiCall,
         params: bodyParams,

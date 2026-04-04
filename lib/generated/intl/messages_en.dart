@@ -69,6 +69,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseFromGallery": MessageLookupByLibrary.simpleMessage(
       "Choose from Gallery",
     ),
+    "chooseOptionToFindUnit": MessageLookupByLibrary.simpleMessage(
+      "Choose One Option To Find Your Unit",
+    ),
     "claimCategory": MessageLookupByLibrary.simpleMessage("Claim category"),
     "claimClosed": MessageLookupByLibrary.simpleMessage("Claim Closed"),
     "claimDeleted": MessageLookupByLibrary.simpleMessage("Claim Deleted"),
@@ -99,10 +102,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithApple": MessageLookupByLibrary.simpleMessage(
       "Continue With Apple",
     ),
+    "contractEndDate": MessageLookupByLibrary.simpleMessage(
+      "Contract End Date",
+    ),
     "contractEndsOn": MessageLookupByLibrary.simpleMessage("Contract ends on "),
     "contractFile": MessageLookupByLibrary.simpleMessage("Contract file"),
     "contractNo": MessageLookupByLibrary.simpleMessage("Contract No"),
+    "contractNumber": MessageLookupByLibrary.simpleMessage("Contract Number"),
     "contractQuery": MessageLookupByLibrary.simpleMessage("Contract Query"),
+    "contractStartDate": MessageLookupByLibrary.simpleMessage(
+      "Contract Start Date",
+    ),
     "createdAt": MessageLookupByLibrary.simpleMessage("Created At"),
     "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
     "dateErrorMessage": MessageLookupByLibrary.simpleMessage(
@@ -130,6 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration": MessageLookupByLibrary.simpleMessage("Duration"),
     "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
+    "emailID": MessageLookupByLibrary.simpleMessage("Email ID"),
     "emailNotifications": MessageLookupByLibrary.simpleMessage(
       "Email Notifications",
     ),
@@ -161,6 +172,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "evening": MessageLookupByLibrary.simpleMessage("Evening"),
     "existingUnit": MessageLookupByLibrary.simpleMessage("My Units"),
+    "fileSizeExceeded": MessageLookupByLibrary.simpleMessage(
+      "File size must not exceed 5 MB",
+    ),
+    "fillAllFields": MessageLookupByLibrary.simpleMessage(
+      "Fill All Fields As In Your Tenancy Contract",
+    ),
     "finished": MessageLookupByLibrary.simpleMessage("Finished"),
     "forgotPassword": MessageLookupByLibrary.simpleMessage("Forgot Password ?"),
     "forgotPasswordTitle": MessageLookupByLibrary.simpleMessage(
@@ -197,6 +214,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Logged in successfully",
     ),
     "login": MessageLookupByLibrary.simpleMessage("Log In"),
+    "mobileNumber": MessageLookupByLibrary.simpleMessage("Mobile Number"),
     "more": MessageLookupByLibrary.simpleMessage("More"),
     "morning": MessageLookupByLibrary.simpleMessage("Morning"),
     "myClaims": MessageLookupByLibrary.simpleMessage("My Claims"),
@@ -204,6 +222,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "na": MessageLookupByLibrary.simpleMessage("N/A"),
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nameIsRequired": MessageLookupByLibrary.simpleMessage("Name is required"),
+    "nationalIDTradeLicense": MessageLookupByLibrary.simpleMessage(
+      "National ID Trade License",
+    ),
     "newClaims": MessageLookupByLibrary.simpleMessage("New Claims"),
     "newClaimsDetails": MessageLookupByLibrary.simpleMessage(
       "New Claims Details",
@@ -227,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "only 4 images allowed",
     ),
     "orRegisterWith": MessageLookupByLibrary.simpleMessage("Or Register with"),
+    "passportNumber": MessageLookupByLibrary.simpleMessage("Passport Number"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Password Changed Successfully",
@@ -240,8 +262,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordistooshort": MessageLookupByLibrary.simpleMessage(
       "Password is too short",
     ),
+    "paste": MessageLookupByLibrary.simpleMessage("Paste"),
+    "pasteUnitLinkOrScan": MessageLookupByLibrary.simpleMessage(
+      "Paste Your Unit Link Or Scan the QR code to get Started",
+    ),
     "personalProfile": MessageLookupByLibrary.simpleMessage("Personal Profile"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "pleaseEnter": MessageLookupByLibrary.simpleMessage("Please Enter"),
     "pleaseEnterContractEndDate": MessageLookupByLibrary.simpleMessage(
       "Please enter contract end date",
     ),
@@ -264,6 +291,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Profile Updated Successfully",
     ),
     "qrCode": MessageLookupByLibrary.simpleMessage("QR Code"),
+    "qrCodeTip": MessageLookupByLibrary.simpleMessage(
+      "Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue",
+    ),
     "qrScanner": MessageLookupByLibrary.simpleMessage("QR Scanner"),
     "rate": MessageLookupByLibrary.simpleMessage("Rate"),
     "rateAdded": MessageLookupByLibrary.simpleMessage("Rate Added"),
@@ -276,8 +306,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "renewUnitText": MessageLookupByLibrary.simpleMessage("Renew Unit"),
     "reply": MessageLookupByLibrary.simpleMessage("Reply"),
     "requestCode": MessageLookupByLibrary.simpleMessage("Claim Code: "),
+    "requestFailed": MessageLookupByLibrary.simpleMessage("Request Failed"),
     "requestNotes": MessageLookupByLibrary.simpleMessage("Request Notes"),
+    "required": MessageLookupByLibrary.simpleMessage("Required"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
+    "scan": MessageLookupByLibrary.simpleMessage("Scan"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "selectAvailableTime": MessageLookupByLibrary.simpleMessage(
       "Select Available Time",
@@ -330,6 +363,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "topUpdates": MessageLookupByLibrary.simpleMessage("Top Updates"),
     "unit": MessageLookupByLibrary.simpleMessage("Unit "),
     "unitCode": MessageLookupByLibrary.simpleMessage("Unit Code: "),
+    "unitLinkQR": MessageLookupByLibrary.simpleMessage("Unit Link (QR)"),
     "unitLinkRequest": MessageLookupByLibrary.simpleMessage(
       "Unit Link Requests",
     ),

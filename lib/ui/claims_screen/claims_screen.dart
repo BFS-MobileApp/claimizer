@@ -48,6 +48,9 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   final DateFormat _dateFormatEN = DateFormat('yyyy-MM-dd', 'en');
   final DateFormat _dateFormatAR = DateFormat('yyyy-MM-dd', 'ar');
 
+  // ─── 5 MB limit in bytes ───────────────────────────────────────────────────
+  static const int _maxFileSizeBytes = 5 * 1024 * 1024; // 5 MB
+
   int selectedBuildingId = 0;
   int selectedUnitId = 0;
   int selectedCategoryId = 0;
@@ -61,9 +64,8 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   @override
   void initState() {
     provider = context.read<ClaimsProvider>();
-    if(provider.homeFilter.isNotEmpty){
+    if (provider.homeFilter.isNotEmpty) {
       provider.selectedIndex = 1;
-      print('hereeeeeeeeeeee');
     }
     EventBusUtils.getInstance().on<ReloadClaimsEvent>().listen((event) {
       if (event.isRefresh != null) {
@@ -74,13 +76,34 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     super.initState();
   }
 
-
-
   @override
   void dispose() {
     super.dispose();
     provider.homeFilter = '';
     provider.reset();
+  }
+
+  // ─── Validates all selected files. Returns true if all are within limit. ──
+  bool _validateFileSizes(ClaimsProvider pr) {
+    // Check gallery files
+    for (final xFile in pr.imageFiles) {
+      final file = File(xFile.path);
+      if (file.existsSync() && file.lengthSync() > _maxFileSizeBytes) {
+        showToasts(S.current.fileSizeExceeded ?? "File size must not exceed 5 MB", "Error");
+        return false;
+      }
+    }
+
+    // Check camera file
+    if (pr.file.path.isNotEmpty) {
+      final file = File(pr.file.path);
+      if (file.existsSync() && file.lengthSync() > _maxFileSizeBytes) {
+        showToasts(S.current.fileSizeExceeded ?? "File size must not exceed 5 MB", "Error");
+        return false;
+      }
+    }
+
+    return true;
   }
 
   List<String> cardTitles = [
@@ -95,7 +118,6 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    print(provider.selectedIndex);
     mPresenter.view.closeProgress();
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -106,7 +128,9 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(8)),
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                 child: Column(
                   children: [
@@ -127,7 +151,9 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                             child: Card(
                               elevation: .5,
                               shadowColor: MColors.dividerColor,
-                              color: pr.selectedIndex == pageIndex ? MColors.primary_color : Colors.white,
+                              color: pr.selectedIndex == pageIndex
+                                  ? MColors.primary_color
+                                  : Colors.white,
                               child: Container(
                                 width: 50.sp,
                                 height: 120.sp,
@@ -138,11 +164,13 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                                   children: [
                                     SvgPicture.asset(
                                       ImageUtils.getSVGPath(cardImages[pageIndex]),
-                                      color: pr.selectedIndex == pageIndex ? Colors.white : MColors.primary_color,
+                                      color: pr.selectedIndex == pageIndex
+                                          ? Colors.white
+                                          : MColors.primary_color,
                                     ),
-                                    SizedBox(height: 10.sp,),
+                                    SizedBox(height: 10.sp),
                                     SizedBox(
-                                      width:  100.sp,
+                                      width: 100.sp,
                                       child: Text(
                                         cardTitles[pageIndex],
                                         style: MTextStyles.textMainLight14.copyWith(
@@ -168,14 +196,15 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
               Visibility(
                 visible: pr.selectedIndex != 0,
                 child: Container(
-                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: BorderRadius.circular(8)),
                   padding: EdgeInsets.all(12),
                   margin: EdgeInsets.only(bottom: 12),
                   child: Row(
                     children: [
                       Expanded(
                         child: Container(
-                          // width: 237,
                           height: 10.w,
                           child: TextFormField(
                             style: MTextStyles.textDark14,
@@ -184,37 +213,27 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                               hintText: S.current.search,
                               hintStyle: MTextStyles.textGray14,
                               border: OutlineInputBorder(
-                                  borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(8)),
                               contentPadding: EdgeInsets.zero,
                               filled: true,
                               fillColor: Color(0xffF7F7F7),
                               prefixIcon: GestureDetector(
-                                child: Icon(
-                                  CupertinoIcons.search,
-                                  color: MColors.primary_light_color,
-                                ),
-                                onTap: () {
-                                  print("################## search : ${pr.searchController.text.toString()}");
-                                  mPresenter.getClaims();
-                                },
+                                child: Icon(CupertinoIcons.search,
+                                    color: MColors.primary_light_color),
+                                onTap: () => mPresenter.getClaims(),
                               ),
                               suffixIcon: GestureDetector(
-                                child: Icon(
-                                  Icons.cancel_rounded,
-                                  color: MColors.primary_light_color,
-                                ),
+                                child: Icon(Icons.cancel_rounded,
+                                    color: MColors.primary_light_color),
                                 onTap: () {
                                   pr.searchController.clear();
                                   mPresenter.getClaims();
                                 },
                               ),
                             ),
-                            onFieldSubmitted: (value) {
-                              mPresenter.getClaims();
-                            },
-                            onChanged: (value) {
-                              pr.searchValue = value;
-                            },
+                            onFieldSubmitted: (_) => mPresenter.getClaims(),
+                            onChanged: (value) => pr.searchValue = value,
                           ),
                         ),
                       ),
@@ -225,519 +244,9 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
               Expanded(
                 child: pr.selectedIndex == 0
                     ? pr.isStepsFinished
-                        ? Container(
-                            padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 4.w),
-                            margin: EdgeInsets.symmetric(vertical: 2.w),
-                            decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
-                            child: ListView(
-                              // crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(S.of(context).newClaimsDetails, style: MTextStyles.textMain14),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).yourBuilding,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(pr.selectedBuilding ,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).yourUnit,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(pr.selectedUnit,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).claimCategory,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(pr.selectedCategory,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).claimSubCategory,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(pr.selectedSubCategory ,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).claimType,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(pr.selectedType ,
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Gaps.vGap12,
-                                Gaps.vGap12,
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(S.of(context).availableTime,
-                                        style: MTextStyles.textMain16.copyWith(
-                                          color: MColors.black,
-                                        )),
-                                    Gaps.vGap8,
-                                    Text(
-                                        "${pr.selectedDate == '' ? DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()) : Setting.mobileLanguage.value == Locale("en") ? _dateFormatEN.format(pr.selectedDate) : _dateFormatAR.format(pr.selectedDate)}\n${pr.selectedTimeValue}",
-                                        style: MTextStyles.textMain14.copyWith(
-                                          color: MColors.black,
-                                          fontWeight: FontWeight.w400,
-                                        )),
-                                  ],
-                                ),
-                                Visibility(
-                                  visible: pr.description.text.isNotEmpty,
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 24),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(S.of(context).description,
-                                            style: MTextStyles.textMain14.copyWith(
-                                              color: MColors.black,
-                                            )),
-                                        Gaps.vGap8,
-                                        Text(pr.description.text,
-                                            style: MTextStyles.textMain14.copyWith(
-                                              color: MColors.black,
-                                              fontWeight: FontWeight.w400,
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Gaps.vGap12,
-                                Consumer<ClaimsProvider>(
-                                  builder: (context, provider, child) {
-                                    final hasCamera = provider.file.path.isNotEmpty;
-                                    final hasGallery = provider.imageFiles.isNotEmpty;
-                                    final total = provider.imageFiles.length + (hasCamera ? 1 : 0);
-
-                                    if (!hasCamera && !hasGallery) {
-                                      return Text(S.of(context)!.noFiles);
-                                    }
-
-                                    return SizedBox(
-                                      height: 74,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: total,
-                                        itemBuilder: (context, index) {
-                                          if (hasCamera && index == 0) {
-                                            return _buildImageItem(context, provider.file.path);
-                                          }
-                                          final adjustedIndex = hasCamera ? index - 1 : index;
-                                          return _buildImageItem(context, provider.imageFiles[adjustedIndex].path);
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                                Gaps.vGap30,
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 30.w,
-                                      margin: EdgeInsets.symmetric(vertical: 3.w),
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          pr.isStepsFinished = !pr.isStepsFinished;
-                                        },
-                                        child: Text(
-                                          S.of(context).back,
-                                          style: MTextStyles.textMain14.copyWith(fontWeight: FontWeight.w700),
-                                        ),
-                                        style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(MColors.white),
-                                            elevation: MaterialStatePropertyAll(0),
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8),
-                                                    side: BorderSide(color: MColors.primary_color))),
-                                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                                EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
-                                      ),
-                                    ),
-
-                                    // FilesWidget(
-                                    //   apiStrings: pr.imageFiles,
-                                    //   count: pr.imageFiles.length,
-                                    // ),
-                                    SizedBox(width:25,),
-                                    Container(
-                                      width: 30.w,
-                                      margin: EdgeInsets.symmetric(vertical: 3.w),
-                                      child: ElevatedButton(
-                                        onPressed: () async {
-                                          final formData = FormData();
-                                          if (pr.imageFiles.isNotEmpty) {
-                                            for (var i = 0; i < pr.imageFiles.length; i++) {
-                                              final file = await mPresenter.compressFile(File(pr.imageFiles[i].path));
-                                              formData.files.add(MapEntry(
-                                                'file[$i]',
-                                                MultipartFile.fromBytes(file!, filename: 'image$i.jpg'),
-                                              ));
-                                              formData.fields.add(MapEntry("unit_id", selectedUnitId.toString()));
-                                              formData.fields
-                                                  .add(MapEntry("category_id", selectedCategoryId.toString()));
-                                              formData.fields
-                                                  .add(MapEntry("sub_category_id", selectedSubCategoryId.toString()));
-                                              formData.fields.add(MapEntry("claim_type_id", selectedTypeId.toString()));
-                                              formData.fields.add(MapEntry("description", provider.description.text));
-                                              formData.fields.add(MapEntry(
-                                                "available_date",
-                                                provider.selectedDate != ''
-                                                    ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
-                                                    : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
-                                              ));
-                                              formData.fields
-                                                  .add(MapEntry("available_time", provider.selectedTimeValue));
-                                            }
-                                            mPresenter.postClaimRequestApiCall(formData);
-                                          } else if (pr.file.path !='') {
-                                            final file = await mPresenter.compressFile(pr.file);
-                                            FormData formData = new FormData.fromMap({
-                                              "file[0]": await MultipartFile.fromBytes(
-                                                file!,
-                                                filename: pr.file.path.split('/').last,
-                                              ),
-                                              "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
-                                              "category_id": selectedCategoryId,
-                                              "sub_category_id": selectedSubCategoryId,
-                                              "claim_type_id": selectedTypeId,
-                                              "description": provider.description.text,
-                                              "available_date": provider.selectedDate!= ''
-                                                  ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
-                                                  : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
-                                              "available_time": provider.selectedTimeValue
-                                            });
-                                            mPresenter.postClaimRequestApiCall(formData);
-                                          } else {
-                                            print('fuxcxxk');
-                                            FormData formData = new FormData.fromMap({
-                                              "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
-                                              "category_id": selectedCategoryId,
-                                              "sub_category_id": selectedSubCategoryId,
-                                              "claim_type_id": selectedTypeId,
-                                              "description": provider.description.text,
-                                              "available_date": provider.selectedDate!= ''
-                                                  ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
-                                                  : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
-                                              "available_time": provider.selectedTimeValue
-                                            });
-                                            print(selectedUnitId);
-                                            print(selectedCategoryId);
-                                            print(selectedSubCategoryId);
-                                            print(provider.description.text);
-                                            Map<String, dynamic> parms = Map();
-                                            parms['unit_id'] = selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId;
-                                            parms['category_id'] = selectedCategoryId;
-                                            parms['sub_category_id'] = selectedSubCategoryId;
-                                            parms['claim_type_id'] = selectedTypeId;
-                                            parms['description'] = provider.description.text;
-                                            parms['available_date'] = provider.selectedDate != null
-                                                ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
-                                                : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());
-                                            parms['available_time'] = provider.selectedTimeValue;
-                                            mPresenter.postClaimRequestApiCall(formData);
-                                          }
-                                        },
-                                        child: Text(
-                                          S.of(context)!.confirm,
-                                          style: MTextStyles.textWhite12.copyWith(fontWeight: FontWeight.w700),
-                                        ),
-                                        style: ButtonStyle(
-                                            backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
-                                            elevation: MaterialStatePropertyAll(0),
-                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(8),
-                                            )),
-                                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                                EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        : Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            margin: EdgeInsets.symmetric(vertical: 2.w),
-                            decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.only(start: 20),
-                                  child: Row(
-                                    children: [
-                                      Visibility(
-                                        visible: pr.currentStep != 0,
-                                        child: InkWell(
-                                            onTap: () {
-                                              pr.currentStep > 0 ? --pr.currentStep : null;
-                                            },
-                                            child: Setting.mobileLanguage.value != Locale("en")
-                                                ? RotatedBox(
-                                                    quarterTurns: 2,
-                                                    child: SvgPicture.asset(
-                                                      ImageUtils.getSVGPath("back_icon"),
-                                                      width: 30,
-                                                      color: Theme.of(context).indicatorColor,
-                                                    ),
-                                                  )
-                                                : SvgPicture.asset(
-                                                    ImageUtils.getSVGPath("back_icon"),
-                                                    width: 30,
-                                              color: Theme.of(context).indicatorColor,
-                                                  )),
-                                      ),
-                                      Expanded(
-                                          child: Center(
-                                              child: Text(S.of(context).addNewClaim, style: Theme.of(context).appBarTheme.titleTextStyle))),
-                                    ],
-                                  ),
-                                ),
-                                Gaps.vGap12,
-                                Expanded(
-                                  child: Theme(
-                                    data: ThemeData(
-                                        canvasColor: Theme.of(context).scaffoldBackgroundColor,
-                                        colorScheme:
-                                            ColorScheme.light(primary: MColors.primary_color, secondary: Colors.teal)),
-                                    child: appStepper.Stepper(
-                                        elevation: 0,
-                                        type: appStepper.StepperType.horizontal,
-                                        physics: BouncingScrollPhysics(),
-                                        currentStep: pr.currentStep,
-                                        controlsBuilder: (context, details) {
-                                          return pr.currentStep != 5
-                                              ? SizedBox.shrink()
-                                              : Container(
-                                                  width: 30.w,
-                                                  margin: EdgeInsets.symmetric(vertical: 3.w),
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      if (!pr.formKey.currentState!.validate()) {
-                                                        return;
-                                                      }
-                                                      if (pr.selectedDate == null && pr.selectedTimeValue == null) {
-                                                        showToasts(S.of(context).youShouldSelectDateAndTime, "warning");
-                                                      } else {
-                                                        pr.isStepsFinished = !pr.isStepsFinished;
-                                                        // mPresenter.postClaimRequestApiCall();
-                                                      }
-                                                    },
-                                                    child: Text(
-                                                      S.of(context).confirm,
-                                                      style:
-                                                          MTextStyles.textMain18.copyWith(fontWeight: FontWeight.w700),
-                                                    ),
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty.all<Color>(MColors.primary_color),
-                                                        elevation: MaterialStatePropertyAll(0),
-                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(8),
-                                                        )),
-                                                        padding: MaterialStateProperty.all<EdgeInsets>(
-                                                            EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
-                                                  ),
-                                                );
-                                        },
-                                        onStepTapped: (step) {
-                                          pr.currentStep = step;
-                                        },
-                                        onStepContinue: () {
-                                          pr.currentStep < 2 ? pr.currentStep += 1 : null;
-                                        },
-                                        onStepCancel: () {
-                                          pr.currentStep > 0 ? pr.currentStep -= 1 : null;
-                                        },
-                                        steps: [
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: BuildingGrid(
-                                              claimContext: this.context,
-                                                presenter: mPresenter,
-                                                onSelected: (id) {
-                                                  print('hello here 0');
-                                                  selectedBuildingId = id;
-                                                  mPresenter.getUnitsApiCall(id);
-                                                }),
-                                            isActive: pr.currentStep == 0,
-                                            state: pr.currentStep == 0
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 0
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: UnitsGrid(
-                                                id: selectedUnitId,
-                                                presenter: mPresenter,
-                                                onSelected: (id) {
-                                                  selectedUnitId = id;
-                                                  mPresenter.getCategoryApiCall(id);
-                                                  print('hello here ');
-                                                }),
-                                            isActive: pr.currentStep == 1,
-                                            state: pr.currentStep == 1
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 1
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: CategoriesGrid(
-                                                presenter: mPresenter,
-                                                id: selectedCategoryId,
-                                                onSelected: (index) {
-                                                  print('hello here 2');
-                                                  selectedCategoryId = pr.categoriesList[index].id;
-                                                  pr.subCategoryList = pr.categoriesList[index].subCategory!.data!;
-                                                }),
-                                            isActive: pr.currentStep == 2,
-                                            state: pr.currentStep == 2
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 2
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: SubcategoryGrid(
-                                              onSelected: (id) {
-                                                print('hello here 3');
-                                                selectedSubCategoryId = id;
-                                                mPresenter.getClaimTypeApiCall(id);
-                                              },
-                                            ),
-                                            isActive: pr.currentStep == 3,
-                                            state: pr.currentStep == 3
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 3
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: ClaimTypeGrid(
-                                                presenter: mPresenter,
-                                                id: selectedTypeId,
-                                                onSelected: (id) {
-                                                  selectedTypeId = id;
-                                                  mPresenter.getClaimAvailableTimeApiCall();
-                                                }),
-                                            isActive: pr.currentStep == 4,
-                                            state: pr.currentStep == 4
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 4
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                          appStepper.Step(
-                                            title: new Text(''),
-                                            content: Form(
-                                              key: pr.formKey,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  AppHeadline(title: S.of(context).selectAvailableTime),
-                                                  Gaps.vGap10,
-                                                  Gaps.vGap12,
-                                                  BuildDatePicker(
-                                                    provider: pr,
-                                                  ),
-                                                  Gaps.vGap8,
-                                                  BuildTimeDropDown(),
-                                                  Gaps.vGap8,
-                                                  BuildDescriptionField(
-                                                    provider: pr,
-                                                  ),
-                                                  Gaps.vGap8,
-                                                  BuildFilePicker(
-                                                    provider: pr,
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            isActive: pr.currentStep == 5,
-                                            state: pr.currentStep == 5
-                                                ? appStepper.StepState.indexed
-                                                : pr.currentStep > 5
-                                                    ? appStepper.StepState.complete
-                                                    : appStepper.StepState.disabled,
-                                          ),
-                                        ]),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                    : AllClaims(
-                        presenter: mPresenter,
-                        provider: pr,
-                      ),
+                    ? _buildReviewStep(context, pr)
+                    : _buildStepperStep(context, pr)
+                    : AllClaims(presenter: mPresenter, provider: pr),
               )
             ],
           ),
@@ -746,13 +255,444 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     );
   }
 
+  // ─── Review / Summary screen ───────────────────────────────────────────────
+  Widget _buildReviewStep(BuildContext context, ClaimsProvider pr) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 4.w),
+      margin: EdgeInsets.symmetric(vertical: 2.w),
+      decoration:
+      BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+      child: ListView(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(S.of(context).newClaimsDetails, style: MTextStyles.textMain14),
+            ],
+          ),
+          Gaps.vGap12,
+          _reviewRow(S.of(context).yourBuilding, pr.selectedBuilding),
+          Gaps.vGap12,
+          _reviewRow(S.of(context).yourUnit, pr.selectedUnit),
+          Gaps.vGap12,
+          _reviewRow(S.of(context).claimCategory, pr.selectedCategory),
+          Gaps.vGap12,
+          _reviewRow(S.of(context).claimSubCategory, pr.selectedSubCategory),
+          Gaps.vGap12,
+          _reviewRow(S.of(context).claimType, pr.selectedType),
+          Gaps.vGap12,
+          _reviewRow(
+            S.of(context).availableTime,
+            "${pr.selectedDate == '' ? DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()) : Setting.mobileLanguage.value == Locale("en") ? _dateFormatEN.format(pr.selectedDate) : _dateFormatAR.format(pr.selectedDate)}\n${pr.selectedTimeValue}",
+          ),
+          Visibility(
+            visible: pr.description.text.isNotEmpty,
+            child: Container(
+              margin: EdgeInsets.only(top: 24),
+              child: _reviewRow(S.of(context).description, pr.description.text),
+            ),
+          ),
+          Gaps.vGap12,
+          Consumer<ClaimsProvider>(
+            builder: (context, provider, child) {
+              final hasCamera = provider.file.path.isNotEmpty;
+              final hasGallery = provider.imageFiles.isNotEmpty;
+              final total = provider.imageFiles.length + (hasCamera ? 1 : 0);
+
+              if (!hasCamera && !hasGallery) {
+                return Text(S.of(context)!.noFiles);
+              }
+
+              return SizedBox(
+                height: 74,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: total,
+                  itemBuilder: (context, index) {
+                    if (hasCamera && index == 0) {
+                      return _buildImageItem(context, provider.file.path);
+                    }
+                    final adjustedIndex = hasCamera ? index - 1 : index;
+                    return _buildImageItem(
+                        context, provider.imageFiles[adjustedIndex].path);
+                  },
+                ),
+              );
+            },
+          ),
+          Gaps.vGap30,
+          Row(
+            children: [
+              // ── Back button ───────────────────────────────────────────────
+              Container(
+                width: 30.w,
+                margin: EdgeInsets.symmetric(vertical: 3.w),
+                child: ElevatedButton(
+                  onPressed: () => pr.isStepsFinished = !pr.isStepsFinished,
+                  child: Text(S.of(context).back,
+                      style: MTextStyles.textMain14
+                          .copyWith(fontWeight: FontWeight.w700)),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(MColors.white),
+                    elevation: MaterialStatePropertyAll(0),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: MColors.primary_color))),
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w)),
+                  ),
+                ),
+              ),
+              SizedBox(width: 25),
+              // ── Confirm button (with file-size validation) ────────────────
+              Container(
+                width: 30.w,
+                margin: EdgeInsets.symmetric(vertical: 3.w),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    // ✅ Validate file sizes BEFORE doing anything else
+                    if (!_validateFileSizes(pr)) return;
+
+                    final formData = FormData();
+
+                    if (pr.imageFiles.isNotEmpty) {
+                      for (var i = 0; i < pr.imageFiles.length; i++) {
+                        final file =
+                        await mPresenter.compressFile(File(pr.imageFiles[i].path));
+                        formData.files.add(MapEntry(
+                          'file[$i]',
+                          MultipartFile.fromBytes(file!, filename: 'image$i.jpg'),
+                        ));
+                        formData.fields
+                            .add(MapEntry("unit_id", selectedUnitId.toString()));
+                        formData.fields.add(
+                            MapEntry("category_id", selectedCategoryId.toString()));
+                        formData.fields.add(MapEntry(
+                            "sub_category_id", selectedSubCategoryId.toString()));
+                        formData.fields.add(
+                            MapEntry("claim_type_id", selectedTypeId.toString()));
+                        formData.fields.add(
+                            MapEntry("description", provider.description.text));
+                        formData.fields.add(MapEntry(
+                          "available_date",
+                          provider.selectedDate != ''
+                              ? DateFormat('yyyy-MM-dd', 'en')
+                              .format(provider.selectedDate)
+                              : DateFormat('yyyy-MM-dd', 'en')
+                              .format(DateTime.now()),
+                        ));
+                        formData.fields.add(
+                            MapEntry("available_time", provider.selectedTimeValue));
+                      }
+                      mPresenter.postClaimRequestApiCall(formData);
+                    } else if (pr.file.path != '') {
+                      final file = await mPresenter.compressFile(pr.file);
+                      final fd = FormData.fromMap({
+                        "file[0]": await MultipartFile.fromBytes(file!,
+                            filename: pr.file.path.split('/').last),
+                        "unit_id": selectedUnitId == 0
+                            ? provider.selectedUnitIndex
+                            : selectedUnitId,
+                        "category_id": selectedCategoryId,
+                        "sub_category_id": selectedSubCategoryId,
+                        "claim_type_id": selectedTypeId,
+                        "description": provider.description.text,
+                        "available_date": provider.selectedDate != ''
+                            ? DateFormat('yyyy-MM-dd', 'en')
+                            .format(provider.selectedDate)
+                            : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                        "available_time": provider.selectedTimeValue,
+                      });
+                      mPresenter.postClaimRequestApiCall(fd);
+                    } else {
+                      final fd = FormData.fromMap({
+                        "unit_id": selectedUnitId == 0
+                            ? provider.selectedUnitIndex
+                            : selectedUnitId,
+                        "category_id": selectedCategoryId,
+                        "sub_category_id": selectedSubCategoryId,
+                        "claim_type_id": selectedTypeId,
+                        "description": provider.description.text,
+                        "available_date": provider.selectedDate != null
+                            ? DateFormat('yyyy-MM-dd', 'en')
+                            .format(provider.selectedDate)
+                            : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                        "available_time": provider.selectedTimeValue,
+                      });
+                      mPresenter.postClaimRequestApiCall(fd);
+                    }
+                  },
+                  child: Text(S.of(context)!.confirm,
+                      style: MTextStyles.textWhite12
+                          .copyWith(fontWeight: FontWeight.w700)),
+                  style: ButtonStyle(
+                    backgroundColor:
+                    MaterialStateProperty.all(MColors.primary_color),
+                    elevation: MaterialStatePropertyAll(0),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8))),
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── Stepper screen ────────────────────────────────────────────────────────
+  Widget _buildStepperStep(BuildContext context, ClaimsProvider pr) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      margin: EdgeInsets.symmetric(vertical: 2.w),
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(8)),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.only(start: 20),
+            child: Row(
+              children: [
+                Visibility(
+                  visible: pr.currentStep != 0,
+                  child: InkWell(
+                    onTap: () => pr.currentStep > 0 ? --pr.currentStep : null,
+                    child: Setting.mobileLanguage.value != Locale("en")
+                        ? RotatedBox(
+                      quarterTurns: 2,
+                      child: SvgPicture.asset(
+                        ImageUtils.getSVGPath("back_icon"),
+                        width: 30,
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                    )
+                        : SvgPicture.asset(
+                      ImageUtils.getSVGPath("back_icon"),
+                      width: 30,
+                      color: Theme.of(context).indicatorColor,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(S.of(context).addNewClaim,
+                        style: Theme.of(context).appBarTheme.titleTextStyle),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Gaps.vGap12,
+          Expanded(
+            child: Theme(
+              data: ThemeData(
+                  canvasColor: Theme.of(context).scaffoldBackgroundColor,
+                  colorScheme: ColorScheme.light(
+                      primary: MColors.primary_color, secondary: Colors.teal)),
+              child: appStepper.Stepper(
+                  elevation: 0,
+                  type: appStepper.StepperType.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  currentStep: pr.currentStep,
+                  controlsBuilder: (context, details) {
+                    return pr.currentStep != 5
+                        ? SizedBox.shrink()
+                        : Container(
+                      width: 30.w,
+                      margin: EdgeInsets.symmetric(vertical: 3.w),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (!pr.formKey.currentState!.validate()) return;
+                          if (pr.selectedDate == null &&
+                              pr.selectedTimeValue == null) {
+                            showToasts(
+                                S.of(context).youShouldSelectDateAndTime,
+                                "warning");
+                          } else {
+                            // ✅ Validate file sizes when moving to review
+                            if (!_validateFileSizes(pr)) return;
+                            pr.isStepsFinished = !pr.isStepsFinished;
+                          }
+                        },
+                        child: Text(S.of(context).confirm,
+                            style: MTextStyles.textMain18
+                                .copyWith(fontWeight: FontWeight.w700)),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              MColors.primary_color),
+                          elevation: MaterialStatePropertyAll(0),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8))),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  horizontal: 4.w, vertical: 3.w)),
+                        ),
+                      ),
+                    );
+                  },
+                  onStepTapped: (step) => pr.currentStep = step,
+                  onStepContinue: () =>
+                  pr.currentStep < 2 ? pr.currentStep += 1 : null,
+                  onStepCancel: () =>
+                  pr.currentStep > 0 ? pr.currentStep -= 1 : null,
+                  steps: [
+                    appStepper.Step(
+                      title: Text(''),
+                      content: BuildingGrid(
+                          claimContext: this.context,
+                          presenter: mPresenter,
+                          onSelected: (id) {
+                            selectedBuildingId = id;
+                            mPresenter.getUnitsApiCall(id);
+                          }),
+                      isActive: pr.currentStep == 0,
+                      state: pr.currentStep == 0
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 0
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                    appStepper.Step(
+                      title: Text(''),
+                      content: UnitsGrid(
+                          id: selectedUnitId,
+                          presenter: mPresenter,
+                          onSelected: (id) {
+                            selectedUnitId = id;
+                            mPresenter.getCategoryApiCall(id);
+                          }),
+                      isActive: pr.currentStep == 1,
+                      state: pr.currentStep == 1
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 1
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                    appStepper.Step(
+                      title: Text(''),
+                      content: CategoriesGrid(
+                          presenter: mPresenter,
+                          id: selectedCategoryId,
+                          onSelected: (index) {
+                            selectedCategoryId = pr.categoriesList[index].id;
+                            pr.subCategoryList =
+                            pr.categoriesList[index].subCategory!.data!;
+                          }),
+                      isActive: pr.currentStep == 2,
+                      state: pr.currentStep == 2
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 2
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                    appStepper.Step(
+                      title: Text(''),
+                      content: SubcategoryGrid(
+                        onSelected: (id) {
+                          selectedSubCategoryId = id;
+                          mPresenter.getClaimTypeApiCall(id);
+                        },
+                      ),
+                      isActive: pr.currentStep == 3,
+                      state: pr.currentStep == 3
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 3
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                    appStepper.Step(
+                      title: Text(''),
+                      content: ClaimTypeGrid(
+                          presenter: mPresenter,
+                          id: selectedTypeId,
+                          onSelected: (id) {
+                            selectedTypeId = id;
+                            mPresenter.getClaimAvailableTimeApiCall();
+                          }),
+                      isActive: pr.currentStep == 4,
+                      state: pr.currentStep == 4
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 4
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                    appStepper.Step(
+                      title: Text(''),
+                      content: Form(
+                        key: pr.formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AppHeadline(title: S.of(context).selectAvailableTime),
+                            Gaps.vGap10,
+                            Gaps.vGap12,
+                            BuildDatePicker(provider: pr),
+                            Gaps.vGap8,
+                            BuildTimeDropDown(),
+                            Gaps.vGap8,
+                            BuildDescriptionField(provider: pr),
+                            Gaps.vGap8,
+                            BuildFilePicker(provider: pr),
+                            Gaps.vGap8,
+                             Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffDA1414).withOpacity(0.10),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  S.current.fileSizeExceeded,
+                                  style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                                    color: const Color(0xffDA1414),
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      isActive: pr.currentStep == 5,
+                      state: pr.currentStep == 5
+                          ? appStepper.StepState.indexed
+                          : pr.currentStep > 5
+                          ? appStepper.StepState.complete
+                          : appStepper.StepState.disabled,
+                    ),
+                  ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── Helpers ───────────────────────────────────────────────────────────────
+  Widget _reviewRow(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label,
+            style: MTextStyles.textMain14.copyWith(color: MColors.black)),
+        Gaps.vGap8,
+        Text(value,
+            style: MTextStyles.textMain14.copyWith(
+                color: MColors.black, fontWeight: FontWeight.w400)),
+      ],
+    );
+  }
+
   Widget _buildImageItem(BuildContext context, String imagePath) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return FullScreenImage(image: imagePath);
-        }));
-      },
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => FullScreenImage(image: imagePath))),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 2.w),
         child: ImageLoader(
@@ -763,22 +703,19 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
       ),
     );
   }
+
   Column buildDivider() {
     return Column(
       children: [
         Gaps.vGap16,
-        Divider(
-          color: MColors.dividerColor,
-        ),
+        Divider(color: MColors.dividerColor),
         Gaps.vGap16,
       ],
     );
   }
 
   @override
-  createPresenter() {
-    return ClaimsPresenter();
-  }
+  createPresenter() => ClaimsPresenter();
 
   @override
   bool get wantKeepAlive => false;

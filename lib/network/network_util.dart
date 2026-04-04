@@ -114,8 +114,8 @@ class DioUtils {
             onSuccessList(result.listData);
           }
         } else {
-          if (onSuccess != null) {
-            onSuccess(result.data!);
+          if (result.data != null) {
+            onSuccess?.call(result.data as T);
           }
         }
       } else {

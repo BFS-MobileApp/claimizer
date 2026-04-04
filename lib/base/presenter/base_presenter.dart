@@ -145,7 +145,11 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
   void _onError(
       int code, dynamic msg, void Function(int code, dynamic msg)? onError) {
     // view.closeProgress();
-    if (onError != null && view.getContext() != null) {
+    // Prevent using context after widget disposed
+    final context = view.getContext();
+    if (context == null || !(context as Element).mounted) return;
+
+    if (onError != null) {
       onError(code, msg);
     }
     if (code == ErrorStatus.FORBIDDEN) {

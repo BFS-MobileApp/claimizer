@@ -123,12 +123,12 @@ class DarkStyle {
       ),
 
       // 🔹 Card Theme
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: MColors.lightBlack,
       ),
 
       // 🔹 Dialog Theme
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: MColors.lightBlack,
       ),
 

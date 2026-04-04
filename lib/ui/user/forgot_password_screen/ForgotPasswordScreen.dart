@@ -222,7 +222,7 @@ class ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen, ForgotPa
           );
         });
         FocusScope.of(context).unfocus();
-        // _submitForm();
+         _submitForm();
       },
     );
   }
@@ -232,13 +232,17 @@ class ForgotPasswordScreenState extends BaseState<ForgotPasswordScreen, ForgotPa
 
     if (form!.validate()) {
       form.save();
+
+      // 🔥 CALL API HERE
+      _doServerLogin(email);
     }
   }
 
-  Future<void> _doServerLogin(String email, String password) async {
-    Map<String, dynamic> bodyParams = new Map();
+  Future<void> _doServerLogin(String email) async {
+    Map<String, dynamic> bodyParams = {};
     bodyParams["email"] = email;
-    await mPresenter.doLoginApiCall(bodyParams);
+
+    await mPresenter.resetPasswordApiCall(bodyParams);
   }
 
   @override
@@ -295,7 +299,7 @@ class DefaultBTN extends StatelessWidget {
           child: Center(
             child: Text(
               S.of(context)!.sendRequestLink.toUpperCase(),
-              style: Theme.of(context).textTheme.displayMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
         ));

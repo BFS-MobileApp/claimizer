@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl_phone_field: ^3.2.0
-  google_fonts:
+  google_fonts: ^6.1.0
   flutter_staggered_animations: "^1.0.0"
   sizer:
   sign_in_with_apple: ^6.0.0
@@ -38,7 +38,7 @@ dependencies:
   fluintl: ^2.0.0
 
   #https://github.com/dart-lang/intl
-  intl: ^0.19.0
+  intl: ^0.20.2
   modal_bottom_sheet: ^2.1.2
   responsive_builder: ^0.7.0
   #charts_flutter:
@@ -105,7 +105,7 @@ dependencies:
   toast: ^0.3.0
   flutter_spinkit: ^5.2.0
   flutter_svg: ^2.0.9
-  syncfusion_flutter_datepicker: ^24.2.3
+  syncfusion_flutter_datepicker: ^32.2.7
   flutter_map: ^6.1.0
   flutter_screenutil: ^5.9.0
   phone_form_field:

@@ -137,11 +137,13 @@ class User {
     deletedAt: json["deleted_at"],
     theme: json["theme"],
     imageUrl: json["image_url"],
-    modules: List<String>.from(json["modules"].map((x) => x)),
-    properties: List<dynamic>.from(json["properties"].map((x) => x)),
+    modules: List<String>.from(json["modules"] ?? []),
+    properties: List<dynamic>.from(json["properties"] ?? []),
     currentRoleName: json["current_role_name"],
-    roles: List<Role>.from(json["roles"].map((x) => Role.fromJson(x))),
-  );
+    roles: (json["roles"] as List?)
+        ?.map((x) => Role.fromJson(x))
+        .toList() ??
+        [],  );
 
   Map<String, dynamic> toJson() => {
     "id": id,

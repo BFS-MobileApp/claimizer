@@ -72,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "chooseFromGallery": MessageLookupByLibrary.simpleMessage(
       "اختر من الاستوديو",
     ),
+    "chooseOptionToFindUnit": MessageLookupByLibrary.simpleMessage(
+      "حدد اختيار لربط الوحدة",
+    ),
     "claimCategory": MessageLookupByLibrary.simpleMessage("فئة الطلب الرئيسية"),
     "claimClosed": MessageLookupByLibrary.simpleMessage("تم غلق طلب الصيانة"),
     "claimDeleted": MessageLookupByLibrary.simpleMessage("تم حذف طلب الصيانة"),
@@ -110,10 +113,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "continueWithApple": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول بأستخدام ابل",
     ),
+    "contractEndDate": MessageLookupByLibrary.simpleMessage(
+      "تاريخ انتهاء العقد",
+    ),
     "contractEndsOn": MessageLookupByLibrary.simpleMessage(" في تاريخ ينتهي"),
     "contractFile": MessageLookupByLibrary.simpleMessage("صورة العقد"),
     "contractNo": MessageLookupByLibrary.simpleMessage("رقم العقد"),
+    "contractNumber": MessageLookupByLibrary.simpleMessage("رقم العقد"),
     "contractQuery": MessageLookupByLibrary.simpleMessage("جدول العقد"),
+    "contractStartDate": MessageLookupByLibrary.simpleMessage(
+      "تاريخ بدء العقد",
+    ),
     "createdAt": MessageLookupByLibrary.simpleMessage("انشئ في"),
     "darkMode": MessageLookupByLibrary.simpleMessage("الوضع الليلي"),
     "dateErrorMessage": MessageLookupByLibrary.simpleMessage("تاريخ خاطئ"),
@@ -139,6 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration": MessageLookupByLibrary.simpleMessage("المده"),
     "editProfile": MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("البريد الالكتروني"),
+    "emailID": MessageLookupByLibrary.simpleMessage("الحساب الألكتروني"),
     "emailNotifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "emailisnotvalid": MessageLookupByLibrary.simpleMessage(
       "البريد الالكتروني غير صحيح",
@@ -169,6 +180,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "evening": MessageLookupByLibrary.simpleMessage("مساءا"),
     "existingUnit": MessageLookupByLibrary.simpleMessage("الوحدات الحالية"),
+    "fileSizeExceeded": MessageLookupByLibrary.simpleMessage(
+      "مساحه الملف لا يمكن ان تتخطي 5 ميجا بايت",
+    ),
+    "fillAllFields": MessageLookupByLibrary.simpleMessage(
+      "ادخل كل الحقول مثل التي في عقدك",
+    ),
     "finished": MessageLookupByLibrary.simpleMessage("منتهي"),
     "forgotPassword": MessageLookupByLibrary.simpleMessage(
       "نسيت كلمة المرور ؟ ",
@@ -207,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم تسجيل الدخول بنجاح",
     ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "mobileNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
     "more": MessageLookupByLibrary.simpleMessage("المزيد"),
     "morning": MessageLookupByLibrary.simpleMessage("صباحا"),
     "myClaims": MessageLookupByLibrary.simpleMessage("طلباتي"),
@@ -216,6 +234,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "na": MessageLookupByLibrary.simpleMessage("لا يوجد"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nameIsRequired": MessageLookupByLibrary.simpleMessage("الاسم مطلوب"),
+    "nationalIDTradeLicense": MessageLookupByLibrary.simpleMessage(
+      "الرقم القومي",
+    ),
     "newClaims": MessageLookupByLibrary.simpleMessage("طلبات الصيانة الجديدة"),
     "newClaimsDetails": MessageLookupByLibrary.simpleMessage(
       "تأكيد طلب الصيانة الجديد",
@@ -237,6 +258,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسموح بإرفاق 4 صور كحد أقصي",
     ),
     "orRegisterWith": MessageLookupByLibrary.simpleMessage("أو سجل بواسطة"),
+    "passportNumber": MessageLookupByLibrary.simpleMessage("رقم جواز السفر"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تغيير كلمة المرور بنجاح",
@@ -250,8 +272,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "passwordistooshort": MessageLookupByLibrary.simpleMessage(
       "كلمة المرور قصيرة",
     ),
+    "paste": MessageLookupByLibrary.simpleMessage("لصق"),
+    "pasteUnitLinkOrScan": MessageLookupByLibrary.simpleMessage(
+      "انسخ لينك الربط الخاص بك او امسح رمز الأستجابه السريع",
+    ),
     "personalProfile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "phoneNumber": MessageLookupByLibrary.simpleMessage(" التليفون المحمول"),
+    "pleaseEnter": MessageLookupByLibrary.simpleMessage("من فضلك ادخل"),
     "pleaseEnterContractEndDate": MessageLookupByLibrary.simpleMessage(
       "ادخل تاريخ انتهاء العقد",
     ),
@@ -272,6 +299,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم تعديل الملف الشخصي بنجاح",
     ),
     "qrCode": MessageLookupByLibrary.simpleMessage("رمز الاستجابة السريعة"),
+    "qrCodeTip": MessageLookupByLibrary.simpleMessage(
+      "ملحوظه : تأكد من لصق اللينك بالكامل, تواصل مع خدمه العملاء الخاصه بنا اذا واجهت اي مشكلة",
+    ),
     "qrScanner": MessageLookupByLibrary.simpleMessage(" قارئ الباركود"),
     "rate": MessageLookupByLibrary.simpleMessage("تقييم"),
     "rateAdded": MessageLookupByLibrary.simpleMessage("تم أضافة التقييم"),
@@ -286,8 +316,11 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "reply": MessageLookupByLibrary.simpleMessage("رد"),
     "requestCode": MessageLookupByLibrary.simpleMessage("كود الطلب: "),
+    "requestFailed": MessageLookupByLibrary.simpleMessage("فشل الطلب"),
     "requestNotes": MessageLookupByLibrary.simpleMessage("دليل الطلب"),
+    "required": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
+    "scan": MessageLookupByLibrary.simpleMessage("مسح"),
     "search": MessageLookupByLibrary.simpleMessage("بحث"),
     "selectAvailableTime": MessageLookupByLibrary.simpleMessage(
       "اختر الوقت المتاح",
@@ -338,6 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "topUpdates": MessageLookupByLibrary.simpleMessage("اخر التحديثات"),
     "unit": MessageLookupByLibrary.simpleMessage("ينتهي تعاقد الوحدة "),
     "unitCode": MessageLookupByLibrary.simpleMessage("كود الوحدة: "),
+    "unitLinkQR": MessageLookupByLibrary.simpleMessage("طلب جديد (QR)"),
     "unitLinkRequest": MessageLookupByLibrary.simpleMessage(
       "جميع طلبات الربط ",
     ),

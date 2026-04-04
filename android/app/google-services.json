@@ -1,26 +1,59 @@
 {
   "project_info": {
-    "project_number": "691924647362",
-    "project_id": "claimizer-new",
-    "storage_bucket": "claimizer-new.firebasestorage.app"
+    "project_number": "688584279084",
+    "project_id": "claimizer-a73e7",
+    "storage_bucket": "claimizer-a73e7.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:691924647362:android:22c4432172919cb80f6a5b",
+        "mobilesdk_app_id": "1:688584279084:android:6498e044a8dd5fd1993d89",
         "android_client_info": {
           "package_name": "com.app.claimizer"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "688584279084-0s36tet8ou9lf6ou5hkvo5lu92920a76.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.claimizer",
+            "certificate_hash": "895951f110599be450b91bf64c8e046caee0d436"
+          }
+        },
+        {
+          "client_id": "688584279084-tra0vhousj0pqqq5bnhjf9vf8ik70m0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.claimizer",
+            "certificate_hash": "28c4e55aa74de0a0148d38ccc89dd4004302e50d"
+          }
+        },
+        {
+          "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBnnAfKw2KzQf_psIcmKXNCL3znVFLpFM0"
+          "current_key": "AIzaSyBRBNeUwID2o8BR0nXXGKjWplXC6Vj7ISQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688584279084-vcbvm7up0qo4q3va71b1n9l1pe56on25.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "688584279084-10sbhe7q6nvfhsompug64etvqripk8p6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.claimizer.claimizerClient"
+              }
+            }
+          ]
         }
       }
     }

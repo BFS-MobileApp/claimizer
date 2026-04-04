@@ -12,6 +12,7 @@ class UnitProvider<T> extends BaseProvider<T> {
   TextEditingController _description = TextEditingController();
   TextEditingController _buildingName = TextEditingController();
   TextEditingController _qrCode = TextEditingController();
+  TextEditingController _value = TextEditingController();
   bool _qrCodeValid = false;
 
   String _unitNumber = '';
@@ -35,6 +36,12 @@ class UnitProvider<T> extends BaseProvider<T> {
 
   set qrCode(TextEditingController value) {
     _qrCode = value;
+    notifyListeners();
+  }
+  TextEditingController get value => _value;
+
+  set value(TextEditingController value) {
+    _value = value;
     notifyListeners();
   }
 
@@ -293,4 +300,5 @@ class UnitProvider<T> extends BaseProvider<T> {
     _validated = value;
     notifyListeners();
   }
+
 }

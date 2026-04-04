@@ -31,7 +31,6 @@ class CompleteNewUnit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Complete');
     return Consumer<UnitProvider>(
       builder: (context, pr, child) => Container(
         padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 4.w),
@@ -139,8 +138,6 @@ class CompleteNewUnit extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 3.w),
                   child: ElevatedButton(
                     onPressed: () async {
-                      print('here1');
-                      print(pr.selectedUnit);
                       if (pr.contractNo.text.isEmpty && !pr.isHasStartDate && !pr.isHasEndDate) {
                         presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
                       } else if(pr.endDate.isBefore(pr.startDate)){
@@ -157,7 +154,7 @@ class CompleteNewUnit extends StatelessWidget {
                             pr.identityImg.path,
                             contentType: new  MediaType('application', 'octet-stream'),
                           ),
-                          "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text,
+                          "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
                           "contract_number": pr.contractNo.text,
                           "start_at": pr.startDate.toString(),
                           "end_at": pr.endDate.toString(),
@@ -166,7 +163,7 @@ class CompleteNewUnit extends StatelessWidget {
                         presenter.completeLinkRequestApiCall(formData , context);
                       } else {
                          FormData formData = new FormData.fromMap({
-                           "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text,
+                           "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
                            "contract_number": pr.contractNo.text,
                            "start_at": pr.startDate.toString(),
                            "end_at": pr.endDate.toString(),

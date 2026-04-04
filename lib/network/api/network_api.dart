@@ -14,6 +14,7 @@ class Api {
   static const String claimsApiCall = "claims?per_page=1000";
   static const String profileApiCall = "profile";
   static const String editPasswordApiCall = "change-password";
+  static const String resetPasswordApiCall = "reset-password";
   static const String editBasicInfo = "profile";
   static const String doAddCommentToClaimApiCall = "claims/comment";
   static const String doAddCommentToUnitRequestApiCall = "requests/addComment";

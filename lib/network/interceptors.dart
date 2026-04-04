@@ -126,12 +126,15 @@ class AdapterInterceptor extends Interceptor {
       result = sprintf(SUCCESS_FORMAT, [content]);
       response.statusCode = ErrorStatus.SUCCESS;
     } else {
-      result = sprintf(FAILURE_FORMAT, [
-        response.statusCode,
-        DefaultResponse?.fromJson(jsonDecode(response?.data))?.message?.isNotEmpty ?? false
-            ? DefaultResponse.fromJson(jsonDecode(response.data)).message.toString()
-            : NOT_FOUND
-      ]);
+      String errorMessage = NOT_FOUND;
+      try {
+        final parsed = jsonDecode(response.data);
+        errorMessage = parsed['data']?['message']
+            ?? parsed['message']
+            ?? NOT_FOUND;
+      } catch (_) {}
+
+      result = sprintf(FAILURE_FORMAT, [response.statusCode, errorMessage]);
       response.statusCode = ErrorStatus.SUCCESS;
     }
     if (response.statusCode == ErrorStatus.SUCCESS) {

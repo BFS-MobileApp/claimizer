@@ -36,26 +36,78 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
   void initState() {
     provider = context.read<UnitProvider>();
     homeProvider = context.read<HomeProvider>();
-    // EventBusUtils.getInstance().on<ReloadEvent>().listen((event) {
-    //   if (event.isRefresh != null || event.isLangChanged != null) {
-    //     Map<String, dynamic> linkRequestParams = Map();
-    //     linkRequestParams['page'] = provider.currentPage;
-    //     linkRequestParams['search'] = provider.searchController.text.toString();
-    //     mPresenter.getUnitRequestsApiCall(linkRequestParams);
-    //   }
-    //   setState(() {});
-    // });
-    // Map<String, dynamic> exitingParams = Map();
-    // exitingParams['page'] = provider.currentPage;
-    // exitingParams['search'] = provider.searchController.text.toString();
-    // mPresenter.getExistingUnitsApiCall(exitingParams);
-    // Map<String, dynamic> linkRequestParams = Map();
-    // linkRequestParams['page'] = provider.currentPage;
-    // linkRequestParams['search'] = provider.searchController.text.toString();
-    // mPresenter.getUnitRequestsApiCall(linkRequestParams);
     super.initState();
   }
-
+  void showErrorDialog({required String message}) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: const Color(0xffDA1414).withOpacity(0.10),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.error_outline_rounded,
+                  color: Color(0xffDA1414),
+                  size: 32,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                S.current!.requestFailed,   // add this key to your l10n
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: MColors.primary_text_color,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: MColors.light_text_color,
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xffDA1414),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                  ),
+                  child: Text(
+                    S.current!.ok,   // reuse existing key
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     List<String> cardTitles = [
@@ -76,146 +128,179 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
           padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 0),
           child: Column(
             children: [
+              // ── Header: title + tab cards ──────────────────────────────
               Container(
-                decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.all(20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Section title with red left border
                     Row(
                       children: [
                         Container(
                           width: 1.w,
                           height: 5.w,
                           margin: EdgeInsetsDirectional.only(end: 2.w),
-                          decoration:
-                              BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
+                          decoration: BoxDecoration(
+                            color: MColors.primary_color,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
-                        Text(S.of(context)!.unitsProperty, style: Theme.of(context).appBarTheme.titleTextStyle),
+                        Text(
+                          S.of(context)!.unitsProperty,
+                          style: Theme.of(context).appBarTheme.titleTextStyle,
+                        ),
                       ],
                     ),
                     Gaps.vGap16,
-                    Consumer<UnitProvider>(
-                      builder: (context, pr, child) => Container(
-                        height:110,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: cardTitles.length,
-                          itemBuilder: (context, pageIndex) {
-                            return GestureDetector(
-                              onTap: () {
-                                pr.selectedIndex = pageIndex;
-                              },
-                              child: Card(
-                                elevation: 0.5,
-                                color: pr.selectedIndex == pageIndex ? MColors.primary_color : Colors.white,
-                                child: Container(
-                                  width: 25.w,
-                                  height: 180.h,
-                                  padding: EdgeInsets.all(12),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        ImageUtils.getSVGPath(cardImages[pageIndex]),
-                                        color: pr.selectedIndex == pageIndex ? Colors.white : MColors.primary_color,
-                                      ),
-                                      SizedBox(height: 12,),
-                                      SizedBox(
-                                        width: 90.sp,
-                                        child: AutoSizeText(
-                                          cardTitles[pageIndex],
-                                          style: TextStyle(
-                                            fontSize: 7.sp,
-                                            color:
-                                                pr.selectedIndex == pageIndex ? Colors.white : MColors.light_text_color,
-                                          ),
-                                          maxLines: 2,
-                                          textAlign: TextAlign.center,
+                    // Tab cards
+                    SizedBox(
+                      height: 110,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: cardTitles.length,
+                        itemBuilder: (context, pageIndex) {
+                          final isSelected = pr.selectedIndex == pageIndex;
+                          return GestureDetector(
+                            onTap: () {
+                              pr.selectedIndex = pageIndex;
+                            },
+                            child: Card(
+                              elevation: isSelected ? 2 : 0.5,
+                              color: isSelected
+                                  ? MColors.primary_color
+                                  : Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Container(
+                                width: 25.w,
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      ImageUtils.getSVGPath(cardImages[pageIndex]),
+                                      color: isSelected
+                                          ? Colors.white
+                                          : MColors.primary_color,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    SizedBox(
+                                      width: 90.sp,
+                                      child: AutoSizeText(
+                                        cardTitles[pageIndex],
+                                        style: TextStyle(
+                                          fontSize: 7.sp,
+                                          fontWeight: FontWeight.w500,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : MColors.light_text_color,
                                         ),
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        ),
+                            ),
+                          );
+                        },
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
               Gaps.vGap12,
+              // ── Search bar (hidden on "New Request" tab) ───────────────
               Visibility(
                 visible: pr.selectedIndex != 0,
                 child: Container(
-                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding:
+                  EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
                   child: Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          // width: 237,
+                        child: SizedBox(
                           height: 10.w,
                           child: TextFormField(
                             style: MTextStyles.textDark14,
-                            controller: pr.selectedIndex == 1 ? pr.searchController : pr.unitLinkSearchController,
+                            controller: pr.selectedIndex == 1
+                                ? pr.searchController
+                                : pr.unitLinkSearchController,
                             decoration: InputDecoration(
                               hintText: S.current!.search,
-                              hintStyle: Theme.of(context).textTheme.titleSmall,
+                              hintStyle:
+                              Theme.of(context).textTheme.titleSmall,
                               border: OutlineInputBorder(
-                                  borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               contentPadding: EdgeInsets.zero,
                               filled: true,
-                              fillColor: Color(0xffF7F7F7),
+                              fillColor: const Color(0xffF7F7F7),
                               prefixIcon: GestureDetector(
+                                onTap: () {
+                                  if (pr.selectedIndex == 1) {
+                                    mPresenter.getExistingUnitsApiCall({
+                                      'search': provider
+                                          .searchController.text
+                                          .toString(),
+                                    });
+                                  } else if (pr.selectedIndex == 2) {
+                                    mPresenter.getUnitRequestsApiCall({
+                                      'search': pr
+                                          .unitLinkSearchController.text
+                                          .toString(),
+                                    });
+                                  }
+                                },
                                 child: Icon(
                                   CupertinoIcons.search,
                                   color: MColors.primary_light_color,
                                 ),
-                                onTap: () {
-                                  if (pr.selectedIndex == 1) {
-                                    Map<String, dynamic> exitingParams = Map();
-                                    exitingParams['search'] = provider.searchController.text.toString();
-                                    mPresenter.getExistingUnitsApiCall(exitingParams);
-                                  } else if (pr.selectedIndex == 2) {
-                                    Map<String, dynamic> params = Map();
-                                    params['search'] = pr.unitLinkSearchController.text.toString();
-                                    mPresenter.getUnitRequestsApiCall(params);
-                                  }
-                                },
                               ),
                               suffixIcon: GestureDetector(
+                                onTap: () {
+                                  if (pr.selectedIndex == 1) {
+                                    pr.searchController.clear();
+                                    mPresenter.getExistingUnitsApiCall({
+                                      'search': '',
+                                    });
+                                  } else if (pr.selectedIndex == 2) {
+                                    pr.unitLinkSearchController.clear();
+                                    mPresenter.getUnitRequestsApiCall({
+                                      'search': '',
+                                    });
+                                  }
+                                },
                                 child: Icon(
                                   Icons.cancel_rounded,
                                   color: MColors.primary_light_color,
                                 ),
-                                onTap: () {
-                                  if (pr.selectedIndex == 1) {
-                                    Map<String, dynamic> exitingParams = Map();
-                                    exitingParams['search'] = provider.searchController.text.toString();
-                                    mPresenter.getExistingUnitsApiCall(exitingParams);
-                                    pr.searchController.clear();
-                                  } else if (pr.selectedIndex == 2) {
-                                    pr.unitLinkSearchController.clear();
-
-                                    Map<String, dynamic> linkRequestParams = Map();
-                                    linkRequestParams['search'] = provider.unitLinkSearchController.text.toString();
-                                    mPresenter.getUnitRequestsApiCall(linkRequestParams);
-                                  }
-                                },
                               ),
                             ),
                             onFieldSubmitted: (value) {
                               if (pr.selectedIndex == 1) {
-                                Map<String, dynamic> exitingParams = Map();
-                                exitingParams['search'] = provider.searchController.text.toString();
-                                mPresenter.getExistingUnitsApiCall(exitingParams);
+                                mPresenter.getExistingUnitsApiCall({
+                                  'search': provider.searchController.text
+                                      .toString(),
+                                });
                               } else if (pr.selectedIndex == 2) {
-                                Map<String, dynamic> params = Map();
-                                params['search'] = pr.unitLinkSearchController.text.toString();
-                                mPresenter.getUnitRequestsApiCall(params);
+                                mPresenter.getUnitRequestsApiCall({
+                                  'search': pr.unitLinkSearchController.text
+                                      .toString(),
+                                });
                               }
                             },
                             onChanged: (value) {
@@ -224,86 +309,41 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                           ),
                         ),
                       ),
-                      // SizedBox(width: 17.0),
-                      // InkWell(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     width: 36,
-                      //     height: 36,
-                      //     padding: EdgeInsets.all(8),
-                      //     decoration: BoxDecoration(
-                      //         borderRadius: BorderRadius.circular(8),
-                      //         color: MColors.whiteE,
-                      //         boxShadow: [
-                      //           BoxShadow(
-                      //               color: MColors.coolGrey.withOpacity(0.2),
-                      //               spreadRadius: 1,
-                      //               blurRadius: 5,
-                      //               offset: Offset(1, 4))
-                      //         ]),
-                      //     child: SvgPicture.asset(ImageUtils.getSVGPath("filter")),
-                      //   ),
-                      // ),
-                      // Gaps.hGap8,
-                      // InkWell(
-                      //   onTap: () {},
-                      //   child: Container(
-                      //     width: 36,
-                      //     height: 36,
-                      //     padding: EdgeInsets.all(8),
-                      //     decoration: BoxDecoration(
-                      //       borderRadius: BorderRadius.circular(8),
-                      //       color: Color(0xffF7F7F7),
-                      //     ),
-                      //     child: SvgPicture.asset(ImageUtils.getSVGPath("export")),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),
               ),
+              // ── Content area ───────────────────────────────────────────
               Expanded(
                 child: PageView(
                   children: [
                     pr.selectedIndex == 0
                         ? !pr.isQrCodeValid
-                            ? SearchAboutUnitByQR(
-                                provider: provider,
-                                presenter: mPresenter,
-                              )
-                            : CompleteNewUnit(
-                                provider: provider,
-                                presenter: mPresenter,
-                              )
+                        ? SearchAboutUnitByQR(
+                      provider: provider,
+                      presenter: mPresenter,
+                    )
+                        : CompleteNewUnit(
+                      provider: provider,
+                      presenter: mPresenter,
+                    )
                         : pr.selectedIndex == 1
-                            ? ExistingUnitList(
-                                presenter: mPresenter,
-                                provider: pr,
-                              )
-                            : UnitLinkRequest(
-                                presenter: mPresenter,
-                                homeProvider: homeProvider,
-                                provider: pr,
-                              ),
+                        ? ExistingUnitList(
+                      presenter: mPresenter,
+                      provider: pr,
+                    )
+                        : UnitLinkRequest(
+                      presenter: mPresenter,
+                      homeProvider: homeProvider,
+                      provider: pr,
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Column buildDivider() {
-    return Column(
-      children: [
-        Gaps.vGap16,
-        Divider(
-          color: MColors.dividerColor,
-        ),
-        Gaps.vGap16,
-      ],
     );
   }
 
@@ -319,8 +359,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
 class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // width: 237,
+    return SizedBox(
       height: 10.w,
       child: TextField(
         decoration: InputDecoration(
@@ -330,10 +369,13 @@ class SearchField extends StatelessWidget {
             Icons.search_rounded,
             color: MColors.primary_light_color,
           ),
-          border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(8),
+          ),
           contentPadding: EdgeInsets.zero,
           filled: true,
-          fillColor: Color(0xffF7F7F7),
+          fillColor: const Color(0xffF7F7F7),
         ),
       ),
     );

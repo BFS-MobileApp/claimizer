@@ -23,6 +23,7 @@ import '../../../network/models/LoginResponse.dart';
 import '../../../res/colors.dart';
 import '../../../res/setting.dart';
 import '../../../res/styles.dart';
+import '../forgot_password_screen/ForgotPasswordScreen.dart';
 import '../register_screen/RegisterScreen.dart';
 import 'LoginPresenter.dart';
 import 'LoginProvider.dart';
@@ -131,7 +132,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                             Gaps.vGap10,
                             buildPasswordField(context),
                             Gaps.vGap8,
-                            /*Container(
+                            Container(
                               width: 100.w,
                               margin: EdgeInsets.symmetric(horizontal: 8.w),
                               child: Row(
@@ -149,8 +150,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
                                   ),
                                 ],
                               ),
-                            ),*/
-                            Gaps.vGap12,
+                            ),
                             AnimatedOpacity(
                               opacity: provider.opacity,
                               curve: Curves.bounceIn,

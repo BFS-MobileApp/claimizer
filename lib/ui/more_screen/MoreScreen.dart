@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/image_loader.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
@@ -39,24 +41,27 @@ class MoreScreen extends StatefulWidget {
 class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   MoreProvider provider = MoreProvider();
-
+  bool _isProfileLoaded = false;
+  late StreamSubscription _profileSubscription;
   @override
   void initState() {
     super.initState();
     provider = context.read<MoreProvider>();
-    EventBusUtils.getInstance().on<ProfileEvent>().listen((event) {
-      if (event.username != null) {
-        provider.instance.name = event.username;
-      }
-      if (event.userEmail != null) {
-        provider.instance.email = event.userEmail;
-      }
-      if (event.userImage != null) {
-        provider.instance.avatar = event.userImage;
-      }
-      setState(() {});
-    });
-    mPresenter.getProfileData();
+    provider.loadProfile(mPresenter);
+    _profileSubscription =
+        EventBusUtils.getInstance().on<ProfileEvent>().listen((event) {
+          if (event.username != null) {
+            provider.instance.name = event.username;
+          }
+          if (event.userEmail != null) {
+            provider.instance.email = event.userEmail;
+          }
+          if (event.userImage != null) {
+            provider.instance.avatar = event.userImage;
+          }
+          setState(() {});
+        });
+    // mPresenter.getProfileData();
     Prefs.getAppLocal.then((value) => {
           if (value != null)
             {
@@ -68,7 +73,11 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
             }
         });
   }
-
+  @override
+  void dispose() {
+    _profileSubscription.cancel();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -201,10 +210,10 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
                         onChanged: (value) {
                           if (value) {
                             setSelected("en");
-                            mPresenter.passReloadByEventPath();
+                            // mPresenter.passReloadByEventPath();
                           } else {
                             setSelected("ar");
-                            mPresenter.passReloadByEventPath();
+                            // mPresenter.passReloadByEventPath();
                           }
                         }),
                   )),
@@ -439,11 +448,12 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
           InkWell(
             onTap: () async {
               await Prefs.clearExpectLanguage();
-              if (!context.mounted) return;
-              Navigator.pushAndRemoveUntil(
-                context,
+
+              if (!mounted) return;
+
+              Navigator.of(context).pushAndRemoveUntil(
                 CupertinoPageRoute(builder: (_) => LoginScreen()),
-                (route) => false,
+                    (route) => false,
               );
             },
             child: Row(

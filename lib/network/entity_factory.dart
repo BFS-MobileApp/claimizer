@@ -1,6 +1,7 @@
 import 'package:Cliamizer/network/models/LoginResponse.dart';
 import 'package:Cliamizer/network/models/general_response.dart';
 
+import '../ui/user/forgot_password_screen/ResetPasswordResponse.dart';
 import 'models/ClaimDetailsResponse.dart';
 import 'models/NewLinkListRequestResponse.dart';
 import 'models/NewLinkRequestResponse.dart';
@@ -24,6 +25,8 @@ class EntityFactory {
         return GeneralResponse.fromJson(json) as T;
       case "LoginResponse":
         return LoginResponse.fromJson(json) as T;
+      case "ResetPasswordResponse":
+        return ResetPasswordResponse.fromJson(json) as T;
       case "StatisticsResponse":
         return StatisticsResponse.fromJson(json) as T;
       case "ClaimsResponse":

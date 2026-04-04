@@ -1,9 +1,14 @@
 import 'package:Cliamizer/base/provider/base_provider.dart';
 import 'package:Cliamizer/network/models/emergency_model.dart';
 
-class MoreProvider<T> extends BaseProvider<T> {
-  bool _receiveNotification = true;
+import 'MorePresenter.dart';
 
+class MoreProvider<T> extends BaseProvider<T> {
+  MoreProvider(){
+    print("MoreProvider CREATED");
+  }
+  bool _receiveNotification = true;
+  bool _isLoaded = false;
   bool get receiveNotification => _receiveNotification;
 
   set receiveNotification(bool value) {
@@ -28,6 +33,12 @@ class MoreProvider<T> extends BaseProvider<T> {
   set isDateLoaded(bool value) {
     _isDateLoaded = value;
     notifyListeners();
+  }
+  Future<void> loadProfile(MorePresenter presenter) async {
+    if (_isLoaded) return;
+
+    _isLoaded = true;
+    await presenter.getProfileData();
   }
 
   String _language = '';

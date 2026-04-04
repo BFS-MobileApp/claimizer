@@ -74,7 +74,7 @@ class LightStyles {
         titleSmall: GoogleFonts.montserrat(
             fontSize: 14.sp, color: MColors.primary_text_color),
         labelSmall: GoogleFonts.montserrat(
-            fontSize: 17.sp, color: MColors.text_button_color, fontWeight: FontWeight.w500),
+            fontSize: 15.sp, color: MColors.text_button_color, fontWeight: FontWeight.w500),
         labelMedium: GoogleFonts.montserrat(
             fontSize: 17.sp, fontWeight: FontWeight.w600, color: MColors.primary_text_color),
       ),
@@ -98,11 +98,11 @@ class LightStyles {
         colorScheme: ColorScheme.light(background: MColors.primary_color),
       ),
 
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: MColors.white,
       ),
 
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: MColors.white,
       ),
 

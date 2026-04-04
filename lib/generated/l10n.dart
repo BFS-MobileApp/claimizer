@@ -134,11 +134,171 @@ class S {
     return Intl.message('Ar', name: 'ar', desc: '', args: []);
   }
 
+  /// `Unit Link (QR)`
+  String get unitLinkQR {
+    return Intl.message(
+      'Unit Link (QR)',
+      name: 'unitLinkQR',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paste Your Unit Link Or Scan the QR code to get Started`
+  String get pasteUnitLinkOrScan {
+    return Intl.message(
+      'Paste Your Unit Link Or Scan the QR code to get Started',
+      name: 'pasteUnitLinkOrScan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paste`
+  String get paste {
+    return Intl.message('Paste', name: 'paste', desc: '', args: []);
+  }
+
+  /// `Scan`
+  String get scan {
+    return Intl.message('Scan', name: 'scan', desc: '', args: []);
+  }
+
+  /// `Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue`
+  String get qrCodeTip {
+    return Intl.message(
+      'Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue',
+      name: 'qrCodeTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mobile Number`
+  String get mobileNumber {
+    return Intl.message(
+      'Mobile Number',
+      name: 'mobileNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email ID`
+  String get emailID {
+    return Intl.message('Email ID', name: 'emailID', desc: '', args: []);
+  }
+
+  /// `National ID Trade License`
+  String get nationalIDTradeLicense {
+    return Intl.message(
+      'National ID Trade License',
+      name: 'nationalIDTradeLicense',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passport Number`
+  String get passportNumber {
+    return Intl.message(
+      'Passport Number',
+      name: 'passportNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose One Option To Find Your Unit`
+  String get chooseOptionToFindUnit {
+    return Intl.message(
+      'Choose One Option To Find Your Unit',
+      name: 'chooseOptionToFindUnit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `check Your Internet`
   String get checkYourInternet {
     return Intl.message(
       'check Your Internet',
       name: 'checkYourInternet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fill All Fields As In Your Tenancy Contract`
+  String get fillAllFields {
+    return Intl.message(
+      'Fill All Fields As In Your Tenancy Contract',
+      name: 'fillAllFields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contract Number`
+  String get contractNumber {
+    return Intl.message(
+      'Contract Number',
+      name: 'contractNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contract End Date`
+  String get contractEndDate {
+    return Intl.message(
+      'Contract End Date',
+      name: 'contractEndDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please Enter`
+  String get pleaseEnter {
+    return Intl.message(
+      'Please Enter',
+      name: 'pleaseEnter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Required`
+  String get required {
+    return Intl.message('Required', name: 'required', desc: '', args: []);
+  }
+
+  /// `File size must not exceed 5 MB`
+  String get fileSizeExceeded {
+    return Intl.message(
+      'File size must not exceed 5 MB',
+      name: 'fileSizeExceeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contract Start Date`
+  String get contractStartDate {
+    return Intl.message(
+      'Contract Start Date',
+      name: 'contractStartDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request Failed`
+  String get requestFailed {
+    return Intl.message(
+      'Request Failed',
+      name: 'requestFailed',
       desc: '',
       args: [],
     );

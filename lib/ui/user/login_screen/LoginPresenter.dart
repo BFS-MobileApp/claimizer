@@ -109,7 +109,7 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
     Prefs.setCurrentUser(jsonEncode(response.toJson()));
     Prefs.setUserToken(response.token);
     Prefs.setUserName(response.user.name!);
-    Prefs.setUserImage(response.user.imageUrl!);
+    Prefs.setUserImage(response.user.imageUrl ?? "");
     Prefs.setIfSocialLogin(social);
     Prefs.setIsLogin(true).then((value) => print("login status $value"));
   }
