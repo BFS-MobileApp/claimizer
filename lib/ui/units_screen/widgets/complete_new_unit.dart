@@ -104,6 +104,7 @@ class CompleteNewUnit extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
+                  height: MediaQuery.of(context).size.height * .05,
                   width: MediaQuery.of(context).size.width * .4,
                   margin: EdgeInsets.symmetric(vertical: 3.w),
                   child: ElevatedButton(
@@ -122,7 +123,7 @@ class CompleteNewUnit extends StatelessWidget {
                     },
                     child: Text(
                       S.of(context)!.back,
-                      style: MTextStyles.textMain14.copyWith(fontWeight: FontWeight.w700),
+                      style: MTextStyles.textMain12.copyWith(fontWeight: FontWeight.w700),
                     ),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(MColors.white),
@@ -134,6 +135,7 @@ class CompleteNewUnit extends StatelessWidget {
                   ),
                 ),
                 Container(
+                  height: MediaQuery.of(context).size.height * .05,
                   width: MediaQuery.of(context).size.width * .4,
                   margin: EdgeInsets.symmetric(vertical: 3.w),
                   child: ElevatedButton(
@@ -177,7 +179,7 @@ class CompleteNewUnit extends StatelessWidget {
                     },
                     child: Text(
                       S.of(context)!.confirm,
-                      style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+                      style: MTextStyles.textWhite12.copyWith(fontWeight: FontWeight.w700),
                     ),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),

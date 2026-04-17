@@ -119,6 +119,12 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
+    print("=== REQUEST DEBUG ===");
+    print("Endpoint: ${Api.newLinkRequestApiCall}");
+    print("Method: POST");
+    print("Headers: $header");
+    print("Body: $bodyParams");
+    print("=====================");
     await requestFutureData<NewLinkRequestResponse>(Method.post,
         endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
           view.closeProgress();

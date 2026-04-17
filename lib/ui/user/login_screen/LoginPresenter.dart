@@ -86,7 +86,22 @@ class LoginPresenter extends BasePresenter<LoginScreenState> {
       getExistingUnitsApiCall(exitingParams);
     } else {
       view.closeProgress();
-      view.provider.setError('Error');
+      view.closeProgress();
+
+      try {
+        final decoded = jsonDecode(response.body);
+
+        if (decoded is Map && decoded.containsKey('message')) {
+          final serverMessage = decoded['message'] ?? 'Error';
+          print('SERVER MESSAGE => $serverMessage');
+          view.provider.setError(serverMessage);
+        } else {
+          view.provider.setError('Unexpected error occurred');
+        }
+      } catch (e) {
+        print('PARSE ERROR => $e');
+        view.provider.setError('Server error. Please try again later.');
+      }
     }
   }
 

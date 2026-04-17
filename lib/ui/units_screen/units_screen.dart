@@ -159,7 +159,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                     Gaps.vGap16,
                     // Tab cards
                     SizedBox(
-                      height: 110,
+                      height: Device.height * 0.1318,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: cardTitles.length,
@@ -217,7 +217,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                   ],
                 ),
               ),
-              Gaps.vGap12,
+              // Gaps.vGap12,
               // ── Search bar (hidden on "New Request" tab) ───────────────
               Visibility(
                 visible: pr.selectedIndex != 0,
@@ -232,7 +232,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                     children: [
                       Expanded(
                         child: SizedBox(
-                          height: 10.w,
+                          height: 8.w,
                           child: TextFormField(
                             style: MTextStyles.textDark14,
                             controller: pr.selectedIndex == 1

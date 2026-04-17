@@ -140,7 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration": MessageLookupByLibrary.simpleMessage("Duration"),
     "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("Email Address"),
-    "emailID": MessageLookupByLibrary.simpleMessage("Email ID"),
+    "emailID": MessageLookupByLibrary.simpleMessage("Tenant Email"),
     "emailNotifications": MessageLookupByLibrary.simpleMessage(
       "Email Notifications",
     ),
@@ -214,7 +214,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Logged in successfully",
     ),
     "login": MessageLookupByLibrary.simpleMessage("Log In"),
-    "mobileNumber": MessageLookupByLibrary.simpleMessage("Mobile Number"),
+    "mobileNumber": MessageLookupByLibrary.simpleMessage("Tenant Mobile"),
     "more": MessageLookupByLibrary.simpleMessage("More"),
     "morning": MessageLookupByLibrary.simpleMessage("Morning"),
     "myClaims": MessageLookupByLibrary.simpleMessage("My Claims"),
@@ -223,7 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name": MessageLookupByLibrary.simpleMessage("Name"),
     "nameIsRequired": MessageLookupByLibrary.simpleMessage("Name is required"),
     "nationalIDTradeLicense": MessageLookupByLibrary.simpleMessage(
-      "National ID Trade License",
+      "ID Number / Trade License Number",
     ),
     "newClaims": MessageLookupByLibrary.simpleMessage("New Claims"),
     "newClaimsDetails": MessageLookupByLibrary.simpleMessage(
@@ -248,7 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "only 4 images allowed",
     ),
     "orRegisterWith": MessageLookupByLibrary.simpleMessage("Or Register with"),
-    "passportNumber": MessageLookupByLibrary.simpleMessage("Passport Number"),
+    "passportNumber": MessageLookupByLibrary.simpleMessage("Tenant Passport"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Password Changed Successfully",
@@ -292,7 +292,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "qrCode": MessageLookupByLibrary.simpleMessage("QR Code"),
     "qrCodeTip": MessageLookupByLibrary.simpleMessage(
-      "Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue",
+      "Tip : To link your flat to your account. please paste the link you received on your email below and click \'search\'.",
     ),
     "qrScanner": MessageLookupByLibrary.simpleMessage("QR Scanner"),
     "rate": MessageLookupByLibrary.simpleMessage("Rate"),

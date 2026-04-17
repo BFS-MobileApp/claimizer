@@ -149,7 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "duration": MessageLookupByLibrary.simpleMessage("المده"),
     "editProfile": MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
     "emailAddress": MessageLookupByLibrary.simpleMessage("البريد الالكتروني"),
-    "emailID": MessageLookupByLibrary.simpleMessage("الحساب الألكتروني"),
+    "emailID": MessageLookupByLibrary.simpleMessage("ايميل المستأجر"),
     "emailNotifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "emailisnotvalid": MessageLookupByLibrary.simpleMessage(
       "البريد الالكتروني غير صحيح",
@@ -224,7 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "تم تسجيل الدخول بنجاح",
     ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-    "mobileNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "mobileNumber": MessageLookupByLibrary.simpleMessage("رقم موبايل المستأجر"),
     "more": MessageLookupByLibrary.simpleMessage("المزيد"),
     "morning": MessageLookupByLibrary.simpleMessage("صباحا"),
     "myClaims": MessageLookupByLibrary.simpleMessage("طلباتي"),
@@ -235,7 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nameIsRequired": MessageLookupByLibrary.simpleMessage("الاسم مطلوب"),
     "nationalIDTradeLicense": MessageLookupByLibrary.simpleMessage(
-      "الرقم القومي",
+      "رقم الهوية/رقم ترخيص المستأجر",
     ),
     "newClaims": MessageLookupByLibrary.simpleMessage("طلبات الصيانة الجديدة"),
     "newClaimsDetails": MessageLookupByLibrary.simpleMessage(
@@ -258,7 +258,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "مسموح بإرفاق 4 صور كحد أقصي",
     ),
     "orRegisterWith": MessageLookupByLibrary.simpleMessage("أو سجل بواسطة"),
-    "passportNumber": MessageLookupByLibrary.simpleMessage("رقم جواز السفر"),
+    "passportNumber": MessageLookupByLibrary.simpleMessage(
+      "رقم جواز سفر المستأجر",
+    ),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "passwordChangedSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تغيير كلمة المرور بنجاح",
@@ -300,7 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "qrCode": MessageLookupByLibrary.simpleMessage("رمز الاستجابة السريعة"),
     "qrCodeTip": MessageLookupByLibrary.simpleMessage(
-      "ملحوظه : تأكد من لصق اللينك بالكامل, تواصل مع خدمه العملاء الخاصه بنا اذا واجهت اي مشكلة",
+      "ملاحظه: تأكد من نسخ الرابط بالكامل من بريدك الألكتروني لتجنب أي أخطاء. إذا واجهت اي مشاكل, يرجي الأتصال بفريق الدعم للحصول علي المساعدة",
     ),
     "qrScanner": MessageLookupByLibrary.simpleMessage(" قارئ الباركود"),
     "rate": MessageLookupByLibrary.simpleMessage("تقييم"),
@@ -371,7 +373,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "topUpdates": MessageLookupByLibrary.simpleMessage("اخر التحديثات"),
     "unit": MessageLookupByLibrary.simpleMessage("ينتهي تعاقد الوحدة "),
     "unitCode": MessageLookupByLibrary.simpleMessage("كود الوحدة: "),
-    "unitLinkQR": MessageLookupByLibrary.simpleMessage("طلب جديد (QR)"),
+    "unitLinkQR": MessageLookupByLibrary.simpleMessage("رابط QR الخاص بالوحدة"),
     "unitLinkRequest": MessageLookupByLibrary.simpleMessage(
       "جميع طلبات الربط ",
     ),

@@ -114,7 +114,7 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
               _sectionHeader(context, S.of(context)!.chooseOptionToFindUnit),
               Gaps.vGap16,
               ...options.map((o) => _buildRadioTile(context, o)),
-              Gaps.vGap16,
+              Gaps.vGap8,
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -123,7 +123,7 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                     backgroundColor: MColors.primary_color,
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                    padding: EdgeInsets.symmetric(vertical: 3.5.w),
+                    padding: EdgeInsets.symmetric(vertical: 2.w),
                   ),
                   child: Text(
                     S.of(context)!.next,
@@ -223,40 +223,57 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                 ),
                 Gaps.vGap16,
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
+                    SizedBox(
+                      height: 5.h,
+                      width: 40.w,
+                      child: ElevatedButton.icon(
                         onPressed: () async {
                           final data = await Clipboard.getData(Clipboard.kTextPlain);
                           if (data?.text != null) pr.qrCode.text = data!.text!;
                         },
-                        icon: const Icon(Icons.content_paste_rounded, size: 18),
-                        label: Text(S.of(context)!.paste),
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: MColors.primary_color,
-                          side: BorderSide(color: MColors.primary_color),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          padding: EdgeInsets.symmetric(vertical: 3.w),
+                        icon: const Icon(Icons.content_paste_rounded, size: 16, color: Colors.white),
+                        label: Text(S.of(context)!.paste,style: TextStyle(fontSize: 15,color: Colors.white),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MColors.primary_color,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 2.w),
                         ),
                       ),
                     ),
-                    SizedBox(width: 3.w),
-                    Expanded(
+
+                    SizedBox(width: 2.w),
+
+                    SizedBox(
+                      height: 5.h,
+                      width: 40.w,
                       child: ElevatedButton.icon(
                         onPressed: () {
                           if (pr.qrCode.text.isEmpty) {
-                            widget.presenter.view.showToasts(S.of(context)!.pleaseEnterQrCode, 'warning');
+                            widget.presenter.view.showToasts(
+                              S.of(context)!.pleaseEnterQrCode,
+                              'warning',
+                            );
                           } else {
                             widget.presenter.checkLinkHasParams(pr.qrCode.text);
                           }
                         },
-                        icon: const Icon(Icons.qr_code_scanner_rounded, size: 18, color: Colors.white),
-                        label: Text(S.of(context)!.scan, style: const TextStyle(color: Colors.white)),
+                        icon: const Icon(Icons.qr_code_scanner_rounded, size: 16, color: Colors.white),
+                        label: Text(
+                          S.of(context)!.scan,
+                          style: const TextStyle(color: Colors.white,fontSize: 15),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MColors.primary_color,
                           elevation: 0,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          padding: EdgeInsets.symmetric(vertical: 3.w),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 2.w),
                         ),
                       ),
                     ),
@@ -271,6 +288,7 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                 ),
                 Gaps.vGap16,
                 SizedBox(
+                  height: 5.5.h,
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     onPressed: () {
@@ -281,7 +299,7 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                       }
                     },
                     icon: const Icon(Icons.search_rounded, color: Colors.white, size: 20),
-                    label: Text(S.of(context)!.search, style: const TextStyle(color: Colors.white)),
+                    label: Text(S.of(context)!.search, style: const TextStyle(color: Colors.white,fontSize: 15)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MColors.primary_color,
                       elevation: 0,
@@ -369,25 +387,25 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
 
               // ── Dynamic first field ──────────────────────────────────
               _buildFormLabel(context, dynamicLabel),
-              Gaps.vGap8,
+               Gaps.vGap5,
               _buildTextField(
                 controller: _dynamicFieldController,
                 hint: dynamicHint,
                 keyboardType: dynamicKeyboard,
               ),
-              Gaps.vGap16,
+              Gaps.vGap8,
 
               // ── Contract Number ──────────────────────────────────────
               _buildFormLabel(context, S.of(context)!.contractNumber),
-              Gaps.vGap8,
+               Gaps.vGap5,
               _buildTextField(
                 controller: _contractNumberController,
                 hint: S.of(context)!.contractNumber,
                 keyboardType: TextInputType.text,
               ),
-              Gaps.vGap16,
-              _buildFormLabel(context, S.of(context)!.contractStartDate),
               Gaps.vGap8,
+              _buildFormLabel(context, S.of(context)!.contractStartDate),
+               Gaps.vGap5,
               GestureDetector(
                 onTap: () => _pickDate(context,true),
                 child: AbsorbPointer(
@@ -403,10 +421,10 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                   ),
                 ),
               ),
-              Gaps.vGap16,
+              Gaps.vGap8,
               // ── Contract End Date ────────────────────────────────────
               _buildFormLabel(context, S.of(context)!.contractEndDate),
-              Gaps.vGap8,
+               Gaps.vGap5,
               GestureDetector(
                 onTap: () => _pickDate(context,false),
                 child: AbsorbPointer(
@@ -422,15 +440,15 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                   ),
                 ),
               ),
-              Gaps.vGap16,
+              Gaps.vGap8,
 
-              // ── Search button ────────────────────────────────────────
               SizedBox(
+                height: 5.5.h,
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   onPressed: () => _onSearchOtherOption(context, dynamicLabel),
                   icon: const Icon(Icons.search_rounded, color: Colors.white, size: 20),
-                  label: Text(S.of(context)!.search, style: const TextStyle(color: Colors.white)),
+                  label: Text(S.of(context)!.search, style: const TextStyle(color: Colors.white,fontSize: 15)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: MColors.primary_color,
                     elevation: 0,
@@ -464,10 +482,24 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
             onSurface: MColors.primary_text_color,
           ),
           textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(foregroundColor: MColors.primary_color),
+            style: TextButton.styleFrom(
+              foregroundColor: MColors.primary_color,
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              minimumSize: Size(60, 30),
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              textStyle: TextStyle(fontSize: 15),
+            ),
           ),
         ),
-        child: child!,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: 0.85,
+          ),
+          child: Transform.scale(
+            scale: 0.9,
+            child: child!,
+          ),
+        ),
       ),
     );
     if (picked != null && IsStart) {
@@ -529,11 +561,11 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
           label,
           style: TextStyle(color: MColors.primary_text_color, fontWeight: FontWeight.w500, fontSize: 13),
         ),
-        const SizedBox(width: 8),
-        Text(
-          S.of(context)!.required,
-          style: TextStyle(color: MColors.primary_color, fontSize: 12),
-        ),
+        // const SizedBox(width: 8),
+        // Text(
+        //   S.of(context)!.required,
+        //   style: TextStyle(color: MColors.primary_color, fontSize: 12),
+        // ),
       ],
     );
   }

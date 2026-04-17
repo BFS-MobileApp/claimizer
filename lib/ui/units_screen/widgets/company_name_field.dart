@@ -17,7 +17,7 @@ class CompanyNameField extends StatelessWidget {
         child: TextFormField(
           controller: TextEditingController(text: pr.isBuilding? pr.linkListRequestDataBean.company: pr.newLinkRequestDataBean.company),
           readOnly: true,
-          style: MTextStyles.textDark14,
+          style: MTextStyles.textDark12,
           decoration: InputDecoration(
             hintText: S.of(context)!.companyName,
             hintStyle: MTextStyles.textMain14.copyWith(color: MColors.light_text_color, fontWeight: FontWeight.w500),

@@ -164,45 +164,45 @@ class S {
     return Intl.message('Scan', name: 'scan', desc: '', args: []);
   }
 
-  /// `Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue`
+  /// `Tip : To link your flat to your account. please paste the link you received on your email below and click 'search'.`
   String get qrCodeTip {
     return Intl.message(
-      'Tip : Ensure you Paste The Entire QR Link, Contact out support if you face Any Issue',
+      'Tip : To link your flat to your account. please paste the link you received on your email below and click \'search\'.',
       name: 'qrCodeTip',
       desc: '',
       args: [],
     );
   }
 
-  /// `Mobile Number`
+  /// `Tenant Mobile`
   String get mobileNumber {
     return Intl.message(
-      'Mobile Number',
+      'Tenant Mobile',
       name: 'mobileNumber',
       desc: '',
       args: [],
     );
   }
 
-  /// `Email ID`
+  /// `Tenant Email`
   String get emailID {
-    return Intl.message('Email ID', name: 'emailID', desc: '', args: []);
+    return Intl.message('Tenant Email', name: 'emailID', desc: '', args: []);
   }
 
-  /// `National ID Trade License`
+  /// `ID Number / Trade License Number`
   String get nationalIDTradeLicense {
     return Intl.message(
-      'National ID Trade License',
+      'ID Number / Trade License Number',
       name: 'nationalIDTradeLicense',
       desc: '',
       args: [],
     );
   }
 
-  /// `Passport Number`
+  /// `Tenant Passport`
   String get passportNumber {
     return Intl.message(
-      'Passport Number',
+      'Tenant Passport',
       name: 'passportNumber',
       desc: '',
       args: [],

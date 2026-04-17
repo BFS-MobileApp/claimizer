@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "688584279084-065o0supdseh1mdibarunrgfpmffn6v6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.claimizer",
+            "certificate_hash": "8166f8fea95bff7305bc5bfbfbe9b0bb3fe7d61a"
+          }
+        },
+        {
           "client_id": "688584279084-0s36tet8ou9lf6ou5hkvo5lu92920a76.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

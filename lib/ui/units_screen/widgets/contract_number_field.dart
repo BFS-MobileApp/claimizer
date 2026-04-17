@@ -19,7 +19,7 @@ class ContractField extends StatelessWidget {
         child: TextFormField(
           controller: pr.contractNo,
           readOnly: pr.validated,
-          style: MTextStyles.textDark14,
+          style: MTextStyles.textDark12,
           decoration: InputDecoration(
             hintText: S.of(context)!.contractNo,
             hintStyle: MTextStyles.textMain14.copyWith(color: MColors.light_text_color, fontWeight: FontWeight.w500),
