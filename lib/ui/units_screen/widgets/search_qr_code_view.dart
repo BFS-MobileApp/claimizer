@@ -421,25 +421,25 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                   ),
                 ),
               ),
-              Gaps.vGap8,
-              // ── Contract End Date ────────────────────────────────────
-              _buildFormLabel(context, S.of(context)!.contractEndDate),
-               Gaps.vGap5,
-              GestureDetector(
-                onTap: () => _pickDate(context,false),
-                child: AbsorbPointer(
-                  child: _buildTextField(
-                    controller: _contractEndDateController,
-                    hint: S.of(context)!.contractEndDate,
-                    keyboardType: TextInputType.none,
-                    suffixIcon: Icon(
-                      Icons.calendar_month_rounded,
-                      color: MColors.primary_color,
-                      size: 22,
-                    ),
-                  ),
-                ),
-              ),
+              // Gaps.vGap8,
+              // // ── Contract End Date ────────────────────────────────────
+              // _buildFormLabel(context, S.of(context)!.contractEndDate),
+              //  Gaps.vGap5,
+              // GestureDetector(
+              //   onTap: () => _pickDate(context,false),
+              //   child: AbsorbPointer(
+              //     child: _buildTextField(
+              //       controller: _contractEndDateController,
+              //       hint: S.of(context)!.contractEndDate,
+              //       keyboardType: TextInputType.none,
+              //       suffixIcon: Icon(
+              //         Icons.calendar_month_rounded,
+              //         color: MColors.primary_color,
+              //         size: 22,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Gaps.vGap8,
 
               SizedBox(
@@ -521,6 +521,20 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
   // Search handler for non-QR options — calls the presenter API
   // ─────────────────────────────────────────────────────────────────────────
   void _onSearchOtherOption(BuildContext context, String dynamicLabel) {
+    String _getSearchType() {
+      switch (_selectedOption) {
+        case UnitSearchOption.mobileNumber:
+          return 'ERP_person_mobile';
+        case UnitSearchOption.emailID:
+          return 'ERP_person_email';
+        case UnitSearchOption.nationalID:
+          return 'ERP_person_national_id_no';
+        case UnitSearchOption.passportNumber:
+          return 'ERP_person_passport_no';
+        default:
+          return '';
+      }
+    }
     if (_dynamicFieldController.text.isEmpty) {
       widget.presenter.view.showToasts(
           '${S.of(context)!.pleaseEnter} $dynamicLabel', 'warning');
@@ -531,19 +545,26 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
           '${S.of(context)!.pleaseEnter} ${S.of(context)!.contractNumber}', 'warning');
       return;
     }
-    if (_contractEndDateController.text.isEmpty) {
+    if (_contractStartDateController.text.isEmpty) {
       widget.presenter.view.showToasts(
-          '${S.of(context)!.pleaseEnter} ${S.of(context)!.contractEndDate}', 'warning');
+          '${S.of(context)!.pleaseEnter} ${S.of(context)!.contractStartDate}', 'warning');
       return;
     }
 
 
 
-     widget.presenter.searchUnitByDetails({'type' : "ERP_person_mobile" ,
-       'value' : _dynamicFieldController.text.trim(),
-     'contract_number' : _contractNumberController.text.trim(),
-     'contract_start' : _contractStartDateController.text.trim()},_dynamicFieldController.text.trim(),
-       _contractNumberController.text.trim(),_contractStartDateController.text.trim(),_contractEndDateController.text.trim());
+    widget.presenter.searchUnitByDetails(
+      {
+        'type': _getSearchType(),
+        'value': _dynamicFieldController.text.trim(),
+        'contract_number': _contractNumberController.text.trim(),
+        'contract_start': _contractStartDateController.text.trim(),
+      },
+      _dynamicFieldController.text.trim(),
+      _contractNumberController.text.trim(),
+      _contractStartDateController.text.trim(),
+      _contractEndDateController.text.trim(),
+    );
   }
 
   // ─────────────────────────────────────────────────────────────────────────

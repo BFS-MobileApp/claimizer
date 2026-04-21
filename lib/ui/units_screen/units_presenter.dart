@@ -136,7 +136,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
               view.provider.value.text = value ?? '';
               view.provider.contractNo.text = contractNum ?? '';
                view.provider.startDate = DateTime.parse(startDate);
-              view.provider.endDate = DateTime.parse(endDate);
+              view.provider.endDate = DateTime.parse(data.data.units!.endDate);
               view.provider.unitNumber = data.data.units!.propertyName;
               view.provider.buildingUnitCode = data.data.units!.code;
               print(data.data.units!.propertyName);
@@ -439,7 +439,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       if (code == 422) {
         view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'warning');
       } else {
-        view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+        view.showToasts(msg, 'error');
       }
     });
   }

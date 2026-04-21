@@ -46,19 +46,22 @@ class Units {
   int id;
   String code;
   String propertyName;
+  String endDate;
 
-  Units({required this.id, required this.code, required this.propertyName});
+  Units({required this.id, required this.code, required this.propertyName,required this.endDate});
 
   Units.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         code = json['code'],
-        propertyName = json['property_name'];
+        propertyName = json['property_name'],
+        endDate = json['ERP_contract_end_date'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['code'] = this.code;
     data['property_name'] = this.propertyName;
+    data['ERP_contract_end_date'] = this.endDate;
     return data;
   }
 }
