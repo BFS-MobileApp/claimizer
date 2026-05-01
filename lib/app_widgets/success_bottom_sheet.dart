@@ -4,12 +4,14 @@ class SuccessBottomSheet extends StatelessWidget {
   final String message;
   final String buttonText;
   final VoidCallback? onDone;
+  final bool isDone;
 
   const SuccessBottomSheet({
     Key? key,
     this.message = "We have e-mailed your\npassword reset link!",
     this.buttonText = "Done",
     this.onDone,
+    required this.isDone
   }) : super(key: key);
 
   /// Call this static method to show the bottom sheet
@@ -18,6 +20,7 @@ class SuccessBottomSheet extends StatelessWidget {
         String message = "We have e-mailed your\npassword reset link!",
         String buttonText = "Done",
         VoidCallback? onDone,
+        required bool isDone,
       }) {
     showModalBottomSheet(
       context: context,
@@ -28,6 +31,7 @@ class SuccessBottomSheet extends StatelessWidget {
         message: message,
         buttonText: buttonText,
         onDone: onDone,
+        isDone: isDone,
       ),
     );
   }
@@ -62,8 +66,8 @@ class SuccessBottomSheet extends StatelessWidget {
               color: Color(0xFFE53935),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.check,
+            child: Icon(
+             isDone ?  Icons.check : Icons.close,
               color: Colors.white,
               size: 44,
             ),

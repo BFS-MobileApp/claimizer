@@ -226,7 +226,7 @@
   "pleaseEnterContractNumber": "Please enter contract number",
   "cancel": "Cancel",
   "renewNotes": "Renew Notes",
-  "unitRequestCode": " Code: ",
+  "unitRequestCode": "Request #",
   "userRemarks": "Tenant Remarks",
   "unlinkDate": "Unlink Date",
   "unlinkReason": "Unlink Reason",

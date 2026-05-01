@@ -125,7 +125,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Consumer<UnitProvider>(
         builder: (context, pr, child) => Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 60, 16, 0),
+          padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 8),
           child: Column(
             children: [
               // ── Header: title + tab cards ──────────────────────────────
@@ -227,7 +227,7 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   padding:
-                  EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
+                  EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.w),
                   child: Row(
                     children: [
                       Expanded(

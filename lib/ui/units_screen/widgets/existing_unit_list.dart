@@ -12,7 +12,7 @@ import '../../../res/gaps.dart';
 import '../../../res/styles.dart';
 
 class ExistingUnitList extends StatefulWidget {
-  ExistingUnitList({Key? key,required this.presenter,required this.provider}) : super(key: key);
+  ExistingUnitList({Key? key, required this.presenter, required this.provider}) : super(key: key);
   final UnitPresenter presenter;
   UnitProvider provider;
 
@@ -37,114 +37,175 @@ class _ExistingUnitListState extends State<ExistingUnitList> {
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UnitProvider>(
       builder: (context, pr, child) {
         return pr.unitsList.isNotEmpty
             ? RefreshIndicator(
-                onRefresh: () async {
-                  pr.searchController.clear();
-                  Map<String, dynamic> params = Map();
-                  params['search'] = widget.provider.searchController.text.toString();
-                  await widget.presenter.getExistingUnitsApiCall(params);
-                },
-                child: ListView.builder(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  controller: _scrollController,
-                  itemCount: pr.unitsList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-                      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
-                      margin: index == 0 ? EdgeInsets.zero : EdgeInsets.symmetric(vertical: 2.w),
-                      child: Column(
-                        children: [
-                          Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    Text(
-                                      pr.unitsList[index].name ?? "",
-                                      style: Theme.of(context).appBarTheme.titleTextStyle,
-                                    ),
-                                    // Text(
-                                    //   S.of(context)!.unitCode + pr.unitsList[index].code,
-                                    //   style: Theme.of(context).appBarTheme.titleTextStyle,
-                                    // ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            buildDivider(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              // //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                UnitCardItem(
-                                  title: S.of(context)!.unitName ,
-                                  data: pr.unitsList[index].name ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.buildingName ,
-                                  data: pr.unitsList[index].building ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.unitType ,
-                                  data: pr.unitsList[index].type ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.company ,
-                                  data: pr.unitsList[index].company ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.contractNo ,
-                                  data: pr.unitsList[index].id.toString() ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.startAt ,
-                                  data: pr.unitsList[index].startAt ?? "",
-                                ),
-                                Gaps.vGap8,
-                                UnitCardItem(
-                                  title: S.of(context)!.endAt ,
-                                  data: pr.unitsList[index].endAt ?? "",
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                  },
-                ),
-              )
+          onRefresh: () async {
+            pr.searchController.clear();
+            Map<String, dynamic> params = Map();
+            params['search'] = widget.provider.searchController.text.toString();
+            await widget.presenter.getExistingUnitsApiCall(params);
+          },
+          child: ListView.builder(
+            physics: AlwaysScrollableScrollPhysics(),
+            controller: _scrollController,
+            itemCount: pr.unitsList.length,
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.w),
+            itemBuilder: (context, index) {
+              return _buildUnitCard(context, pr, index);
+            },
+          ),
+        )
             : NoDataWidget(
-                onRefresh: () async {
-                  Map<String, dynamic> params = Map();
-                  params['search'] = widget.provider.searchController.text.toString();
-                  await widget.presenter.getExistingUnitsApiCall(params);
-                },
-              );
+          onRefresh: () async {
+            Map<String, dynamic> params = Map();
+            params['search'] = widget.provider.searchController.text.toString();
+            await widget.presenter.getExistingUnitsApiCall(params);
+          },
+        );
       },
     );
   }
 
-  Column buildDivider() {
-    return Column(
-      children: [
-        Gaps.vGap16,
-        Divider(
-          color: MColors.dividerColor,
+  Widget _buildUnitCard(BuildContext context, dynamic pr, int index) {
+    final unit = pr.unitsList[index];
+
+    return Container(
+      margin: EdgeInsets.only(bottom: 3.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Row: Name + Status Badge
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        unit.name ?? "",
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      SizedBox(height: 1.w),
+                      Text(
+                        "${unit.id ?? ""} - ${unit.building ?? ""}",
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 2.w),
+                // _buildStatusBadge(unit.type),
+              ],
+            ),
+
+            SizedBox(height: 3.w),
+            Divider(color: Colors.grey.shade200, thickness: 1, height: 1),
+            SizedBox(height: 3.w),
+
+            // Detail Rows
+            _buildDetailRow(context, S.of(context)!.unitName, unit.name ?? ""),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.buildingName, unit.building ?? ""),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.unitType, unit.type ?? ""),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.company, unit.company ?? ""),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.contractNo, unit.id.toString()),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.startAt, unit.startAt ?? ""),
+            _buildDividerRow(),
+            _buildDetailRow(context, S.of(context)!.endAt, unit.endAt ?? ""),
+          ],
         ),
-        Gaps.vGap16,
-      ],
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(String status) {
+    Color bgColor;
+    Color textColor;
+
+    switch (status.toLowerCase()) {
+      case 'approved':
+        bgColor = Color(0xFFE8F5E9);
+        textColor = Color(0xFF2E7D32);
+        break;
+      case 'pending':
+        bgColor = Color(0xFFFFF8E1);
+        textColor = Color(0xFFF9A825);
+        break;
+      case 'rejected':
+        bgColor = Color(0xFFFFEBEE);
+        textColor = Color(0xFFC62828);
+        break;
+      default:
+        bgColor = Color(0xFFE8F5E9);
+        textColor = Color(0xFF2E7D32);
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.w),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        status,
+        style: Theme.of(context).textTheme.displaySmall,
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(BuildContext context, String title, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.8.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
+          SizedBox(width: 4.w),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodySmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDividerRow() {
+    return Divider(
+      color: Colors.grey.shade100,
+      thickness: 1,
+      height: 1,
     );
   }
 }

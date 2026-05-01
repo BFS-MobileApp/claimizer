@@ -54,7 +54,7 @@ class Units {
       : id = json['id'],
         code = json['code'],
         propertyName = json['property_name'],
-        endDate = json['ERP_contract_end_date'];
+        endDate = json['ERP_contract_end_date'] ?? "";
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();

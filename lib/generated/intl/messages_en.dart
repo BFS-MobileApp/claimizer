@@ -375,7 +375,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unitRenewSuccessfully": MessageLookupByLibrary.simpleMessage(
       "Unit Renew Successfully",
     ),
-    "unitRequestCode": MessageLookupByLibrary.simpleMessage(" Code: "),
+    "unitRequestCode": MessageLookupByLibrary.simpleMessage("Request #"),
     "unitRequestUnlinked": MessageLookupByLibrary.simpleMessage(
       "Unit UnLinked",
     ),

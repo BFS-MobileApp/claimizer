@@ -34,15 +34,15 @@ class ClaimCreatedDialog extends StatelessWidget {
                   color: MColors.black,
                 )),
             Gaps.vGap8,
+            // Text(
+            //   S.of(context)!.OneOfOurCustomerServices,
+            //   style: MTextStyles.textSubtitle,
+            //   textAlign: TextAlign.center,
+            // ),
+            // Gaps.vGap8,
             Text(
-              S.of(context)!.OneOfOurCustomerServices,
-              style: MTextStyles.textSubtitle,
-              textAlign: TextAlign.center,
-            ),
-            Gaps.vGap8,
-            Text(
-              '${S.of(context)!.requestCode} ${claimsRequestResponse?.id}'  ,
-              style: MTextStyles.textSubtitle,
+              '${claimsRequestResponse?.id}'  ,
+              style: MTextStyles.textGray14,
               textAlign: TextAlign.center,
             ),
             Gaps.vGap30,

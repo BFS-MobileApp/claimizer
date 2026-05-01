@@ -16,7 +16,7 @@ import '../../../res/gaps.dart';
 import '../../unit_request_details_screen/UnitDetailsScreen.dart';
 
 class UnitLinkRequest extends StatefulWidget {
-  UnitLinkRequest({Key? key,required this.presenter,required this.homeProvider,required this.provider}) : super(key: key);
+  UnitLinkRequest({Key? key, required this.presenter, required this.homeProvider, required this.provider}) : super(key: key);
   final UnitPresenter presenter;
   final HomeProvider homeProvider;
   UnitProvider provider;
@@ -56,139 +56,172 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
     return Consumer<UnitProvider>(
       builder: (context, pr, child) => pr.unitsRequestList.isNotEmpty
           ? RefreshIndicator(
-              onRefresh: () async {
-                Map<String, dynamic> linkRequestParams = Map();
-                linkRequestParams['search'] = widget.provider.searchController.text.toString();
-                widget.presenter.getUnitRequestsApiCall(linkRequestParams);
-                pr.unitLinkSearchController.clear();
+        onRefresh: () async {
+          Map<String, dynamic> linkRequestParams = Map();
+          linkRequestParams['search'] = widget.provider.searchController.text.toString();
+          widget.presenter.getUnitRequestsApiCall(linkRequestParams);
+          pr.unitLinkSearchController.clear();
+        },
+        child: ListView.builder(
+          controller: _scrollController,
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.w),
+          itemCount: pr.unitsRequestList.length,
+          itemBuilder: (context, index) {
+            final item = pr.unitsRequestList[index];
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => UnitRequestDetailsScreen(
+                        id: item.id!,
+                        unitRequestDataBean: item,
+                      ),
+                    ));
               },
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: pr.unitsRequestList.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => UnitRequestDetailsScreen(
-                              id: pr.unitsRequestList[index].id!,
-                              unitRequestDataBean: pr.unitsRequestList[index],
-                            ),
-                          ));
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor, borderRadius: BorderRadius.circular(8)),
-                        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 3.w),
-                        margin: index == 0 ? EdgeInsets.only(bottom: 12) : EdgeInsets.symmetric(vertical: 12),
-                        child: Column(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                margin: EdgeInsets.only(bottom: 3.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // AutoSizeText(
-                                    //   pr.unitsRequestList[index].unitName ?? "",
-                                    //   style: TextStyle(color: MColors.text_dark, fontWeight: FontWeight.bold),
-                                    // ),
-                                    AutoSizeText(
-                                      S.of(context)!.unitRequestCode + "\n" + pr.unitsRequestList[index].refCode!,
-                                      style: TextStyle(fontWeight: FontWeight.w500, color: MColors.subText_color),
-                                    ),
-                                  ],
-                                ),
-                                Card(
-                                  color: widget.presenter
-                                      .getUnitStatusColorFromString(pr.unitsRequestList[index].status!.toLowerCase()),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-                                    child: AutoSizeText(
-                                      pr?.unitsRequestList[index]?.status ?? '',
-                                      maxLines: 1,
-                                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              S.of(context)!.unitRequestCode,
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            buildDivider(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.unitName,
-                                  data: pr.unitsRequestList[index].unitName!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.buildingName,
-                                  data: pr.unitsRequestList[index].buildingName!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.unitType,
-                                  data: pr.unitsRequestList[index].unitType!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.company,
-                                  data: pr.unitsRequestList[index].company!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.contractNo,
-                                  data: pr.unitsRequestList[index].contractNumber!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.startAt,
-                                  data: pr.unitsRequestList[index].startAt!,
-                                  isLast: true,
-                                ),
-                                Gaps.vGap8,
-                                UnitRequestDataItem(
-                                  title: S.of(context)!.endAt,
-                                  data: pr.unitsRequestList[index].endAt!,
-                                  isLast: true,
-                                ),
-                              ],
+                            SizedBox(height: 1.w),
+                            Text(
+                              item.refCode ?? "",
+                              style: Theme.of(context).textTheme.displaySmall,
                             ),
                           ],
                         ),
-                      ),
-                    );
-                },
+                        SizedBox(width: 2.w),
+                        _buildStatusBadge(item.status ?? ""),
+                      ],
+                    ),
+
+                    SizedBox(height: 3.w),
+                    Divider(color: Colors.grey.shade200, thickness: 1, height: 1),
+                    SizedBox(height: 3.w),
+
+                    // Detail Rows
+                    _buildDetailRow(S.of(context)!.unitName, item.unitName ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.buildingName, item.buildingName ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.unitType, item.unitType ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.company, item.company ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.contractNo, item.contractNumber ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.startAt, item.startAt ?? ""),
+                    _buildDividerRow(),
+                    _buildDetailRow(S.of(context)!.endAt, item.endAt ?? ""),
+                  ],
+                ),
               ),
-            )
+            );
+          },
+        ),
+      )
           : NoDataWidget(onRefresh: () async {
-              Map<String, dynamic> linkRequestParams = Map();
-              linkRequestParams['search'] = widget.provider.searchController.text.toString();
-              widget.presenter.getUnitRequestsApiCall(linkRequestParams);
-            }),
+        Map<String, dynamic> linkRequestParams = Map();
+        linkRequestParams['search'] = widget.provider.searchController.text.toString();
+        widget.presenter.getUnitRequestsApiCall(linkRequestParams);
+      }),
     );
   }
 
-  Column buildDivider() {
-    return Column(
-      children: [
-        Gaps.vGap16,
-        Divider(
-          color: MColors.dividerColor,
+  Widget _buildStatusBadge(String status) {
+    Color bgColor;
+    Color textColor;
+
+    switch (status.toLowerCase()) {
+      case 'approved':
+        bgColor = Color(0xFFE8F5E9);
+        textColor = Color(0xFF2E7D32);
+        break;
+      case 'pending':
+        bgColor = Color(0xFFFFF8E1);
+        textColor = Color(0xFFF9A825);
+        break;
+      case 'rejected':
+        bgColor = Color(0xFFFFEBEE);
+        textColor = Color(0xFFC62828);
+        break;
+      default:
+        bgColor = widget.presenter.getUnitStatusColorFromString(status.toLowerCase()).withOpacity(0.15);
+        textColor = widget.presenter.getUnitStatusColorFromString(status.toLowerCase());
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.w),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        status,
+        style: TextStyle(
+          fontSize: 15.sp,
+          fontWeight: FontWeight.w600,
+          color: textColor,
         ),
-        Gaps.vGap16,
-      ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String title, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 1.8.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
+          SizedBox(width: 4.w),
+          Flexible(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodySmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDividerRow() {
+    return Divider(
+      color: Colors.grey.shade100,
+      thickness: 1,
+      height: 1,
     );
   }
 }

@@ -1844,9 +1844,14 @@ class S {
     return Intl.message('Renew Notes', name: 'renewNotes', desc: '', args: []);
   }
 
-  /// ` Code: `
+  /// `Request #`
   String get unitRequestCode {
-    return Intl.message(' Code: ', name: 'unitRequestCode', desc: '', args: []);
+    return Intl.message(
+      'Request #',
+      name: 'unitRequestCode',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Tenant Remarks`

@@ -24,177 +24,262 @@ import 'company_name_field.dart';
 import 'contract_number_field.dart';
 
 class CompleteNewUnit extends StatelessWidget {
-  const CompleteNewUnit({Key? key,required this.provider,required this.presenter}) : super(key: key);
+  const CompleteNewUnit({Key? key, required this.provider, required this.presenter}) : super(key: key);
   final UnitProvider provider;
   final UnitPresenter presenter;
-
 
   @override
   Widget build(BuildContext context) {
     return Consumer<UnitProvider>(
       builder: (context, pr, child) => Container(
-        padding: EdgeInsets.symmetric(vertical: 2.w, horizontal: 4.w),
-        margin: EdgeInsets.symmetric(vertical: 2.w),
-        decoration: BoxDecoration(color: MColors.white, borderRadius: BorderRadius.circular(8)),
+        color: Color(0xFFF5F5F5),
         child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(S.current!.newLinkRequest, style: MTextStyles.textMain18),
-              ],
-            ),
-            Gaps.vGap8,
-            Gaps.vGap8,
-            Gaps.vGap8,
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 1.w,
-                  height: 5.w,
-                  margin: EdgeInsetsDirectional.only(end: 3.w),
-                  decoration: BoxDecoration(color: MColors.primary_color, borderRadius: BorderRadius.circular(4)),
-                ),
-                Text(pr.isBuilding ? "Building Query" : S.current!.contractQuery, style: MTextStyles.textMain16),
-              ],
-            ),
-            Gaps.vGap8,
-            CompanyNameField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            BuildingNameField(
-              provider: provider,
-            ),
-            /*Gaps.vGap8,
-            
-            UnitNameField(
-              provider: provider,
-            ),*/
-            Gaps.vGap8,
-            Visibility(visible: pr.isBuilding, child: BuildBuildingUnitDropDown()),
-            Gaps.vGap8,
-            provider.showUnitNumber ?Column(
-              children: [
-                UnitNumberItem(
-                  provider: provider,
-                ),
-                Gaps.vGap8,
-              ],
-            ): const SizedBox(),
-            ContractField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            StartEndDatePickerField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            BuildContractFilePicker(provider: provider),
-            Gaps.vGap8,
-            BuildIdentityFilePicker(provider: provider),
-            Gaps.vGap8,
-            BuildDescriptionField(
-              provider: provider,
-            ),
-            Gaps.vGap8,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * .05,
-                  width: MediaQuery.of(context).size.width * .4,
-                  margin: EdgeInsets.symmetric(vertical: 3.w),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      pr.isQrCodeValid = !pr.isQrCodeValid;
-                      pr.contractNo.clear();
-                      pr.companyName.clear();
-                      pr.buildingName.clear();
-                      pr.description.clear();
-                      pr.startDate = DateTime.now();
-                      pr.endDate = DateTime.now();
-                      pr.identityImg = File('');
-                      pr.contractImg = File('');
-                      pr.contractFiles = [];
-                      pr.identityFiles = [];
-                    },
-                    child: Text(
-                      S.of(context)!.back,
-                      style: MTextStyles.textMain12.copyWith(fontWeight: FontWeight.w700),
+            // Page Title
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 1.w,
+                    height: 5.w,
+                    margin: EdgeInsetsDirectional.only(end: 3.w),
+                    decoration: BoxDecoration(
+                      color: MColors.primary_color,
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(MColors.white),
+                  ),
+                  Text(
+                    S.current!.newLinkRequest,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Gaps.vGap8,
+
+            // Form Card
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildFieldLabel(S.current!.companyName),
+                  Gaps.vGap8,
+                  CompanyNameField(provider: provider),
+
+                  Gaps.vGap16,
+                  _buildFieldLabel(S.current!.buildingName),
+                  Gaps.vGap8,
+                  BuildingNameField(provider: provider),
+
+                  Gaps.vGap16,
+                  Visibility(
+                    visible: pr.isBuilding,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildFieldLabel(S.current!.unitName ?? "Unit Name"),
+                        Gaps.vGap8,
+                        BuildBuildingUnitDropDown(),
+                        Gaps.vGap16,
+                      ],
+                    ),
+                  ),
+
+                  if (provider.showUnitNumber) ...[
+                    _buildFieldLabel("Unit Number"),
+                    Gaps.vGap8,
+                    UnitNumberItem(provider: provider),
+                    Gaps.vGap16,
+                  ],
+
+                  _buildFieldLabel(S.current!.contractNo),
+                  Gaps.vGap8,
+                  ContractField(provider: provider),
+
+                  Gaps.vGap16,
+                  StartEndDatePickerField(provider: provider),
+
+                  Gaps.vGap16,
+                  BuildContractFilePicker(provider: provider),
+
+                  Gaps.vGap16,
+                  BuildIdentityFilePicker(provider: provider),
+
+                  Gaps.vGap16,
+                  Text(
+                    S.current!.requestNotes,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Gaps.vGap8,
+                  BuildDescriptionField(provider: provider),
+                ],
+              ),
+            ),
+
+            Gaps.vGap16,
+
+            // Buttons Row
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 6.h,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        pr.isQrCodeValid = !pr.isQrCodeValid;
+                        pr.contractNo.clear();
+                        pr.companyName.clear();
+                        pr.buildingName.clear();
+                        pr.description.clear();
+                        pr.startDate = DateTime.now();
+                        pr.endDate = DateTime.now();
+                        pr.identityImg = File('');
+                        pr.contractImg = File('');
+                        pr.contractFiles = [];
+                        pr.identityFiles = [];
+                      },
+                      child: Text(
+                        S.of(context)!.back,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w700,
+                          color: MColors.primary_color,
+                        ),
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                         elevation: MaterialStatePropertyAll(0),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8), side: BorderSide(color: MColors.primary_color))),
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(color: MColors.primary_color, width: 1.5),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * .05,
-                  width: MediaQuery.of(context).size.width * .4,
-                  margin: EdgeInsets.symmetric(vertical: 3.w),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (pr.contractNo.text.isEmpty && !pr.isHasStartDate && !pr.isHasEndDate) {
-                        presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                      } else if(pr.endDate.isBefore(pr.startDate)){
-                        presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
-                      } else if(pr.contractNo.text.isNotEmpty && pr.isHasStartDate && pr.isHasEndDate){
-                       if (pr.contractImg.path != '' ||
-                          pr.identityImg.path != '') {
-                        FormData formData = new FormData.fromMap({
-                          "contract_attach": await MultipartFile.fromFile(
-                            pr.contractImg.path,
-                            contentType: new  MediaType('application', 'octet-stream'),
-                          ),
-                          "client_gov_id": await MultipartFile.fromFile(
-                            pr.identityImg.path,
-                            contentType: new  MediaType('application', 'octet-stream'),
-                          ),
-                          "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
-                          "contract_number": pr.contractNo.text,
-                          "start_at": pr.startDate.toString(),
-                          "end_at": pr.endDate.toString(),
-                          "request_remarks": pr.description.text,
-                        });
-                        presenter.completeLinkRequestApiCall(formData , context);
-                      } else {
-                         FormData formData = new FormData.fromMap({
-                           "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
-                           "contract_number": pr.contractNo.text,
-                           "start_at": pr.startDate.toString(),
-                           "end_at": pr.endDate.toString(),
-                           "request_remarks": pr.description.text,
-                         });
-                         presenter.completeLinkRequestApiCall(formData , context);
-                       }
-                      }else{
-                        presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
-                      }
-                    },
-                    child: Text(
-                      S.of(context)!.confirm,
-                      style: MTextStyles.textWhite12.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                    style: ButtonStyle(
+                SizedBox(width: 3.w),
+                Expanded(
+                  child: SizedBox(
+                    height: 6.h,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (pr.contractNo.text.isEmpty && !pr.isHasStartDate && !pr.isHasEndDate) {
+                          presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
+                        } else if (pr.endDate.isBefore(pr.startDate)) {
+                          presenter.view.showToasts(S.of(context)!.dateErrorMessage, 'error');
+                        } else if (pr.contractNo.text.isNotEmpty && pr.isHasStartDate && pr.isHasEndDate) {
+                          if (pr.contractImg.path != '' || pr.identityImg.path != '') {
+                            FormData formData = new FormData.fromMap({
+                              "contract_attach": await MultipartFile.fromFile(
+                                pr.contractImg.path,
+                                contentType: new MediaType('application', 'octet-stream'),
+                              ),
+                              "client_gov_id": await MultipartFile.fromFile(
+                                pr.identityImg.path,
+                                contentType: new MediaType('application', 'octet-stream'),
+                              ),
+                              "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
+                              "contract_number": pr.contractNo.text,
+                              "start_at": pr.startDate.toString(),
+                              "end_at": pr.endDate.toString(),
+                              "request_remarks": pr.description.text,
+                            });
+                            presenter.completeLinkRequestApiCall(formData, context);
+                          } else {
+                            FormData formData = new FormData.fromMap({
+                              "unit_code": pr.isBuilding ? pr.selectedUnit : pr.qrCode.text == '' ? pr.buildingUnitCode : pr.qrCode.text,
+                              "contract_number": pr.contractNo.text,
+                              "start_at": pr.startDate.toString(),
+                              "end_at": pr.endDate.toString(),
+                              "request_remarks": pr.description.text,
+                            });
+                            presenter.completeLinkRequestApiCall(formData, context);
+                          }
+                        } else {
+                          presenter.view.showToasts(S.of(context)!.enterAllData, 'error');
+                        }
+                      },
+                      child: Text(
+                        S.of(context)!.confirm,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
                         elevation: MaterialStatePropertyAll(0),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        )),
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                )
+                ),
               ],
-            )
+            ),
+
+            Gaps.vGap16,
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildFieldLabel(String label) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            text: '* ',
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: MColors.primary_color,
+            ),
+          ),
+          TextSpan(
+            text: label,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
       ),
     );
   }

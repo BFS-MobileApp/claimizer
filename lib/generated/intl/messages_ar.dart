@@ -235,7 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nameIsRequired": MessageLookupByLibrary.simpleMessage("الاسم مطلوب"),
     "nationalIDTradeLicense": MessageLookupByLibrary.simpleMessage(
-      "رقم الهوية/رقم ترخيص المستأجر",
+      "رقم الهوية/رقم الرخصة المستأجر",
     ),
     "newClaims": MessageLookupByLibrary.simpleMessage("طلبات الصيانة الجديدة"),
     "newClaimsDetails": MessageLookupByLibrary.simpleMessage(
@@ -385,7 +385,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "unitRenewSuccessfully": MessageLookupByLibrary.simpleMessage(
       "تم تجديد الوحده بنجاح",
     ),
-    "unitRequestCode": MessageLookupByLibrary.simpleMessage("كود الطلب: "),
+    "unitRequestCode": MessageLookupByLibrary.simpleMessage("الطلب #"),
     "unitRequestUnlinked": MessageLookupByLibrary.simpleMessage(
       "تم الغاء ربط الوحدة",
     ),

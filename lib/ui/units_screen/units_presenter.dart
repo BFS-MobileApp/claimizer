@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Cliamizer/app_widgets/success_bottom_sheet.dart';
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
 import 'package:Cliamizer/network/models/NewLinkListRequestResponse.dart';
 import 'package:Cliamizer/network/models/NewLinkRequestResponse.dart';
@@ -29,23 +30,27 @@ import 'units_screen.dart';
 import 'package:flutter/foundation.dart';
 
 class UnitPresenter extends BasePresenter<UnitsScreenState> {
-
-
   Future getExistingUnitsApiCall(Map<String, dynamic> params) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<UnitsResponse>(Method.get, queryParams:params,options: Options(headers: header), endPoint: Api.unitsApiCall,
-        onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        view.provider.unitsList = data.data;
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-    });
+    await requestFutureData<UnitsResponse>(
+      Method.get,
+      queryParams: params,
+      options: Options(headers: header),
+      endPoint: Api.unitsApiCall,
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          view.provider.unitsList = data.data;
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+      },
+    );
   }
 
   Future getFilteredExistingUnitsApiCall(Map<String, dynamic> params) async {
@@ -54,15 +59,21 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<UnitsResponse>(Method.get, options: Options(headers: header),queryParams: params, endPoint: Api.unitsApiCall,
-        onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        view.provider.unitsList = data.data;
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-    });
+    await requestFutureData<UnitsResponse>(
+      Method.get,
+      options: Options(headers: header),
+      queryParams: params,
+      endPoint: Api.unitsApiCall,
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          view.provider.unitsList = data.data;
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+      },
+    );
   }
 
   Future getUnitRequestsApiCall(Map<String, dynamic> params) async {
@@ -83,7 +94,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           data.data!.sort((a, b) {
             final dateA = DateTime.tryParse(a.createdAt ?? '') ?? DateTime(0);
             final dateB = DateTime.tryParse(b.createdAt ?? '') ?? DateTime(0);
-            return dateB.compareTo(dateA); // Descending order
+            return dateB.compareTo(dateA);
           });
 
           view.provider.unitsRequestList = data.data!;
@@ -95,25 +106,36 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
     );
   }
 
-
   Future getFilteredUnitRequestsApiCall(Map<String, dynamic> params) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<UnitRequestsResponse>(Method.get, options: Options(headers: header),queryParams: params, endPoint: Api.unitRequestApiCall,
-        onSuccess: (data) {
-          view.closeProgress();
-          if (data != null) {
-            view.provider.unitsRequestList = data.data!;
-          }
-        }, onError: (code, msg) {
-          view.closeProgress();
-        });
+    await requestFutureData<UnitRequestsResponse>(
+      Method.get,
+      options: Options(headers: header),
+      queryParams: params,
+      endPoint: Api.unitRequestApiCall,
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          view.provider.unitsRequestList = data.data!;
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+      },
+    );
   }
 
-  Future searchUnitByDetails(Map<String, dynamic> bodyParams, String value, String contractNum,String startDate,String endDate) async {
+  Future searchUnitByDetails(
+      Map<String, dynamic> bodyParams,
+      String value,
+      String contractNum,
+      String startDate,
+      String endDate,
+      ) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
@@ -125,52 +147,56 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
     print("Headers: $header");
     print("Body: $bodyParams");
     print("=====================");
-    await requestFutureData<NewLinkRequestResponse>(Method.post,
-        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
-          view.closeProgress();
-          if (data != null) {
-            if (data.status == "success") {
-              print('here');
-              view.provider.newLinkRequestDataBean = data.data;
-              view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
-              view.provider.value.text = value ?? '';
-              view.provider.contractNo.text = contractNum ?? '';
-               view.provider.startDate = DateTime.parse(startDate);
-              view.provider.endDate = DateTime.parse(data.data.units!.endDate);
-              view.provider.unitNumber = data.data.units!.propertyName;
-              view.provider.buildingUnitCode = data.data.units!.code;
-              print(data.data.units!.propertyName);
-              view.provider.hasStartDate = true;
-              view.provider.hasEndDate = true;
-              view.provider.contract = true;
-            } else if (data.status == "fail") {
-              view.provider.message = data.data.message;
-              view.showErrorDialog(
-                message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
-              );
-            }
+    await requestFutureData<NewLinkRequestResponse>(
+      Method.post,
+      endPoint: Api.newLinkRequestApiCall,
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          if (data.status == "success") {
+            print('here');
+            view.provider.newLinkRequestDataBean = data.data;
+            view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+            view.provider.value.text = value ?? '';
+            view.provider.contractNo.text = contractNum ?? '';
+            view.provider.startDate = DateTime.parse(startDate);
+            view.provider.endDate = DateTime.parse(data.data.units!.endDate);
+            view.provider.unitNumber = data.data.units!.propertyName;
+            view.provider.buildingUnitCode = data.data.units!.code;
+            print(data.data.units!.propertyName);
+            view.provider.hasStartDate = true;
+            view.provider.hasEndDate = true;
+            view.provider.contract = true;
+          } else if (data.status == "fail") {
+            view.provider.message = data.data.message;
+            view.showErrorDialog(
+              message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+            );
           }
-        }, onError: (code, msg) {
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
 
-            view.closeProgress();
+        String displayMessage = msg;
+        try {
+          final parsed = jsonDecode(msg);
+          displayMessage = parsed['data']?['message'] ?? parsed['message'] ?? msg;
+        } catch (_) {
+          displayMessage = msg;
+        }
 
-            String displayMessage = msg;
-            try {
-              final parsed = jsonDecode(msg);
-              displayMessage = parsed['data']?['message']
-                  ?? parsed['message']
-                  ?? msg;
-            } catch (_) {
-              displayMessage = msg;
-            }
-
-            view.provider.message = displayMessage;
-            view.showErrorDialog(message: displayMessage);
-          if (code == 422) {
-            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
-          }
-        });
+        view.provider.message = displayMessage;
+        view.showErrorDialog(message: displayMessage);
+        if (code == 422) {
+          view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+        }
+      },
+    );
   }
+
   checkLinkHasParams(String link) {
     Uri myUri = Uri.parse(link);
     print(myUri.queryParameters.toString());
@@ -179,10 +205,10 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
     bool hasStartDate = myUri.queryParameters.containsKey('contract_start');
     bool hasEndDate = myUri.queryParameters.containsKey('contract_end');
     String qrCode = myUri.queryParameters['qr_code'] ?? "";
-    String contractNumber = myUri.queryParameters['contract_no']??'';
-    String startDate = myUri.queryParameters['contract_start']?? '';
-    String endDate = myUri.queryParameters['contract_end']??'';
-    String mLink = myUri.queryParameters['m']??'';
+    String contractNumber = myUri.queryParameters['contract_no'] ?? '';
+    String startDate = myUri.queryParameters['contract_start'] ?? '';
+    String endDate = myUri.queryParameters['contract_end'] ?? '';
+    String mLink = myUri.queryParameters['m'] ?? '';
     RegExp uPattern = RegExp('^U\\d{2}-\\d{5}-\\d');
     RegExp bPattern = RegExp('^B\\d{2}-\\d{5}-\\d');
     if (hasContractNumber && hasStartDate && hasEndDate) {
@@ -190,8 +216,7 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
       String formattedEndDate = endDate.replaceAll('-', '');
       view.provider.isBuilding = false;
       String mCalculated;
-      mCalculated =
-          ((int.parse(formattedStartDate) + int.parse(formattedEndDate)) * int.parse(contractNumber!)).toString();
+      mCalculated = ((int.parse(formattedStartDate) + int.parse(formattedEndDate)) * int.parse(contractNumber!)).toString();
       if (mCalculated == mLink) {
         doCheckUnitQrCodeApiCall({"qr_code": qrCode, "validated": true}, qrCode, contractNumber, startDate, endDate);
         view.provider.validated = true;
@@ -213,133 +238,161 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
   }
 
   Future doCheckUnitQrCodeApiCall(
-      Map<String, dynamic> bodyParams, String qrCode, String contractNum, String startData, String endDate) async {
+      Map<String, dynamic> bodyParams,
+      String qrCode,
+      String contractNum,
+      String startData,
+      String endDate,
+      ) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<NewLinkRequestResponse>(Method.post,
-        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        if (data.status == "success") {
-          print('here');
-          view.provider.newLinkRequestDataBean = data.data;
-          view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
-          view.provider.qrCode.text = qrCode ?? '';
-          view.provider.contractNo.text = contractNum ?? '';
-          view.provider.startDate = DateTime.parse(startData);
-          view.provider.endDate = DateTime.parse(endDate);
-          view.provider.unitNumber = data.data.units!.propertyName;
-          print(data.data.units!.propertyName);
-          view.provider.hasStartDate = true;
-          view.provider.hasEndDate = true;
-          view.provider.contract = true;
-        } else if (data.status == "fail") {
-          view.provider.message = data.data.message;
-          view.showErrorDialog(
-            message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
-          );
+    await requestFutureData<NewLinkRequestResponse>(
+      Method.post,
+      endPoint: Api.newLinkRequestApiCall,
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          if (data.status == "success") {
+            print('here');
+            view.provider.newLinkRequestDataBean = data.data;
+            view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+            view.provider.qrCode.text = qrCode ?? '';
+            view.provider.contractNo.text = contractNum ?? '';
+            view.provider.startDate = DateTime.parse(startData);
+            view.provider.endDate = DateTime.parse(endDate);
+            view.provider.unitNumber = data.data.units!.propertyName;
+            print(data.data.units!.propertyName);
+            view.provider.hasStartDate = true;
+            view.provider.hasEndDate = true;
+            view.provider.contract = true;
+          } else if (data.status == "fail") {
+            view.provider.message = data.data.message;
+            view.showErrorDialog(
+              message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+            );
+          }
         }
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-      if (code == 404) {
-        view.provider.message = S.current!.theQrCodeIsIncorrect;
-        view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
-      }
-      if (code == 422) {
-        view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
-      }
-    });
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+        if (code == 404) {
+          view.provider.message = S.current!.theQrCodeIsIncorrect;
+          view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
+        }
+        if (code == 422) {
+          view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+        }
+      },
+    );
   }
 
   Future doCheckSmallUnitQrCodeApiCall(
-      Map<String, dynamic> bodyParams, String qrCode, String contractNum, String startData, String endDate) async {
+      Map<String, dynamic> bodyParams,
+      String qrCode,
+      String contractNum,
+      String startData,
+      String endDate,
+      ) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<NewLinkRequestResponse>(Method.post,
-        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
-          view.closeProgress();
-          if (data != null) {
-            if (data.status == "success") {
-              print('here');
-              view.provider.newLinkRequestDataBean = data.data;
-              view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
-              view.provider.qrCode.text = qrCode ?? '';
-              view.provider.contractNo.text = contractNum ?? '';
-              view.provider.hasStartDate = false;
-              view.provider.hasEndDate = false;
-              view.provider.unitNumber = data.data.units!.propertyName;
-              print(data.data.units!.propertyName);
-              view.provider.contract = false;
-            } else if (data.status == "fail") {
-              view.provider.message = data.data.message;
-              view.showErrorDialog(
-                message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
-              );
-            }
+    await requestFutureData<NewLinkRequestResponse>(
+      Method.post,
+      endPoint: Api.newLinkRequestApiCall,
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          if (data.status == "success") {
+            print('here');
+            view.provider.newLinkRequestDataBean = data.data;
+            view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+            view.provider.qrCode.text = qrCode ?? '';
+            view.provider.contractNo.text = contractNum ?? '';
+            view.provider.hasStartDate = false;
+            view.provider.hasEndDate = false;
+            view.provider.unitNumber = data.data.units!.propertyName;
+            print(data.data.units!.propertyName);
+            view.provider.contract = false;
+          } else if (data.status == "fail") {
+            view.provider.message = data.data.message;
+            view.showErrorDialog(
+              message: data.data.message ?? S.current!.anErrorOccurredTryAgainLater,
+            );
           }
-        }, onError: (code, msg) {
-          view.closeProgress();
-          if (code == 404) {
-            view.provider.message = S.current!.theQrCodeIsIncorrect;
-            view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
-          }
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+        if (code == 404) {
+          view.provider.message = S.current!.theQrCodeIsIncorrect;
+          view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
+        }
 
-          if (code == 422) {
-            view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
-          }
-        });
+        if (code == 422) {
+          view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+        }
+      },
+    );
   }
 
   Future doCheckBuildingQrCodeApiCall(
-    Map<String, dynamic> bodyParams,
-    String qrCode,
-  ) async {
+      Map<String, dynamic> bodyParams,
+      String qrCode,
+      ) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
     });
     view.showProgress(isDismiss: false);
-    await requestFutureData<NewLinkListRequestResponse>(Method.post,
-        endPoint: Api.newLinkRequestApiCall, params: bodyParams, options: Options(headers: header), onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        if (data.status == "success") {
-          view.provider.buildingUnitsList = data.data!.units!;
-          view.provider.linkListRequestDataBean = data.data!;
-          view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
-          view.provider.qrCode.text = qrCode ?? '';
-          view.provider.hasStartDate = false;
-          view.provider.hasEndDate = false;
+    await requestFutureData<NewLinkListRequestResponse>(
+      Method.post,
+      endPoint: Api.newLinkRequestApiCall,
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          if (data.status == "success") {
+            view.provider.buildingUnitsList = data.data!.units!;
+            view.provider.linkListRequestDataBean = data.data!;
+            view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+            view.provider.qrCode.text = qrCode ?? '';
+            view.provider.hasStartDate = false;
+            view.provider.hasEndDate = false;
 
-          print(data.data!.units![0].propertyName);
-        } else if (data.status == "fail") {
-          view.provider.message = data.status;
-          view.showErrorDialog(
-            message: data.status ?? S.current!.anErrorOccurredTryAgainLater,
-          );
+            print(data.data!.units![0].propertyName);
+          } else if (data.status == "fail") {
+            view.provider.message = data.status;
+            view.showErrorDialog(
+              message: data.status ?? S.current!.anErrorOccurredTryAgainLater,
+            );
+          }
         }
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-      if (code == 404) {
-        view.provider.message = S.current!.theQrCodeIsIncorrect;
-        view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
-      }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+        if (code == 404) {
+          view.provider.message = S.current!.theQrCodeIsIncorrect;
+          view.showErrorDialog(message: S.current!.theQrCodeIsIncorrect);
+        }
 
-      if (code == 422) {
-        view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
-      }
-    });
+        if (code == 422) {
+          view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'error');
+        }
+      },
+    );
   }
 
-  Future completeLinkRequestApiCall(FormData bodyParams , BuildContext context) async {
+  Future completeLinkRequestApiCall(FormData bodyParams, BuildContext context) async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token) {
       header['Authorization'] = "Bearer $token";
@@ -359,89 +412,129 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
         }
       }
     }
-    await requestFutureData<GeneralResponse>(Method.post,
-        endPoint: Api.completeLinkRequestApiCall,
-        params: bodyParams,
-        options: Options(headers: header), onSuccess: (data) {
-      view.closeProgress();
-      if (data != null) {
-        if (data.status == "success") {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              MainScreen(index: 0,)), (Route<dynamic> route) => false);
-          view.closeProgress();
-          showDialog(
-            context: view.context,
-            builder: (context) => AlertDialog(
-              insetPadding: EdgeInsets.all(20),
-              contentPadding: EdgeInsets.all(16),
-              backgroundColor: MColors.whiteE,
-              elevation: 0,
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(ImageUtils.getSVGPath("done")),
-                  Gaps.vGap16,
-                  Text(
-                    S.current!.linkRequestSubmittedSuccessfully,
-                    style: MTextStyles.textMain18,
-                    textAlign: TextAlign.center,
-                  ),
-                  Gaps.vGap30,
-                  ElevatedButton(
-                    onPressed: () {
-                      view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
-                      view.provider.qrCode.clear();
-                      view.provider.contractNo.clear();
-                      view.provider.companyName.clear();
-                      view.provider.buildingName.clear();
-                      view.provider.description.clear();
-                      view.provider.startDate = DateTime.now();
-                      view.provider.endDate = DateTime.now();
-                      view.provider.identityImg = File('');
-                      view.provider.contractImg = File('');
-                      view.provider.contractFiles = [];
-                      view.provider.identityFiles = [];
-                      view.provider.qrCodeValid = false;
-                      view.provider.hasStartDate = false;
-                      view.provider.hasEndDate = false;
-                      Navigator.pop(context);
-                      view.provider.selectedIndex = 2;
-                      Map<String, dynamic> params = Map();
-                      params['search'] = view.provider.searchController.text.toString();
-                      getUnitRequestsApiCall(params);
-                    },
-                    child: Text(
-                      S.current!.backToHome,
-                      style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
-                        elevation: MaterialStatePropertyAll(0),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        )),
-                        padding: MaterialStateProperty.all<EdgeInsets>(
-                            EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w))),
-                  )
-                ],
+    await requestFutureData<GeneralResponse>(
+      Method.post,
+      endPoint: Api.completeLinkRequestApiCall,
+      params: bodyParams,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        view.closeProgress();
+        if (data != null) {
+          if (data.status == "success") {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => MainScreen(index: 0),
               ),
-            ),
-          );
-          view.provider.selectedUnit = '';
-        } else if (data.status == "fail") {
-          view.showToasts(data.message!, 'error');
-        } /*else {
-          view.showToasts(data.message!, 'error');
-        }*/
-      }
-    }, onError: (code, msg) {
-      view.closeProgress();
-      if (code == 422) {
-        view.showToasts(S.current!.anErrorOccurredTryAgainLater, 'warning');
-      } else {
-        view.showToasts(msg, 'error');
-      }
-    });
+                  (Route<dynamic> route) => false,
+            );
+            SuccessBottomSheet.show(
+              context,
+              buttonText: "Back",
+              message: S.current!.linkRequestSubmittedSuccessfully,
+              onDone: () {
+                            view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+                            view.provider.qrCode.clear();
+                            view.provider.contractNo.clear();
+                            view.provider.companyName.clear();
+                            view.provider.buildingName.clear();
+                            view.provider.description.clear();
+                            view.provider.startDate = DateTime.now();
+                            view.provider.endDate = DateTime.now();
+                            view.provider.identityImg = File('');
+                            view.provider.contractImg = File('');
+                            view.provider.contractFiles = [];
+                            view.provider.identityFiles = [];
+                            view.provider.qrCodeValid = false;
+                            view.provider.hasStartDate = false;
+                            view.provider.hasEndDate = false;
+                            Navigator.pop(context);
+                            view.provider.selectedIndex = 2;
+                            Map<String, dynamic> params = Map();
+                            params['search'] = view.provider.searchController.text.toString();
+                            getUnitRequestsApiCall(params);
+                          },
+              isDone: true
+            );
+            // showDialog(
+            //   context: context,
+            //   builder: (context) => AlertDialog(
+            //     insetPadding: EdgeInsets.all(20),
+            //     contentPadding: EdgeInsets.all(16),
+            //     backgroundColor: MColors.whiteE,
+            //     elevation: 0,
+            //     content: Column(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: [
+            //         SvgPicture.asset(ImageUtils.getSVGPath("done")),
+            //         Gaps.vGap16,
+            //         Text(
+            //           S.current!.linkRequestSubmittedSuccessfully,
+            //           style: MTextStyles.textMain18,
+            //           textAlign: TextAlign.center,
+            //         ),
+            //         Gaps.vGap30,
+            //         ElevatedButton(
+            //           onPressed: () {
+            //             view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
+            //             view.provider.qrCode.clear();
+            //             view.provider.contractNo.clear();
+            //             view.provider.companyName.clear();
+            //             view.provider.buildingName.clear();
+            //             view.provider.description.clear();
+            //             view.provider.startDate = DateTime.now();
+            //             view.provider.endDate = DateTime.now();
+            //             view.provider.identityImg = File('');
+            //             view.provider.contractImg = File('');
+            //             view.provider.contractFiles = [];
+            //             view.provider.identityFiles = [];
+            //             view.provider.qrCodeValid = false;
+            //             view.provider.hasStartDate = false;
+            //             view.provider.hasEndDate = false;
+            //             Navigator.pop(context);
+            //             view.provider.selectedIndex = 2;
+            //             Map<String, dynamic> params = Map();
+            //             params['search'] = view.provider.searchController.text.toString();
+            //             getUnitRequestsApiCall(params);
+            //           },
+            //           child: Text(
+            //             S.current!.backToHome,
+            //             style: MTextStyles.textWhite14.copyWith(fontWeight: FontWeight.w700),
+            //           ),
+            //           style: ButtonStyle(
+            //             backgroundColor: MaterialStateProperty.all<Color>(MColors.primary_color),
+            //             elevation: MaterialStatePropertyAll(0),
+            //             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //               RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(8),
+            //               ),
+            //             ),
+            //             padding: MaterialStateProperty.all<EdgeInsets>(
+            //               EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.w),
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // );
+            view.provider.selectedUnit = '';
+          } else if (data.status == "fail") {
+            SuccessBottomSheet.show(context,
+              buttonText: "Back",message: data.message!,onDone: (){},isDone: false);
+          }
+        }
+      },
+      onError: (code, msg) {
+        view.closeProgress();
+        if (code == 422) {
+          SuccessBottomSheet.show(context,
+            buttonText: "Back",message: S.current!.anErrorOccurredTryAgainLater,onDone: (){},isDone: false);
+        } else {
+          SuccessBottomSheet.show(context,
+            buttonText: "Back",message: msg,onDone: (){},isDone: false);
+        }
+      },
+    );
   }
 
   Color getUnitStatusColorFromString(String status) {

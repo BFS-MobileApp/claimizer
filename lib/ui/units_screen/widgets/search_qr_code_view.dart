@@ -170,22 +170,29 @@ class _SearchAboutUnitByQRState extends State<SearchAboutUnitByQR> {
                 child: Container(
                   width: 10,
                   height: 10,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: MColors.primary_color),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: MColors.primary_color,
+                  ),
                 ),
               )
                   : null,
             ),
             const SizedBox(width: 12),
-            Text(
-              option.label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
-                color: isSelected ? MColors.primary_text_color : MColors.light_text_color,
+
+            Expanded(
+              child: Text(
+                option.label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: isSelected ? FontWeight.w500 : FontWeight.w400,
+                  color: isSelected ? MColors.primary_text_color : MColors.light_text_color,
+                ),
+                softWrap: true,
               ),
             ),
           ],
-        ),
+        )
       ),
     );
   }

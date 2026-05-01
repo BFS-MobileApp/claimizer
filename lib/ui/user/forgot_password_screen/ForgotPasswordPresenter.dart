@@ -27,6 +27,7 @@ class ForgotPasswordPresenter
             // Optional: navigate back or to login after Done is tapped
             // Navigator.of(view.context).pop();
           },
+          isDone: true
         );
       },
       onError: (code, msg) {
