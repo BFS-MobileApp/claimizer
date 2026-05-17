@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../CommonUtils/log_utils.dart';
+import '../../CommonUtils/logmanager.dart';
 import '../../CommonUtils/model_eventbus/EventBusUtils.dart';
 import '../../CommonUtils/model_eventbus/ProfileEvent.dart';
 import '../../CommonUtils/preference/Prefs.dart';
@@ -447,10 +448,9 @@ class MoreScreenState extends BaseState<MoreScreen, MorePresenter>
           // logout
           InkWell(
             onTap: () async {
+              mPresenter.view.closeProgress();
+              LogoutManager.cancelAll();
               await Prefs.clearExpectLanguage();
-
-              if (!mounted) return;
-
               Navigator.of(context).pushAndRemoveUntil(
                 CupertinoPageRoute(builder: (_) => LoginScreen()),
                     (route) => false,

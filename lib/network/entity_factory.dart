@@ -3,6 +3,7 @@ import 'package:Cliamizer/network/models/general_response.dart';
 
 import '../ui/user/forgot_password_screen/ResetPasswordResponse.dart';
 import 'models/ClaimDetailsResponse.dart';
+import 'models/GlobalSettingsResponse.dart';
 import 'models/NewLinkListRequestResponse.dart';
 import 'models/NewLinkRequestResponse.dart';
 import 'models/NotificationResponse.dart';
@@ -57,6 +58,8 @@ class EntityFactory {
         return ClaimDetailsResponse.fromJson(json) as T;
       case "UnitRequestDetailsResponse":
         return UnitRequestDetailsResponse.fromJson(json) as T;
+      case "GlobalSettingsResponse":
+        return GlobalSettingsResponse.fromJson(json) as T;
     }
     return null;
   }

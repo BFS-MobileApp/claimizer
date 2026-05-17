@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:Cliamizer/ui/units_screen/units_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,11 +30,28 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
     super.initState();
   }
 
-  Future<void> pickImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
+  Future<void> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'mp4', 'mov', 'avi'],
+    );
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      int maxFileSize = widget.provider.maxFileSize ?? 5;
+      int sizeInBytes = file.lengthSync();
+      double sizeInMb = sizeInBytes / (1024 * 1024);
+      if (sizeInMb > maxFileSize) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: MColors.error_color,
+            margin: EdgeInsets.all(8),
+            behavior: SnackBarBehavior.floating,
+            content: Text("${S.of(context)!.fileSizeExceeded} ($maxFileSize MB)")));
+        Navigator.pop(context);
+        return;
+      }
       setState(() {
-        widget.provider.identityImg = File(pickedFile.path);
+        widget.provider.identityImg = file;
       });
     }
     Navigator.pop(context);
@@ -42,20 +60,31 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
-    setState(() {
-      if (pickedFile != null) {
-        print(pickedFile.path);
-        widget.provider.identityImg = File(pickedFile.path);
-      } else {
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      int maxFileSize = widget.provider.maxFileSize ?? 5;
+      int sizeInBytes = file.lengthSync();
+      double sizeInMb = sizeInBytes / (1024 * 1024);
+      if (sizeInMb > maxFileSize) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: MColors.error_color,
             margin: EdgeInsets.all(8),
             behavior: SnackBarBehavior.floating,
-            content: Text(S.of(context)!.noImageSelected)));
+            content: Text("${S.of(context)!.fileSizeExceeded} ($maxFileSize MB)")));
         Navigator.pop(context);
-        Navigator.pop(context);
+        return;
       }
-    });
+      setState(() {
+        widget.provider.identityImg = file;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: MColors.error_color,
+          margin: EdgeInsets.all(8),
+          behavior: SnackBarBehavior.floating,
+          content: Text(S.of(context)!.noImageSelected)));
+      Navigator.pop(context);
+    }
     Navigator.pop(context);
   }
 
@@ -102,7 +131,7 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
                           ),
                           SizedBox(width: 10),
                           GestureDetector(
-                            onTap: pickImageFromGallery,
+                            onTap: pickFile,
                             child: Container(
                               width: 40.w,
                               padding: EdgeInsets.all(14),
@@ -140,12 +169,23 @@ class _BuildIdentityFilePickerState extends State<BuildIdentityFilePicker> {
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
                 pr.identityImg.path.isNotEmpty
-                    ? ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.file(pr.identityImg,width: 10.w,height: 10.w,fit: BoxFit.cover,))
+                    ? (pr.identityImg.path.toLowerCase().endsWith('.pdf')
+                        ? Icon(Icons.picture_as_pdf, color: Colors.red, size: 10.w)
+                        : (pr.identityImg.path.toLowerCase().endsWith('.mp4') ||
+                                pr.identityImg.path.toLowerCase().endsWith('.mov') ||
+                                pr.identityImg.path.toLowerCase().endsWith('.avi'))
+                            ? Icon(Icons.videocam, color: Colors.blue, size: 10.w)
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  pr.identityImg,
+                                  width: 10.w,
+                                  height: 10.w,
+                                  fit: BoxFit.cover,
+                                )))
                     : Text(
                         S.of(context)!.uploadYourIdentity,
-                        style: MTextStyles.textDark14,
+                        style: MTextStyles.textDark12.copyWith(color: MColors.primary_color),
                       ),
                 Spacer(),
                 InkWell(

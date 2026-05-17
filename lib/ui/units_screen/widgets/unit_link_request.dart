@@ -14,6 +14,8 @@ import '../../../generated/l10n.dart';
 import '../../../res/colors.dart';
 import '../../../res/gaps.dart';
 import '../../unit_request_details_screen/UnitDetailsScreen.dart';
+import 'package:intl/intl.dart';
+
 
 class UnitLinkRequest extends StatefulWidget {
   UnitLinkRequest({Key? key, required this.presenter, required this.homeProvider, required this.provider}) : super(key: key);
@@ -50,7 +52,10 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
   void dispose() {
     super.dispose();
   }
-
+  String formatDate(String date) {
+    final parsedDate = DateTime.parse(date).toLocal();
+    return DateFormat('d/M/y h:mm a').format(parsedDate);
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<UnitProvider>(
@@ -126,6 +131,8 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
                     SizedBox(height: 3.w),
 
                     // Detail Rows
+                    _buildDetailRow(S.of(context)!.createdAt,formatDate( item.createdAt ?? "")),
+                    _buildDividerRow(),
                     _buildDetailRow(S.of(context)!.unitName, item.unitName ?? ""),
                     _buildDividerRow(),
                     _buildDetailRow(S.of(context)!.buildingName, item.buildingName ?? ""),
@@ -166,6 +173,10 @@ class _UnitLinkRequestState extends State<UnitLinkRequest> {
       case 'pending':
         bgColor = Color(0xFFFFF8E1);
         textColor = Color(0xFFF9A825);
+        break;
+      case 'terminated':
+        bgColor = Color(0xFFE1FFFE);
+        textColor = Color(0xFF3CB8E0);
         break;
       case 'rejected':
         bgColor = Color(0xFFFFEBEE);

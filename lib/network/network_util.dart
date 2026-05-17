@@ -123,6 +123,10 @@ class DioUtils {
       }
     }, onError: (e) {
       _cancelLog(e, endPoint);
+      if (e is DioException && CancelToken.isCancel(e)) {
+        if (onError != null) onError(1005, '');
+        return;
+      }
       NetError error = ExceptionHandle.handleException(e);
       _onError(error.code, error.msg, onError);
     });
@@ -190,7 +194,10 @@ class DioUtils {
       }
     }, onError: (e) {
       _cancelLog(e, url);
-      NetError error = ExceptionHandle.handleException(e);
+      if (e is DioException && CancelToken.isCancel(e)) {
+        if (onError != null) onError(1005, '');
+        return;
+      }      NetError error = ExceptionHandle.handleException(e);
       _onError(error.code, error.msg, onError);
     });
   }
@@ -202,6 +209,7 @@ class DioUtils {
   }
 
   _onError(int code, String msg, Function(int code, String msg)? onError) {
+    if (code == 1005 || code == -1) return;
     Log.e("Interface request exception code:$code message:$msg");
     if (onError != null) {
       onError(code, msg);

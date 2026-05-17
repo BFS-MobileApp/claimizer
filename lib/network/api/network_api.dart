@@ -30,6 +30,7 @@ class Api {
   static const String getNotificationApiCall = "show-client-notifications";
   static const String fcmToken = "fcm-token";
   static const String emergency = "emergency-contact";
+  static const String globalSettingsApiCall = "global-settings";
   static String getClaimDetailsApiCall(String id) => "claim/$id";
 
   static String doAddRatingApiCall(String claimId) => "claims/$claimId/addRate";

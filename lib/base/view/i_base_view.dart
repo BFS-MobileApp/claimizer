@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class IBaseView {
   BuildContext getContext();
-
+  bool get mounted;
   void showProgress();
 
   void closeProgress();

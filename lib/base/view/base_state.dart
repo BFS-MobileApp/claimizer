@@ -28,15 +28,17 @@ abstract class BaseState<T extends StatefulWidget, P extends BasePresenter> exte
   BuildContext getContext() {
     return context;
   }
-
   @override
   void showProgress({bool isDismiss = true}) {
+    print('🔴 showProgress called - widget: ${widget.runtimeType}');
+    print(StackTrace.current);
     if (mounted && !_isShowDialog) {
       _isShowDialog = true;
       try {
         showDialog(
           context: context,
-          builder: (context) {
+          barrierDismissible: false,
+          builder: (dialogContext) {
             return WillPopScope(
               onWillPop: () async => false,
               child: Container(

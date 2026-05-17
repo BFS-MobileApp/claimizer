@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/app_widgets/app_headline.dart';
 import 'package:Cliamizer/base/view/base_state.dart';
@@ -37,7 +39,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with  TickerProviderStateMixin {
+
+  StreamSubscription? _profileSubscription;
+  StreamSubscription? _reloadSubscription;
   HomeProvider provider = HomeProvider();
   MoreProvider moreProvider = MoreProvider();
   MainProvider mainProvider = MainProvider();
@@ -70,39 +75,38 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     mainProvider = context.read<MainProvider>();
     claimsProvider = context.read<ClaimsProvider>();
     moreProvider = context.read<MoreProvider>();
-    EventBusUtils.getInstance().on<ProfileEvent>().listen((event) {
-      if (event.username != null) {
-        provider.name = event.username!;
-      }
-      if (event.userImage != null) {
-        provider.avatar = event.userImage!;
+    _profileSubscription = EventBusUtils.getInstance().on<ProfileEvent>().listen((event) {
+      if (!mounted) return;
+      if (event.username != null) provider.name = event.username!;
+      if (event.userImage != null) provider.avatar = event.userImage!;
+      setState(() {});
+    });
+
+    _reloadSubscription = EventBusUtils.getInstance().on<ReloadEvent>().listen((event) {
+      if (!mounted) return;
+      if (event.isRefresh != null || event.isLangChanged != null) {
+        mPresenter.getStatisticsApiCall(isUpdateData: true);
       }
       setState(() {});
     });
 
-    EventBusUtils.getInstance().on<ReloadEvent>().listen((event) {
-      if (event.isRefresh != null || event.isLangChanged != null) {
-        mPresenter.getStatisticsApiCall();
-      }
-      setState(() {});
-    });
-    mPresenter.getStatisticsApiCall();
+    mPresenter.getStatisticsApiCall(isUpdateData: false);
     // mPresenter.getProfileData();
     mPresenter.getUserName();
     mPresenter.test();
     super.initState();
   }
 
+
   @override
-  void didUpdateWidget(covariant HomeScreen oldWidget) {
-    mPresenter.getStatisticsApiCall();
-    mPresenter.test();
-    super.didUpdateWidget(oldWidget);
+  void dispose() {
+    _profileSubscription?.cancel();
+    _reloadSubscription?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     List<String> cardTitles = [
       S.current!.allClaims,
       S.current!.newClaims,
@@ -282,9 +286,6 @@ class HomeScreenState extends BaseState<HomeScreen, HomePresenter>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 
   @override
   HomePresenter createPresenter() {

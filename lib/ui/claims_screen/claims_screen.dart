@@ -48,9 +48,6 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   final DateFormat _dateFormatEN = DateFormat('yyyy-MM-dd', 'en');
   final DateFormat _dateFormatAR = DateFormat('yyyy-MM-dd', 'ar');
 
-  // ─── 5 MB limit in bytes ───────────────────────────────────────────────────
-  static const int _maxFileSizeBytes = 5 * 1024 * 1024; // 5 MB
-
   int selectedBuildingId = 0;
   int selectedUnitId = 0;
   int selectedCategoryId = 0;
@@ -72,7 +69,10 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
         mPresenter.getClaims();
       }
     });
-    mPresenter.getClaims();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      mPresenter.getGlobalSettings();
+      mPresenter.getClaims();
+    });
     super.initState();
   }
 
@@ -85,11 +85,14 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
 
   // ─── Validates all selected files. Returns true if all are within limit. ──
   bool _validateFileSizes(ClaimsProvider pr) {
+    int maxFileSizeMb = pr.maxFileSize ?? 5;
+    int maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
+
     // Check gallery files
     for (final xFile in pr.imageFiles) {
       final file = File(xFile.path);
-      if (file.existsSync() && file.lengthSync() > _maxFileSizeBytes) {
-        showToasts(S.current.fileSizeExceeded ?? "File size must not exceed 5 MB", "Error");
+      if (file.existsSync() && file.lengthSync() > maxFileSizeBytes) {
+        showToasts("${S.current.fileSizeExceeded} ($maxFileSizeMb MB)", "Error");
         return false;
       }
     }
@@ -97,8 +100,8 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     // Check camera file
     if (pr.file.path.isNotEmpty) {
       final file = File(pr.file.path);
-      if (file.existsSync() && file.lengthSync() > _maxFileSizeBytes) {
-        showToasts(S.current.fileSizeExceeded ?? "File size must not exceed 5 MB", "Error");
+      if (file.existsSync() && file.lengthSync() > maxFileSizeBytes) {
+        showToasts("${S.current.fileSizeExceeded} ($maxFileSizeMb MB)", "Error");
         return false;
       }
     }
@@ -255,6 +258,11 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
     );
   }
 
+  bool isImage(String path) {
+    final ext = path.toLowerCase();
+    return ext.endsWith('.jpg') || ext.endsWith('.jpeg') || ext.endsWith('.png');
+  }
+
   // ─── Review / Summary screen ───────────────────────────────────────────────
   Widget _buildReviewStep(BuildContext context, ClaimsProvider pr) {
     return Container(
@@ -357,52 +365,64 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
 
                     if (pr.imageFiles.isNotEmpty) {
                       for (var i = 0; i < pr.imageFiles.length; i++) {
-                        final file =
-                        await mPresenter.compressFile(File(pr.imageFiles[i].path));
-                        formData.files.add(MapEntry(
-                          'file[$i]',
-                          MultipartFile.fromBytes(file!, filename: 'image$i.jpg'),
-                        ));
-                        formData.fields
-                            .add(MapEntry("unit_id", selectedUnitId.toString()));
-                        formData.fields.add(
-                            MapEntry("category_id", selectedCategoryId.toString()));
-                        formData.fields.add(MapEntry(
-                            "sub_category_id", selectedSubCategoryId.toString()));
-                        formData.fields.add(
-                            MapEntry("claim_type_id", selectedTypeId.toString()));
-                        formData.fields.add(
-                            MapEntry("description", provider.description.text));
-                        formData.fields.add(MapEntry(
-                          "available_date",
-                          provider.selectedDate != ''
-                              ? DateFormat('yyyy-MM-dd', 'en')
-                              .format(provider.selectedDate)
-                              : DateFormat('yyyy-MM-dd', 'en')
-                              .format(DateTime.now()),
-                        ));
-                        formData.fields.add(
-                            MapEntry("available_time", provider.selectedTimeValue));
+                        String path = pr.imageFiles[i].path;
+                        if (isImage(path)) {
+                          final compressedBytes = await mPresenter.compressFile(File(path));
+                          formData.files.add(MapEntry(
+                            'file[$i]',
+                            MultipartFile.fromBytes(compressedBytes!, filename: path.split('/').last),
+                          ));
+                        } else {
+                          formData.files.add(MapEntry(
+                            'file[$i]',
+                            await MultipartFile.fromFile(path, filename: path.split('/').last),
+                          ));
+                        }
                       }
+                      formData.fields.add(MapEntry("unit_id", selectedUnitId.toString()));
+                      formData.fields.add(MapEntry("category_id", selectedCategoryId.toString()));
+                      formData.fields.add(MapEntry("sub_category_id", selectedSubCategoryId.toString()));
+                      formData.fields.add(MapEntry("claim_type_id", selectedTypeId.toString()));
+                      formData.fields.add(MapEntry("description", provider.description.text));
+                      formData.fields.add(MapEntry(
+                        "available_date",
+                        provider.selectedDate != ''
+                            ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
+                            : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                      ));
+                      formData.fields.add(MapEntry("available_time", provider.selectedTimeValue));
                       mPresenter.postClaimRequestApiCall(formData);
                     } else if (pr.file.path != '') {
-                      final file = await mPresenter.compressFile(pr.file);
-                      final fd = FormData.fromMap({
-                        "file[0]": await MultipartFile.fromBytes(file!,
-                            filename: pr.file.path.split('/').last),
-                        "unit_id": selectedUnitId == 0
-                            ? provider.selectedUnitIndex
-                            : selectedUnitId,
-                        "category_id": selectedCategoryId,
-                        "sub_category_id": selectedSubCategoryId,
-                        "claim_type_id": selectedTypeId,
-                        "description": provider.description.text,
-                        "available_date": provider.selectedDate != ''
-                            ? DateFormat('yyyy-MM-dd', 'en')
-                            .format(provider.selectedDate)
-                            : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
-                        "available_time": provider.selectedTimeValue,
-                      });
+                      String path = pr.file.path;
+                      FormData fd;
+                      if (isImage(path)) {
+                        final compressedBytes = await mPresenter.compressFile(pr.file);
+                        fd = FormData.fromMap({
+                          "file[0]": MultipartFile.fromBytes(compressedBytes!, filename: path.split('/').last),
+                          "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
+                          "category_id": selectedCategoryId,
+                          "sub_category_id": selectedSubCategoryId,
+                          "claim_type_id": selectedTypeId,
+                          "description": provider.description.text,
+                          "available_date": provider.selectedDate != ''
+                              ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
+                              : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                          "available_time": provider.selectedTimeValue,
+                        });
+                      } else {
+                        fd = FormData.fromMap({
+                          "file[0]": await MultipartFile.fromFile(path, filename: path.split('/').last),
+                          "unit_id": selectedUnitId == 0 ? provider.selectedUnitIndex : selectedUnitId,
+                          "category_id": selectedCategoryId,
+                          "sub_category_id": selectedSubCategoryId,
+                          "claim_type_id": selectedTypeId,
+                          "description": provider.description.text,
+                          "available_date": provider.selectedDate != ''
+                              ? DateFormat('yyyy-MM-dd', 'en').format(provider.selectedDate)
+                              : DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
+                          "available_time": provider.selectedTimeValue,
+                        });
+                      }
                       mPresenter.postClaimRequestApiCall(fd);
                     } else {
                       final fd = FormData.fromMap({
@@ -639,21 +659,21 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
                             Gaps.vGap8,
                             BuildFilePicker(provider: pr),
                             Gaps.vGap8,
-                             Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffDA1414).withOpacity(0.10),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  S.current.fileSizeExceeded,
-                                  style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
-                                    color: const Color(0xffDA1414),
-                                    fontSize: 12,
-                                  ),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xffDA1414).withOpacity(0.10),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                "${S.current.fileSizeExceeded} (${pr.maxFileSize ?? 5} MB)",
+                                style: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                                  color: const Color(0xffDA1414),
+                                  fontSize: 12,
                                 ),
                               ),
+                            ),
                           ],
                         ),
                       ),
@@ -688,18 +708,40 @@ class ClaimsScreenState extends BaseState<ClaimsScreen, ClaimsPresenter>
   }
 
   Widget _buildImageItem(BuildContext context, String imagePath) {
+    bool isImg = isImage(imagePath);
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => FullScreenImage(image: imagePath))),
+      onTap: () {
+        if (isImg) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => FullScreenImage(image: imagePath)));
+        }
+      },
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 2.w),
-        child: ImageLoader(
-          imageUrl: imagePath,
-          width: 16.w,
-          height: 16.w,
-        ),
+        child: isImg
+            ? ImageLoader(
+                imageUrl: imagePath,
+                width: 16.w,
+                height: 16.w,
+              )
+            : Container(
+                width: 16.w,
+                height: 16.w,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  imagePath.toLowerCase().endsWith('.pdf')
+                      ? Icons.picture_as_pdf
+                      : Icons.videocam,
+                  color: imagePath.toLowerCase().endsWith('.pdf')
+                      ? Colors.red
+                      : Colors.blue,
+                ),
+              ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:Cliamizer/app_widgets/success_bottom_sheet.dart';
 import 'package:Cliamizer/base/presenter/base_presenter.dart';
+import 'package:Cliamizer/network/models/GlobalSettingsResponse.dart';
 import 'package:Cliamizer/network/models/NewLinkListRequestResponse.dart';
 import 'package:Cliamizer/network/models/NewLinkRequestResponse.dart';
 import 'package:Cliamizer/network/models/UnitRequestResponse.dart';
@@ -421,17 +422,12 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
         view.closeProgress();
         if (data != null) {
           if (data.status == "success") {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => MainScreen(index: 0),
-              ),
-                  (Route<dynamic> route) => false,
-            );
             SuccessBottomSheet.show(
               context,
               buttonText: "Back",
               message: S.current!.linkRequestSubmittedSuccessfully,
               onDone: () {
+
                             view.provider.isQrCodeValid = !view.provider.isQrCodeValid;
                             view.provider.qrCode.clear();
                             view.provider.contractNo.clear();
@@ -447,11 +443,8 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
                             view.provider.qrCodeValid = false;
                             view.provider.hasStartDate = false;
                             view.provider.hasEndDate = false;
-                            Navigator.pop(context);
-                            view.provider.selectedIndex = 2;
-                            Map<String, dynamic> params = Map();
-                            params['search'] = view.provider.searchController.text.toString();
-                            getUnitRequestsApiCall(params);
+                            HomeProvider.silentHomeRefresh = true;
+                            Navigator.of(context).popUntil((route) => route.isFirst);
                           },
               isDone: true
             );
@@ -533,6 +526,26 @@ class UnitPresenter extends BasePresenter<UnitsScreenState> {
           SuccessBottomSheet.show(context,
             buttonText: "Back",message: msg,onDone: (){},isDone: false);
         }
+      },
+    );
+  }
+
+  Future getGlobalSettings() async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    await requestFutureData<GlobalSettingsResponse>(
+      Method.get,
+      endPoint: Api.globalSettingsApiCall,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        if (data != null) {
+          view.provider.maxFileSize = data.maxFileSize;
+        }
+      },
+      onError: (code, msg) {
+        // Silently fail or handle error if needed
       },
     );
   }

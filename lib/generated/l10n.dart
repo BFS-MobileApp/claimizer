@@ -274,10 +274,10 @@ class S {
     return Intl.message('Required', name: 'required', desc: '', args: []);
   }
 
-  /// `File size must not exceed 5 MB`
+  /// `File size must not exceed`
   String get fileSizeExceeded {
     return Intl.message(
-      'File size must not exceed 5 MB',
+      'File size must not exceed',
       name: 'fileSizeExceeded',
       desc: '',
       args: [],
@@ -514,11 +514,21 @@ class S {
     return Intl.message('Dark Mode', name: 'darkMode', desc: '', args: []);
   }
 
-  /// `Request Notes`
+  /// `Other Notes`
   String get requestNotes {
     return Intl.message(
-      'Request Notes',
+      'Other Notes',
       name: 'requestNotes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type your comments here`
+  String get typeComment {
+    return Intl.message(
+      'Type your comments here',
+      name: 'typeComment',
       desc: '',
       args: [],
     );
@@ -1549,10 +1559,10 @@ class S {
     );
   }
 
-  /// `Contract Image`
+  /// `Contract Copy (JPG Or PDF)`
   String get uploadContractImage {
     return Intl.message(
-      'Contract Image',
+      'Contract Copy (JPG Or PDF)',
       name: 'uploadContractImage',
       desc: '',
       args: [],
@@ -1649,6 +1659,16 @@ class S {
     return Intl.message('Close Claim', name: 'closeClaim', desc: '', args: []);
   }
 
+  /// `Cancel Claim`
+  String get cancelClaim {
+    return Intl.message(
+      'Cancel Claim',
+      name: 'cancelClaim',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Unit Link Request Details`
   String get unitLinkRequestDetails {
     return Intl.message(
@@ -1729,10 +1749,10 @@ class S {
     );
   }
 
-  /// `Upload Your ID`
+  /// `National ID Copy (JPG Or PDF)`
   String get uploadYourIdentity {
     return Intl.message(
-      'Upload Your ID',
+      'National ID Copy (JPG Or PDF)',
       name: 'uploadYourIdentity',
       desc: '',
       args: [],
@@ -1964,6 +1984,16 @@ class S {
     return Intl.message(
       'Are you sure to close this Claim ?',
       name: 'areYouSureToCloseThisClaim',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure to cancel this Claim ?`
+  String get areYouSureToCancelThisClaim {
+    return Intl.message(
+      'Are you sure to cancel this Claim ?',
+      name: 'areYouSureToCancelThisClaim',
       desc: '',
       args: [],
     );

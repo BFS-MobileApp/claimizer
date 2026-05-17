@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:Cliamizer/CommonUtils/image_utils.dart';
 import 'package:Cliamizer/ui/claims_screen/ClaimsProvider.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +25,43 @@ class BuildFilePicker extends StatefulWidget {
 class _BuildFilePickerState extends State<BuildFilePicker> {
   final picker = ImagePicker();
 
-  Future<void> pickImages() async {
-    final pickedFiles = await picker.pickMultiImage();
-    if (pickedFiles.length > 4) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: MColors.error_color,
-          margin: EdgeInsets.all(8),
-          behavior: SnackBarBehavior.floating,
-          content: Text(S.of(context)!.only4ImagesAllowed)));
-      Navigator.pop(context);
-      Navigator.pop(context);
-      return ;
-    }
-    if (pickedFiles.isNotEmpty) {
-        widget.provider.imageFiles = pickedFiles;
+  Future<void> pickFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'mp4', 'mov', 'avi'],
+    );
+
+    if (result != null) {
+      if (result.files.length > 4) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: MColors.error_color,
+            margin: EdgeInsets.all(8),
+            behavior: SnackBarBehavior.floating,
+            content: Text(S.of(context)!.only4ImagesAllowed)));
+        Navigator.pop(context);
+        return;
+      }
+
+      int maxFileSizeMb = widget.provider.maxFileSize ?? 5;
+      int maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
+      List<XFile> validFiles = [];
+
+      for (var file in result.files) {
+        if (file.size > maxFileSizeBytes) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: MColors.error_color,
+              margin: EdgeInsets.all(8),
+              behavior: SnackBarBehavior.floating,
+              content: Text("${S.of(context)!.fileSizeExceeded} ($maxFileSizeMb MB)")));
+          continue;
+        }
+        validFiles.add(XFile(file.path!));
+      }
+
+      if (validFiles.isNotEmpty) {
+        widget.provider.imageFiles = validFiles;
+      }
     }
     Navigator.pop(context);
   }
@@ -45,17 +69,28 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
   // File pr.file;
   Future getImageFromCamera() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
-      if (pickedFile != null) {
-        widget.provider.file = File(pickedFile.path);
-      } else {
+    if (pickedFile != null) {
+      File file = File(pickedFile.path);
+      int maxFileSizeMb = widget.provider.maxFileSize ?? 5;
+      int maxFileSizeBytes = maxFileSizeMb * 1024 * 1024;
+
+      if (file.lengthSync() > maxFileSizeBytes) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: MColors.error_color,
             margin: EdgeInsets.all(8),
             behavior: SnackBarBehavior.floating,
-            content: Text(S.of(context)!.only4ImagesAllowed)));
+            content: Text("${S.of(context)!.fileSizeExceeded} ($maxFileSizeMb MB)")));
         Navigator.pop(context);
-        Navigator.pop(context);
+        return;
       }
+      widget.provider.file = file;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: MColors.error_color,
+          margin: EdgeInsets.all(8),
+          behavior: SnackBarBehavior.floating,
+          content: Text(S.of(context)!.noImageSelected)));
+    }
     Navigator.pop(context);
   }
 
@@ -101,7 +136,7 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
                         ),
                         SizedBox(width: 10),
                         GestureDetector(
-                          onTap: pickImages,
+                          onTap: pickFiles,
                           child: Container(
                             width: 40.w,
                             padding: EdgeInsets.all(14),
@@ -139,13 +174,30 @@ class _BuildFilePickerState extends State<BuildFilePicker> {
                 SvgPicture.asset(ImageUtils.getSVGPath("file_upload")),
                 Gaps.hGap8,
                 pr.file.path != ''
-                    ? ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.file(pr.file,width: 10.w, height: 10.w,fit: BoxFit.cover,))
+                    ? (pr.file.path.toLowerCase().endsWith('.pdf')
+                        ? Icon(Icons.picture_as_pdf, color: Colors.red, size: 10.w)
+                        : (pr.file.path.toLowerCase().endsWith('.mp4') ||
+                                pr.file.path.toLowerCase().endsWith('.mov') ||
+                                pr.file.path.toLowerCase().endsWith('.avi'))
+                            ? Icon(Icons.videocam, color: Colors.blue, size: 10.w)
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.file(
+                                  pr.file,
+                                  width: 10.w,
+                                  height: 10.w,
+                                  fit: BoxFit.cover,
+                                )))
                     : pr.imageFiles.isNotEmpty
                     ? Row(
-                  children: [Icon(Icons.image,color: MColors.rejected_color,), Text(pr.imageFiles.length.toString() +" "+ S.of(context)!.images)],
-                )
+                        children: [
+                          Icon(
+                            Icons.insert_drive_file,
+                            color: MColors.rejected_color,
+                          ),
+                          Text(pr.imageFiles.length.toString() + " " + S.of(context)!.allFiles)
+                        ],
+                      )
                     : Text(
                   S.current!.uploadAnyFiles,
                   style: Theme.of(context).appBarTheme.titleTextStyle,

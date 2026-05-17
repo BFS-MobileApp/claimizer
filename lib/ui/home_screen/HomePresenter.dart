@@ -91,16 +91,17 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
         getProfileData();
       }
     }, onError: (code, msg) {
-      view.closeProgress();
-      if (code == 401) {
-        //return "error";
-      }
+          if (!isUpdateData) {
+            try { view.closeProgress(); } catch (_) {}
+          }
+          if (code == 401) {
+            try { view.closeProgress(); } catch (_) {}
+          }
     });
   }
   getProfileData() async {
     Map<String, dynamic> header = Map();
     await Prefs.getUserToken.then((token)  {
-      view.showProgress(isDismiss: false);
       header['Authorization'] = "Bearer $token";
       requestFutureData<ProfileResponse>(
         Method.get,
@@ -110,19 +111,16 @@ class HomePresenter extends BasePresenter<HomeScreenState> {
           if (data != null) {
             view.provider.setData(data.profileDataBean);
             view.provider.isDateLoaded = true;
-            view.closeProgress();
             // print("#####################" + data.profileDataBean!.avatar);
             Prefs.setUserImage(data.profileDataBean!.avatar);
             getUserImage();
           }else{
-            view.closeProgress();
           }
         },
         onError: (code, msg) {
           Log.d(msg);
           if(code == ErrorStatus.UNKNOWN_ERROR)
             view.provider.internetStatus = false;
-          view.closeProgress();
           if(code == ErrorStatus.UNAUTHORIZED)
             showDialog( context: view.context,builder: (_)=>
                 LoginRequiredDialog( message: S.of(view.context)!.sessionTimeoutPleaseLogin),barrierDismissible: false);

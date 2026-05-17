@@ -41,6 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "areNotConnectedToBuilding": MessageLookupByLibrary.simpleMessage(
       "غير متصل بالمبني الخاص بك",
     ),
+    "areYouSureToCancelThisClaim": MessageLookupByLibrary.simpleMessage(
+      "هل انت متأكد من الغاء طلب الصيانة ؟",
+    ),
     "areYouSureToCloseClaim": MessageLookupByLibrary.simpleMessage(
       "هل انت متأكد من اغلاق طلب الصيانة؟",
     ),
@@ -62,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "basicInfo": MessageLookupByLibrary.simpleMessage("معلومات اساسية"),
     "buildingName": MessageLookupByLibrary.simpleMessage("المبني"),
     "cancel": MessageLookupByLibrary.simpleMessage("الغاء"),
+    "cancelClaim": MessageLookupByLibrary.simpleMessage("الغاء الطلب "),
     "canceled": MessageLookupByLibrary.simpleMessage("ملغي"),
     "cancelledClaims": MessageLookupByLibrary.simpleMessage(
       "طلبات الصيانة الملغاة  ",
@@ -181,7 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "evening": MessageLookupByLibrary.simpleMessage("مساءا"),
     "existingUnit": MessageLookupByLibrary.simpleMessage("الوحدات الحالية"),
     "fileSizeExceeded": MessageLookupByLibrary.simpleMessage(
-      "مساحه الملف لا يمكن ان تتخطي 5 ميجا بايت",
+      "مساحه الملف لا يمكن ان تتخطي",
     ),
     "fillAllFields": MessageLookupByLibrary.simpleMessage(
       "ادخل كل الحقول مثل التي في عقدك",
@@ -319,7 +323,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reply": MessageLookupByLibrary.simpleMessage("رد"),
     "requestCode": MessageLookupByLibrary.simpleMessage("كود الطلب: "),
     "requestFailed": MessageLookupByLibrary.simpleMessage("فشل الطلب"),
-    "requestNotes": MessageLookupByLibrary.simpleMessage("دليل الطلب"),
+    "requestNotes": MessageLookupByLibrary.simpleMessage("ملاحظات أخري"),
     "required": MessageLookupByLibrary.simpleMessage("مطلوب"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("حفظ التغييرات"),
     "scan": MessageLookupByLibrary.simpleMessage("مسح"),
@@ -371,6 +375,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "theUnitIsReserved": MessageLookupByLibrary.simpleMessage("الوحدة مربوطة"),
     "timeline": MessageLookupByLibrary.simpleMessage("الخط الزمني"),
     "topUpdates": MessageLookupByLibrary.simpleMessage("اخر التحديثات"),
+    "typeComment": MessageLookupByLibrary.simpleMessage("اكتب ملاحظاتك هنا"),
     "unit": MessageLookupByLibrary.simpleMessage("ينتهي تعاقد الوحدة "),
     "unitCode": MessageLookupByLibrary.simpleMessage("كود الوحدة: "),
     "unitLinkQR": MessageLookupByLibrary.simpleMessage("رابط QR الخاص بالوحدة"),

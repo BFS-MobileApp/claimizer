@@ -7,6 +7,7 @@ import 'package:Cliamizer/ui/user/login_screen/LoginScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../CommonUtils/logmanager.dart';
 import '../view/i_base_view.dart';
 import 'i_presenter.dart';
 
@@ -22,6 +23,7 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
 
   BasePresenter() {
     _cancelToken = CancelToken();
+    LogoutManager.register(_cancelToken);
   }
 
   @override
@@ -35,6 +37,7 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
 
   @override
   void dispose() {
+    LogoutManager.unregister(_cancelToken);
     if (_cancelToken.isCancelled) {
       _cancelToken.cancel();
     }
@@ -61,15 +64,32 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
         params: params,
         queryParameters: queryParams ?? {},
         options: options,
-        cancelToken: cancelToken ?? _cancelToken, onSuccess: (data) {
-          // view.closeProgress();
-          if (onSuccess != null) {
-            onSuccess(data);
+        cancelToken: cancelToken ?? _cancelToken,
+        onSuccess: (data) {
+          if (_cancelToken.isCancelled) return;
+          try {
+            if (!view.mounted) return;
+            if (onSuccess != null) onSuccess(data);
+          } catch (_) {
+            return;
           }
         }, onSuccessList: (data) {
+          if (_cancelToken.isCancelled) return;
+          final element = view.getContext() as Element;
+          if (!element.mounted) return;
           if (isClose) // view.closeProgress();
             if (onSuccessList != null) onSuccessList(data);
         }, onError: (code, msg) {
+          if (code == 1005 || _cancelToken.isCancelled) {
+            view.closeProgress();
+            return;
+          }
+          try {
+            if (!view.mounted) return;
+            if (isClose) _onError(code, msg, onError);
+          } catch (_) {
+            return;
+          }
           if (isClose) // view.closeProgress();
             _onError(code, msg, onError);
           if (code == ErrorStatus.FORBIDDEN) {
@@ -102,6 +122,13 @@ class BasePresenter<V extends IBaseView> extends IPresenter {
           }
         });
   }
+
+  void cancelRequests() {
+    if (!_cancelToken.isCancelled) {
+      _cancelToken.cancel('User logged out');
+    }
+  }
+
 
   void requestDataFromNetwork<T>(Method method,
       {String? url,

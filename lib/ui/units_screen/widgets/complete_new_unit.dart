@@ -133,7 +133,7 @@ class CompleteNewUnit extends StatelessWidget {
                   Text(
                     S.current!.requestNotes,
                     style: TextStyle(
-                      fontSize: 13.sp,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                     ),
@@ -274,7 +274,7 @@ class CompleteNewUnit extends StatelessWidget {
           TextSpan(
             text: label,
             style: TextStyle(
-              fontSize: 13.sp,
+              fontSize: 15.sp,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),

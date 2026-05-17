@@ -31,12 +31,33 @@ import '../../CommonUtils/model_eventbus/ReloadHomeEevet.dart';
 import '../../CommonUtils/preference/Prefs.dart';
 import '../../app_widgets/NoDataFound.dart';
 import '../../network/api/network_api.dart';
+import '../../network/models/GlobalSettingsResponse.dart';
 import '../../network/models/claim_type_response.dart';
 import '../../network/models/units_response.dart';
 import '../../network/network_util.dart';
 import 'claims_screen.dart';
 
 class ClaimsPresenter extends BasePresenter<ClaimsScreenState> {
+
+  Future getGlobalSettings() async {
+    Map<String, dynamic> header = Map();
+    await Prefs.getUserToken.then((token) {
+      header['Authorization'] = "Bearer $token";
+    });
+    await requestFutureData<GlobalSettingsResponse>(
+      Method.get,
+      endPoint: Api.globalSettingsApiCall,
+      options: Options(headers: header),
+      onSuccess: (data) {
+        if (data != null) {
+          view.provider.maxFileSize = data.maxFileSize;
+        }
+      },
+      onError: (code, msg) {
+        // Silently fail or handle error if needed
+      },
+    );
+  }
 
   getClaims(){
     Map<String, dynamic> params = Map();

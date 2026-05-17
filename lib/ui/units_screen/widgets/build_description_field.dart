@@ -16,7 +16,7 @@ class BuildDescriptionField extends StatelessWidget {
         maxLines: 3,
         style: MTextStyles.textDark14,
         decoration: InputDecoration(
-          hintText: S.of(context)!.requestNotes,
+          hintText: S.of(context)!.typeComment,
           hintStyle: MTextStyles.textMain14.copyWith(
               color: MColors.light_text_color
           ),

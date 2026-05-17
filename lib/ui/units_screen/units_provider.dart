@@ -301,4 +301,13 @@ class UnitProvider<T> extends BaseProvider<T> {
     notifyListeners();
   }
 
+  int? _maxFileSize;
+
+  int? get maxFileSize => _maxFileSize;
+
+  set maxFileSize(int? value) {
+    _maxFileSize = value;
+    notifyListeners();
+  }
+
 }

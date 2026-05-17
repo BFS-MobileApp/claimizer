@@ -36,7 +36,7 @@ class LoginScreen extends StatefulWidget {
   LoginScreenState createState() => LoginScreenState();
 }
 
-class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with TickerProviderStateMixin {
   LoginProvider<LoginResponse> provider = LoginProvider<LoginResponse>();
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
@@ -91,7 +91,6 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return ChangeNotifierProvider<LoginProvider<LoginResponse>>(
       create: (_) => provider,
       child: Consumer<LoginProvider<LoginResponse>>(
@@ -544,8 +543,7 @@ class LoginScreenState extends BaseState<LoginScreen, LoginPresenter> with Autom
     return LoginPresenter();
   }
 
-  @override
-  bool get wantKeepAlive => true;
+
 
   void _refresh() {
     setState(() {

@@ -37,6 +37,9 @@ class UnitsScreenState extends BaseState<UnitsScreen, UnitPresenter>
     provider = context.read<UnitProvider>();
     homeProvider = context.read<HomeProvider>();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      mPresenter.getGlobalSettings();
+    });
   }
   void showErrorDialog({required String message}) {
     showDialog(

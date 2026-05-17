@@ -7,7 +7,7 @@ import '../../network/models/StatisticsResponse.dart';
 
 class HomeProvider<T> extends BaseProvider<T> {
   List<String> _claimsStatistics = [];
-
+  static bool silentHomeRefresh = false;
   List<String> get claimsStatistics => _claimsStatistics;
 
   set claimsStatistics(List<String> value) {

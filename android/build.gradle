@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.1.1' apply false
+    id 'com.android.application' version '8.2.1' apply false
     // ...
 
     // Add the dependency for the Google services Gradle plugin

@@ -46,6 +46,15 @@ class ClaimsProvider extends ChangeNotifier {
   String selectedSubCategory = '';
   String selectedType = '';
 
+  int? _maxFileSize;
+
+  int? get maxFileSize => _maxFileSize;
+
+  set maxFileSize(int? value) {
+    _maxFileSize = value;
+    notifyListeners();
+  }
+
   // Getters and setters...
 
   bool get isStepsFinished => _isStepsFinished;

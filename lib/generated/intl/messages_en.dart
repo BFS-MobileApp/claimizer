@@ -42,6 +42,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "areNotConnectedToBuilding": MessageLookupByLibrary.simpleMessage(
       "Are Not Connected To Building",
     ),
+    "areYouSureToCancelThisClaim": MessageLookupByLibrary.simpleMessage(
+      "Are you sure to cancel this Claim ?",
+    ),
     "areYouSureToCloseClaim": MessageLookupByLibrary.simpleMessage(
       "Are you sure to close claim?",
     ),
@@ -61,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "basicInfo": MessageLookupByLibrary.simpleMessage("Basic Info"),
     "buildingName": MessageLookupByLibrary.simpleMessage("Building"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cancelClaim": MessageLookupByLibrary.simpleMessage("Cancel Claim"),
     "canceled": MessageLookupByLibrary.simpleMessage("Canceled"),
     "cancelledClaims": MessageLookupByLibrary.simpleMessage("Cancelled Claims"),
     "checkYourInternet": MessageLookupByLibrary.simpleMessage(
@@ -173,7 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "evening": MessageLookupByLibrary.simpleMessage("Evening"),
     "existingUnit": MessageLookupByLibrary.simpleMessage("My Units"),
     "fileSizeExceeded": MessageLookupByLibrary.simpleMessage(
-      "File size must not exceed 5 MB",
+      "File size must not exceed",
     ),
     "fillAllFields": MessageLookupByLibrary.simpleMessage(
       "Fill All Fields As In Your Tenancy Contract",
@@ -307,7 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "reply": MessageLookupByLibrary.simpleMessage("Reply"),
     "requestCode": MessageLookupByLibrary.simpleMessage("Claim Code: "),
     "requestFailed": MessageLookupByLibrary.simpleMessage("Request Failed"),
-    "requestNotes": MessageLookupByLibrary.simpleMessage("Request Notes"),
+    "requestNotes": MessageLookupByLibrary.simpleMessage("Other Notes"),
     "required": MessageLookupByLibrary.simpleMessage("Required"),
     "saveChanges": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "scan": MessageLookupByLibrary.simpleMessage("Scan"),
@@ -361,6 +365,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "timeline": MessageLookupByLibrary.simpleMessage("Timeline"),
     "topUpdates": MessageLookupByLibrary.simpleMessage("Top Updates"),
+    "typeComment": MessageLookupByLibrary.simpleMessage(
+      "Type your comments here",
+    ),
     "unit": MessageLookupByLibrary.simpleMessage("Unit "),
     "unitCode": MessageLookupByLibrary.simpleMessage("Unit Code: "),
     "unitLinkQR": MessageLookupByLibrary.simpleMessage("Unit Link (QR)"),
@@ -397,14 +404,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Upload Contract File",
     ),
     "uploadContractImage": MessageLookupByLibrary.simpleMessage(
-      "Contract Image",
+      "Contract Copy (JPG Or PDF)",
     ),
     "uploadIdentityImage": MessageLookupByLibrary.simpleMessage("ID Image"),
     "uploadImageFrom": MessageLookupByLibrary.simpleMessage(
       "Upload image from",
     ),
     "uploadYourIdentity": MessageLookupByLibrary.simpleMessage(
-      "Upload Your ID",
+      "National ID Copy (JPG Or PDF)",
     ),
     "userRemarks": MessageLookupByLibrary.simpleMessage("Tenant Remarks"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),

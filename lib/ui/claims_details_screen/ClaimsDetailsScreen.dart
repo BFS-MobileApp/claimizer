@@ -705,11 +705,8 @@ class ClaimsDetailsScreenState
                                 Gaps.vGap12,
                                 Visibility(
                                   visible:
-                                      pr.instance.status.toLowerCase() != "closed" &&
-                                          pr.instance.status != "مغلق" &&
-                                          pr.instance.status.toLowerCase() !=
-                                              "cancelled" &&
-                                          pr.instance.status != "ملغي",
+                                      pr.instance.status.toLowerCase() == "new" ||
+                                          pr.instance.status == "جديد",
                                   child: ElevatedButton(
                                     onPressed: (){
                                     },
@@ -725,7 +722,7 @@ class ClaimsDetailsScreenState
                                               insetPadding: EdgeInsets.all(20),
                                               contentPadding: EdgeInsets.all(24),
                                               title: Text(
-                                                S.current!.closeClaim,
+                                                S.current!.cancelClaim,
                                                 style: Theme.of(context)
                                                     .appBarTheme
                                                     .titleTextStyle,
@@ -761,6 +758,111 @@ class ClaimsDetailsScreenState
                                                               EdgeInsets.symmetric(
                                                                   horizontal: 2.w,
                                                                   vertical: 3.w))),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    S.of(context)!.cancel,
+                                                    style: Theme.of(context)
+                                                        .appBarTheme
+                                                        .titleTextStyle,
+                                                  ),
+                                                ),
+                                              ],
+                                              content: Text(
+                                                S
+                                                    .of(context)!
+                                                    .areYouSureToCancelThisClaim,
+                                                style: Theme.of(context)
+                                                    .appBarTheme
+                                                    .titleTextStyle,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                        // mPresenter.closeClaimApiCall(pr.instance.referenceId);
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: MColors.primary_color
+                                                    .withOpacity(0.08),
+                                                shape: BoxShape.circle),
+                                            padding: EdgeInsets.all(4),
+                                            child: SvgPicture.asset(
+                                              ImageUtils.getSVGPath("trash"),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Gaps.hGap8,
+                                          Text(
+                                            S.of(context)!.cancelClaim,
+                                            style: TextStyle(fontSize: Dimens.font_sp14,color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible:
+                                  pr.instance.status.toLowerCase() == "completed" ||
+                                      pr.instance.status == "مكتمل",
+                                  child: ElevatedButton(
+                                    onPressed: (){
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: MColors.primary_color
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              insetPadding: EdgeInsets.all(20),
+                                              contentPadding: EdgeInsets.all(24),
+                                              title: Text(
+                                                S.current!.closeClaim,
+                                                style: Theme.of(context)
+                                                    .appBarTheme
+                                                    .titleTextStyle,
+                                              ),
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    mPresenter.closeClaimApiCall(
+                                                        pr.instance.referenceId);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    S.of(context)!.confirm,
+                                                    style: Theme.of(context)
+                                                        .appBarTheme
+                                                        .titleTextStyle,
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      backgroundColor:
+                                                      MaterialStateProperty.all<
+                                                          Color>(
+                                                          MColors.primary_color),
+                                                      elevation:
+                                                      MaterialStatePropertyAll(0),
+                                                      shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius.circular(8),
+                                                          )),
+                                                      padding: MaterialStateProperty
+                                                          .all<EdgeInsets>(
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 2.w,
+                                                              vertical: 3.w))),
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
